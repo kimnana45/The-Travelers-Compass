@@ -7,3 +7,16 @@ export function Container({ children }) {
 export function Row({ children }) {
   return <div className="row mt-1"> {children} </div>;
 }
+
+export function Col({ size, children }) {
+  return (
+    <div
+      className={size
+        .split(" ")
+        .map(size => "col-" + size)
+        .join(" ")}
+    >
+      {children}
+    </div>
+  );
+}
