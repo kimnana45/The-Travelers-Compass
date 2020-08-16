@@ -36,15 +36,15 @@ class Trip extends Component {
                 break;
             case "location":
                 //valid location 
-                this.setState({ validLocation: this.state.});
+                this.setState({ validLocation: this.state.value });
                 break;
             case "dates":
                 //dates of the trip 
-                this.setState({});
+                this.setState({ validDates: this.state.value });
                 break;
             case "numberOfPeople":
                 //number of people
-                this.setState({});
+                this.setState({ validNOP: this.state.value });
                 break;
             default:
         }
