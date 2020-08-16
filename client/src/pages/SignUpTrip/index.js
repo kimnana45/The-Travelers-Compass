@@ -22,14 +22,14 @@ class Trip extends Component {
                 //condition that trip name has to be unique 
                 if (tripName) {
                     API.availableTN(value.toUpperCase())
-                    .then(res => {
-                        res.data.length < 1
-                        ? this.setState({ validTN: true })
-                        : this.setState({ validTN : false })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+                        .then(res => {
+                            res.data.length < 1
+                                ? this.setState({ validTN: true })
+                                : this.setState({ validTN: false })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
                 } else {
                     this.setState({ validTN: false });
                 }
@@ -128,6 +128,19 @@ class Trip extends Component {
                         />
                         {validNOP ? <Small text="Something" /> : <Small text="something else" />}
                     </FormGroup>
+                    <FormBtn
+                        disabled={
+                            this.state.validTN && 
+                            this.state.validLocation && 
+                            this.state.validDates && 
+                            this.sate.validNOP
+                                ? ""
+                                : "disabled"
+                        }
+                        text="Save Trip!"
+                        onClick={this.register}
+                        classes="btn-primary"
+                    />
                 </form>
             </div>
         );
