@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FormGroup, Input, Label, Small, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
-import "./style.css";
 
 class Register extends Component {
   state = {

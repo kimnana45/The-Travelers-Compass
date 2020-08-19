@@ -5,8 +5,8 @@ import Jumbotron from "../components/Jumbotron";
 function MembersDashboard() {
   return (
     <Container fluid>
-      <Row>
-        <Col size="md-6 md-offset-3">
+      <Row className="row mt-2 justify-content-md-center"> 
+        <Col size="md-6">
           <Row className="row border border-info rounded-pill text-center p-2">
             <Col size="4">
               <a href="/"><small>HOME</small></a>

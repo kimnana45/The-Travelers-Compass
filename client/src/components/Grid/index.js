@@ -4,8 +4,8 @@ export function Container({ fluid, children }) {
   return <div className={`container${fluid ? "-fluid" : ""}`}>{children}</div>;
 }
 
-export function Row({ children }) {
-  return <div className="row mt-1"> {children} </div>;
+export function Row(props) {
+  return <div className="row" {...props}> {props.children} </div>;
 }
 
 export function Col({ size, children }) {
