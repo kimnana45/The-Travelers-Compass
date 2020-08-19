@@ -1,7 +1,7 @@
 import React from "react";
 
-export function Container({ children }) {
-  return <div className="container-lg"> {children} </div>;
+export function Container({ fluid, children }) {
+  return <div className={`container${fluid ? "-fluid" : ""}`}>{children}</div>;
 }
 
 export function Row({ children }) {

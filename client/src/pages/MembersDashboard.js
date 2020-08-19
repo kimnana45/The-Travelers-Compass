@@ -1,0 +1,50 @@
+import React from "react";
+import { Col, Row, Container } from "../components/Grid";
+import Jumbotron from "../components/Jumbotron";
+import SignUpTrip from './SignUpTrip';
+
+function MembersDashboard({logout}) {
+  return (
+    <Container fluid>
+      <Row>
+        <Col size="md-6 md-offset-3">
+          <Row className="row border border-info rounded-pill text-center p-2">
+            <Col size="4">
+              <a href="/"><small>HOME</small></a>
+            </Col>
+            <Col size="4">
+            <a href="/"><small>MEMBERS DASHBOARD</small></a>
+            </Col>      
+            <Col size="4">
+            <a href={SignUpTrip}><small>PLAN NEW TRIP</small></a>
+            </Col>                   
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col size="md-6">
+          <Row>
+            <h4>past trips:</h4>
+          </Row>
+          <Row className="p-1">
+            <div className="shadow p-3 mb-5 bg-white rounded">
+              *add tile*
+            </div>
+          </Row>
+        </Col>
+        <Col size="md-6">
+          <Row>
+            <h4>upcoming trips:</h4>
+          </Row>
+          <Row className="p-1">
+          <div className="shadow p-3 mb-5 bg-white rounded">
+              *add tile*
+            </div>
+          </Row>
+        </Col>    
+      </Row>
+    </Container>
+  );
+}
+
+export default MembersDashboard;
