@@ -1,9 +1,8 @@
 import React from "react";
 import { Col, Row, Container } from "../components/Grid";
 import Jumbotron from "../components/Jumbotron";
-import SignUpTrip from './SignUpTrip';
 
-function MembersDashboard({logout}) {
+function MembersDashboard() {
   return (
     <Container fluid>
       <Row>
@@ -16,7 +15,7 @@ function MembersDashboard({logout}) {
             <a href="/"><small>MEMBERS DASHBOARD</small></a>
             </Col>      
             <Col size="4">
-            <a href={SignUpTrip}><small>PLAN NEW TRIP</small></a>
+            <a href="/newtrip"><small>PLAN NEW TRIP</small></a>
             </Col>                   
           </Row>
         </Col>

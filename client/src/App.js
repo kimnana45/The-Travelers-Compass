@@ -14,6 +14,7 @@ import Nav from './components/Nav';
 import Footer from './components/Footer';
 import Wrapper from './components/Wrapper';
 import MembersDashboard from './pages/MembersDashboard';
+import SignUpTrip from './pages/SignUpTrip';
 
 class App extends Component {
   state = {
@@ -89,6 +90,14 @@ class App extends Component {
                 <Route exact path="/protected">
                   {this.state.authorized ? (
                     <Protected logout={this.logout} />
+                  ) : (
+                      <Redirect to="/login" />
+                    )}
+                </Route>
+
+                <Route exact path="/newtrip">
+                  {this.state.authorized ? (
+                    <SignUpTrip />
                   ) : (
                       <Redirect to="/login" />
                     )}

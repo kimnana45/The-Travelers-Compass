@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FormGroup, Input, Label, FormBtn } from "../../components/Form";
 import {Datepicker, START_DATE} from '@datepicker-react/styled';
 import API from "../../utils/API";
+import { Container } from '../../components/Grid';
 import "./style.css";
 
 function Trip() {
@@ -31,15 +32,20 @@ function Trip() {
     }
   }
 
-  handleInputChange = (name, data) => {
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+
     switch (name) {
       case "tripName":
-        setTripName(data);
+        return setTripName({
+          tripName: value, 
+          validTN: true
+        });
         //condition that trip name has to be unique 
         // if (tripName) {
         //     API.availableTN(value.toUpperCase())
         //         .then(res => {
-        //             res.data.length < 1
+        //             res.value.length < 1
         //                 ? this.setTripName({ validTN: true })
         //                 : this.setState({ validTN: false })
         //         })
@@ -49,24 +55,26 @@ function Trip() {
         // } else {
         //     this.setState({ validTN: false });
         // }
-        break;
       case "location":
         //valid location 
-        setLocation(data);
-        break;
+        return setLocation({
+          location: value,
+          validLocation: true
+        });
       case "dates":
         //dates of the trip 
-        handleDatesChange()
-        break;
+        return handleDatesChange()
       case "numOfPpl":
         //number of people
-        setNumOfPpl(data);
-        break;
+        return setNumOfPpl({
+          numOfPpl: value,
+          validNumOfPpl: true
+        });
       default:
     }
   };
 
-  register = e => {
+  const register = e => {
     e.preventDefault();
     API.register({
       tripName: tripName.toUpperCase(),
@@ -82,14 +90,14 @@ function Trip() {
 
 
   return (
-    <div>
+    <Container>
       <form>
         <FormGroup>
           <Label text="Your Trip Name" />
           <Input
             name="tripName"
-            value={tripName}
-            onChange={handleInputChange()}
+            value={tripName.tripName}
+            onChange={handleInputChange}
             placeholder="Your Trip Name"
           />
         </FormGroup>
@@ -97,8 +105,8 @@ function Trip() {
           <Label text="Where are you going?" />
           <Input
             name="location"
-            value={location}
-            onChange={handleInputChange()}
+            value={location.location}
+            onChange={handleInputChange}
             placeholder="Your Trip Location"
           />
         </FormGroup>
@@ -115,18 +123,18 @@ function Trip() {
           <Label text="How many people are on this trip?" />
           <Input
             name="numOfPpl"
-            value={numOfPpl}
-            onChange={handleInputChange()}
+            value={numOfPpl.numOfPpl}
+            onChange={handleInputChange}
             placeholder="Number of People"
           />
         </FormGroup>
         <FormBtn
           disabled={
-            validTN &&
-              validLocation &&
-              startDate &&
-              endDate &&
-              validNumOfPpl
+            tripName.validTN &&
+              location.validLocation &&
+              dates.startDate &&
+              dates.endDate &&
+              numOfPpl.validNumOfPpl
               ? ""
               : "disabled"
           }
@@ -135,7 +143,7 @@ function Trip() {
           classes="btn-primary"
         />
       </form>
-    </div>
+    </Container>
   )
 }
 
