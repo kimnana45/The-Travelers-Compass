@@ -8,8 +8,8 @@ export function Input({ type, classes, placeholder, ...other }) {
   {...other} />;
 }
 
-export function Label({ text }) {
-  return <label> {text} </label>;
+export function Label({ text, classes }) {
+  return <label className={classes}> {text} </label>;
 }
 
 export function Small({ text, classes }) {

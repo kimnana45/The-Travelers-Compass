@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const TripInfo = new Schema({
+const Trip = new Schema({
     tripName: {
         type: String,
         required: 'Trip name is required',
         unique: true,
+    },
+    password: {
+        type: String,
+        required: 'Password for the trip is required'
     },
     location: {
         type: String,
@@ -15,13 +19,10 @@ const TripInfo = new Schema({
         type: Date,
         required: 'Dates of trip is required'
     },
-    numberOfPeople: {
-        type: Number,
-        required: 'Number of peop'
-    },
+    users: Array,
     created: { type: Date, required: true, default: Date.now() },
 });
 
 // User.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('TripInfo', TripInfo);
+module.exports = mongoose.model('Trip', Trip);

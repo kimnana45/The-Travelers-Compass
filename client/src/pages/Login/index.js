@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { FormGroup, Input, Label, Small, FormBtn } from "../../components/Form";
+import { Col, Row} from '../../components/Grid';
 import API from "../../utils/API";
-import "./style.css";
+import './style.css';
 
 class Login extends Component {
   state = {
@@ -52,43 +53,47 @@ class Login extends Component {
   render() {
     return (
       <React.Fragment>
-        {this.props.authorized ?
-          //if login component was triggered by its own path, redirect to home page
-          (<Redirect to={this.state.redirect === "/login" ? "/" : this.state.redirect} />) : (
-            <div className="container loginContainer">
-              <form>
-                <FormGroup>
-                  <Label text="Username" />
-                  <Input
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.handleInputChange}
-                    type="text"
+        <Row>
+          <h4 className="mx-auto mt-2">WELCOME BACK!</h4>
+        </Row>
+        <Row className="mt-2">
+          {this.props.authorized ?
+            //if login component was triggered by its own path, redirect to home page
+            (<Redirect to={this.state.redirect === "/login" ? "/" : this.state.redirect} />) : (
+              <div className="container loginContainer">
+                <form>
+                  <FormGroup>
+                    <Label text="Username" />
+                    <Input
+                      name="username"
+                      value={this.state.username}
+                      onChange={this.handleInputChange}
+                      type="text"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label text="Password" />
+                    <Input
+                      name="password"
+                      value={this.state.password}
+                      onChange={this.handleInputChange}
+                      type="password"
+                    />
+                  </FormGroup>
+                  {this.state.error ? <Small text={this.state.error} /> : ""}
+                  <FormBtn
+                    disabled={
+                      this.state.username && this.state.password ? "" : "disabled"
+                    }
+                    text="Login"
+                    onClick={this.login}
+                    classes="btn-primary"
                   />
-                </FormGroup>
-                <FormGroup>
-                  <Label text="Password" />
-                  <Input
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handleInputChange}
-                    type="password"
-                  />
-                </FormGroup>
-                {this.state.error ? <Small text={this.state.error} /> : ""}
-                <FormBtn
-                  disabled={
-                    this.state.username && this.state.password ? "" : "disabled"
-                  }
-                  text="Login"
-                  onClick={this.login}
-                  classes="btn-primary"
-                />
-                <Link to="/register">Not registered? Click here.</Link>
-              </form>
-            </div>
-
-          )}
+                  <Link to="/register">Not registered? Click here.</Link>
+                </form>
+              </div>
+            )}
+        </Row>
       </React.Fragment>
     );
   }

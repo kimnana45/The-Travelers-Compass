@@ -14,7 +14,7 @@ import Nav from './components/Nav';
 import Footer from './components/Footer';
 import Wrapper from './components/Wrapper';
 import MembersDashboard from './pages/MembersDashboard';
-import SignUpTrip from './pages/SignUpTrip';
+import NewTrip from './pages/NewTrip';
 
 class App extends Component {
   state = {
@@ -97,7 +97,7 @@ class App extends Component {
 
                 <Route exact path="/newtrip">
                   {this.state.authorized ? (
-                    <SignUpTrip />
+                    <NewTrip />
                   ) : (
                       <Redirect to="/login" />
                     )}
