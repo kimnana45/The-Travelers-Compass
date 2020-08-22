@@ -16,7 +16,7 @@ const Trip = new Schema({
         required: 'Location is required'
     },
     dates: {
-        type: Date,
+        type: Object,
         required: 'Dates of trip is required'
     },
     users: Array,

@@ -4,7 +4,8 @@ const router = express.Router();
 const db = require("../models");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
-router.post("/api/register", function(req, res) {
+// USER PASSPORT ROUTES
+router.post("/api/register", function (req, res) {
   console.log("registering user");
 
   //Do password validation here before attempting to register user, such as checking for password length, captial letters, special characters, etc.
@@ -12,27 +13,27 @@ router.post("/api/register", function(req, res) {
   db.User.register(
     new db.User({ username: req.body.username, email: req.body.email }),
     req.body.password,
-    function(err, user) {
+    function (err, user) {
       if (err) {
         console.log(err);
         return res.json(err);
       }
-      passport.authenticate("local")(req, res, function(data) {
+      passport.authenticate("local")(req, res, function (data) {
         res.json(req.user);
       });
     }
   );
 });
 
-router.post("/api/login", function(req, res, next) {
-  passport.authenticate("local", function(err, user, info) {
+router.post("/api/login", function (req, res, next) {
+  passport.authenticate("local", function (err, user, info) {
     if (err) {
       return next(err);
     }
     if (!user) {
       return res.json(info);
     }
-    req.logIn(user, function(err) {
+    req.logIn(user, function (err) {
       if (err) {
         return next(err);
       }
@@ -41,12 +42,12 @@ router.post("/api/login", function(req, res, next) {
   })(req, res, next);
 });
 
-router.get("/api/logout", function(req, res) {
+router.get("/api/logout", function (req, res) {
   req.logout();
   res.json({ message: "logged out" });
 });
 
-router.get("/api/user", function(req, res) {
+router.get("/api/user", function (req, res) {
   console.log("available username");
   if (req.query.username) {
     db.User.find({ username: req.query.username })
@@ -59,8 +60,44 @@ router.get("/api/user", function(req, res) {
   }
 });
 
-router.get("/api/authorized", isAuthenticated, function(req, res) {
+router.get("/api/authorized", isAuthenticated, function (req, res) {
   res.json(req.user);
 });
+
+// register a trip 
+router.post("/api/registerTrip", function (req, res) {
+  console.log("registering trip");
+  db.Trip.create({
+    tripName: req.body.tripName,
+    location: req.body.location.name,
+    dates: {startDate: req.body.dates.startDate,
+            endDate: req.body.dates.endDate,  
+          },
+    password: req.body.password
+  })
+    .then(dbTrip => {
+      res.json(dbTrip);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+});
+// router.post("/api/registerTrip", function (req, res) {
+//   console.log("registering trip");
+//   db.Trip.create(
+//     new db.Trip({
+//       tripName: req.body.tripName,
+//       location: req.body.location,
+//       dates: req.body.dates,
+//       password: req.body.password
+//     }).then(dbTrip => {
+//       res.json(dbTrip)
+//     })
+//   ).catch(err => {
+//       res.status(400).json(err);
+//     })
+// });
+
+router.post("api/")
 
 module.exports = router;

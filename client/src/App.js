@@ -96,7 +96,7 @@ class App extends Component {
                 </Route>
 
                 <Route exact path="/newtrip">
-                  {this.state.authorized ? (
+                  {this.state ? (
                     <NewTrip />
                   ) : (
                       <Redirect to="/login" />

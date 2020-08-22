@@ -23,7 +23,6 @@ function Trip() {
 		password: '',
 		validPW: false,
 	});
-	const [searchCity, setSearchCity] = useState();
 
 	function handleDatesChange(data: OnDatesChangeProps) {
 		if (!data.focusedInput) {
@@ -53,26 +52,18 @@ function Trip() {
 		}
 	}
 
-	const addNewLocation = (e) => {
-		e.preventDefault();
-		setLocation({
-			location: [...location.location, searchCity],
-			validLocation: true,
-		});
-	};
-
 	const addNewTrip = (e) => {
 		e.preventDefault();
-		// API.register({
-		// 	tripName: tripName.tripName.toUpperCase(),
-		// 	location: location.location,
-		// 	dates: dates,
-		//	password: password.password,
-		//  })
-		// 	.then(res => console.log("Your trip was registered successfully!"))
-		// 	.catch(err => {
-		// 	  console.log(err);
-		// 	});
+		API.registerTrip({
+			tripName: tripName.tripName.toUpperCase(),
+			location: location.location,
+			dates: dates,
+			password: password.password,
+		 })
+			.then(res => console.log("Your trip was registered successfully!"))
+			.catch(err => {
+			  console.log(err);
+			});
 	};
 
 	return (
@@ -118,15 +109,11 @@ function Trip() {
 										language: 'en',
 										type: 'city',
 									}}
-									onChange={({ suggestion }) => setSearchCity(suggestion)}
+									onChange={({ suggestion }) => setLocation({
+										location: suggestion,
+										validLocation: true,
+									})}
 									onClear={() => {}}
-								/>
-							</Col>
-							<Col size='1'>
-								<FormBtn
-									text='+'
-									classes='btn-outline-danger mr-4 text-wrap'
-									onClick={addNewLocation}
 								/>
 							</Col>
 						</Row>
@@ -149,7 +136,7 @@ function Trip() {
 							location.validLocation &&
 							dates.startDate &&
 							dates.endDate &&
-							password.password
+							password.validPW
 								? ''
 								: 'disabled'
 						}
