@@ -18,5 +18,8 @@ export default {
   },
   availableTN: function (tripName) {
     return axios.get("/api/trip/tripname=" + tripName);
+  },
+  registerTrip: function (trip) {
+    return axios.post("api/registerTrip", trip);
   }
 };
