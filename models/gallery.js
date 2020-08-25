@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const Gallery = new Schema({
     picture: {
         type: String,
+        required: true
     },
     caption: {
         type: String,

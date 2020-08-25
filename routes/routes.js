@@ -82,21 +82,15 @@ router.post("/api/registerTrip", function (req, res) {
       console.log(err)
     })
 });
-// router.post("/api/registerTrip", function (req, res) {
-//   console.log("registering trip");
-//   db.Trip.create(
-//     new db.Trip({
-//       tripName: req.body.tripName,
-//       location: req.body.location,
-//       dates: req.body.dates,
-//       password: req.body.password
-//     }).then(dbTrip => {
-//       res.json(dbTrip)
-//     })
-//   ).catch(err => {
-//       res.status(400).json(err);
-//     })
-// });
+
+//add picture to gallery 
+router.post("api/addToGallery", function (req, res) {
+  console.log("Your picture has been added to gallery.");
+  db.Gallery.create({
+    picture: req.body.picture,
+    caption: req.body.caption
+  }).then(dbGallery => res.json(dbGallery));
+}).catch(err => console.log(err));
 
 router.post("api/")
 

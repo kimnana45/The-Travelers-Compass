@@ -15,6 +15,7 @@ import Footer from './components/Footer';
 import Wrapper from './components/Wrapper';
 import MembersDashboard from './pages/MembersDashboard';
 import NewTrip from './pages/NewTrip';
+import Gallery from "./pages/Gallery";
 
 class App extends Component {
   state = {
@@ -98,6 +99,14 @@ class App extends Component {
                 <Route exact path="/newtrip">
                   {this.state ? (
                     <NewTrip />
+                  ) : (
+                      <Redirect to="/login" />
+                    )}
+                </Route>
+
+                <Route exact path="/gallery">
+                  {this.state ? (
+                    <Gallery />
                   ) : (
                       <Redirect to="/login" />
                     )}

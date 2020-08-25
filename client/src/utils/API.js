@@ -21,5 +21,8 @@ export default {
   },
   registerTrip: function (trip) {
     return axios.post("api/registerTrip", trip);
+  }, 
+  addPicture: function (gallery) {
+    return axios.post("api/addToGallery", gallery);
   }
 };
