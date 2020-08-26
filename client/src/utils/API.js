@@ -19,6 +19,9 @@ export default {
   availableTN: function (tripName) {
     return axios.get("/api/trip/tripname=" + tripName);
   },
+  getUser: function () {
+    return axios.get("/api/user_data");
+  },
   registerTrip: function (trip) {
     return axios.post("api/registerTrip", trip);
   },
@@ -27,5 +30,8 @@ export default {
   },
   addPicture: function (gallery) {
     return axios.post("api/addToGallery", gallery);
-  }
+  },
+  getTripInfo: function(id) {
+    return axios.get("/trip/" + id);
+  },
 };
