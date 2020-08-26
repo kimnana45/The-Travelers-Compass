@@ -1,9 +1,16 @@
 import React from 'react';
+import logo from '../../assets/logo.png';
 
 const Nav = ({ authorized, logout }) => {
     return (
-        <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-            <a className="navbar-brand" href="/">Traveler's Compass</a>
+        <nav className="navbar sticky-top navbar-expand-lg navbar-dark" style={{backgroundColor:"black"}}>
+            <img 
+                src={logo} 
+                alt="traveler's compass logo" 
+                className="mx-auto"
+                style={{
+                    width: "150px"
+                }}/>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>

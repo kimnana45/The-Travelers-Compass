@@ -1,17 +1,21 @@
 import React from "react";
-import { Col, Row, Container } from "../components/Grid";
-import mountains from "../assets/mtn_banner.png";
+import Jumbotron from "../components/Jumbotron";
+import { Container, Row, Col } from "../components/Grid";
+import headerIMG from "../assets/header.png";
 
 function Home() {
   return (
     <Container fluid>
-      <Row>
-        <img src={mountains} className="mt-2" alt="mountains-banner" />
-        <Col size="md-12">
-            <h4 className="bigWord">where to next?</h4>
-            <h4 className="text-info">start planning your next vacation!</h4>
-        </Col>
-      </Row>
+      <Jumbotron>
+        <Row>
+          <Col size="8">
+            <img src={headerIMG} className="img-fluid" />
+          </Col>
+          <Col size="4">
+          <h1 className='bigWordName mt-4'>start planning your next vacation!</h1>
+          </Col>
+        </Row>
+      </Jumbotron>
     </Container>
   );
 }

@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
+const { mongo } = require("mongoose");
 
 // USER PASSPORT ROUTES
 router.post("/api/register", function (req, res) {
@@ -70,9 +71,10 @@ router.post("/api/registerTrip", function (req, res) {
   db.Trip.create({
     tripName: req.body.tripName,
     location: req.body.location.name,
-    dates: {startDate: req.body.dates.startDate,
-            endDate: req.body.dates.endDate,  
-          },
+    dates: {
+      startDate: req.body.dates.startDate,
+      endDate: req.body.dates.endDate,
+    },
     password: req.body.password
   })
     .then(dbTrip => {
@@ -83,14 +85,36 @@ router.post("/api/registerTrip", function (req, res) {
     })
 });
 
-//add picture to gallery 
+//add picture to gallery that has id of the specific trip
 router.post("api/addToGallery", function (req, res) {
   console.log("Your picture has been added to gallery.");
   db.Gallery.create({
-    picture: req.body.picture,
+    pictureUrl: req.body.pictureUrl,
     caption: req.body.caption
-  }).then(dbGallery => res.json(dbGallery));
-}).catch(err => console.log(err));
+  }).then(({ _id }) => db.Trip.findOneAndUpdate({},
+    { $push: { pictures: _id } },
+    { new: true }))
+    .then(dbGallery => {
+      res.json(dbGallery)
+    })
+    .catch(err => {
+      console.log(err);
+    })
+});
+
+
+//findAll pictures that belong to a specific trip ID 
+router.get("/api/gallery/:id", function (req, res) {
+  db.Trip.findById(req.params.id)
+    .populate("pictures")
+    .then(dbTrip => {
+      res.json(dbTrip)
+    })
+    .catch(err => {
+      res.json(err)
+    })
+});
+
 
 router.post("api/")
 

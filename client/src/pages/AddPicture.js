@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import API from "../utils/API";
-import { FormGroup, FormBtn } from "../components/Form";
+import { Row, Col, Container } from "../components/Grid"; 
+import { Input, Label, FormGroup, FormBtn } from "../components/Form";
 
 function Picture() {
-    const [picture, uploadPicture] = useState({
-        picture: '',
-    });
-    const [caption, setCaption] = useState({
-        caption: '',
-        validCaption: ''
-    });
+
+    const [pictureUrl, setPictureUrl] = useState();
+    const [caption, setCaption] = useState();
 
     function uploadPicture() {
         filepicker.pick(
@@ -35,7 +32,7 @@ function Picture() {
         const handler = document.getElementById('button-upload').dataset.handler;
         switch (name) {
             case "picture":
-                return uploadPicture;
+                return setPicture();
             case "caption":
                 return setCaption({
                     caption: value,
