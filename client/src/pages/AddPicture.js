@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import API from '../utils/API';
 import { Row, Col, Container } from '../components/Grid';
 import { Input, Label, FormGroup, FormBtn } from '../components/Form';
-import ReactFilestack from 'filestack-react';
+// import ReactFilestack from 'filestack-react';
 
 function Picture() {
 	const [pictureUrl, setPictureUrl] = useState();
@@ -49,13 +49,13 @@ function Picture() {
 	return (
 		<Container>
 			<Row className='mt-2'>
-				<ReactFilestack
+				{/* <ReactFilestack
 					apikey={process.env.filestackAPI}
 					mode={'pick'}
 					onSuccess={(response) => console.log(response)}
 					onError={(e) => console.log(e)}
 					buttonText={'Pick File'}
-				/>
+				/> */}
 				 
 				{/* <form>
 					<Row>

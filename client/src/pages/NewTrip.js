@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import AlgoliaPlaces from 'algolia-places-react';
 import { FormGroup, Input, Label, FormBtn } from '../components/Form';
 import { Container, Col, Row } from '../components/Grid';
@@ -6,12 +7,13 @@ import { Datepicker, START_DATE } from '@datepicker-react/styled';
 import API from '../utils/API';
 
 function Trip() {
+	const [tripId, setTripId] = useState()
 	const [tripName, setTripName] = useState({
 		tripName: '',
 		validTN: false,
 	});
 	const [location, setLocation] = useState({
-		location: [],
+		location: {},
 		validLocation: false,
 	});
 	const [dates, setDates] = useState({
@@ -59,8 +61,7 @@ function Trip() {
 			location: location.location,
 			dates: dates,
 			password: password.password,
-		 })
-			.then(res => console.log("Your trip was registered successfully!"))
+		 }).then(res => console.log(res))
 			.catch(err => {
 			  console.log(err);
 			});
@@ -109,10 +110,7 @@ function Trip() {
 										language: 'en',
 										type: 'city',
 									}}
-									onChange={({ suggestion }) => setLocation({
-										location: suggestion,
-										validLocation: true,
-									})}
+									onChange={({ suggestion }) => setLocation({ location: suggestion, validLocation: true})}
 									onClear={() => {}}
 								/>
 							</Col>
@@ -143,6 +141,7 @@ function Trip() {
 						text='Start Planning!'
 						onClick={addNewTrip}
 						classes='btn-primary'
+						type='submit'
 					/>
 				</form>
 			</Row>

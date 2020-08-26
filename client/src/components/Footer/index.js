@@ -1,13 +1,14 @@
-import React from "react";
+import React from 'react';
 
-const Footer = () => {
-  return (
-    <nav className="navbar fixed-bottom navbar-light bg-light" id="footer">
-        <span className="navbar-brand">
-            <span>Created by Eunah Kim and Kim Le || (c) 2020</span>
-        </span>
-    </nav>
-  );
+export function Footer({ children }) {
+	return (
+		<nav className="navbar fixed-bottom navbar-light bg-light" id="footer">
+			{children}
+		</nav>
+	);
 }
 
-export default Footer;
+export function FooterSpan({ classes, children }) {
+	return <span className={"navbar-brand " + (classes ? classes : "")}>{children}</span>;
+}
+  

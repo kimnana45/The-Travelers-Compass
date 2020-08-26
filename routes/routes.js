@@ -70,7 +70,7 @@ router.post('/api/registerTrip', function (req, res) {
 	console.log('registering trip');
 	db.Trip.create({
 		tripName: req.body.tripName,
-		location: req.body.location.name,
+		location: req.body.location,
 		dates: {
 			startDate: req.body.dates.startDate,
 			endDate: req.body.dates.endDate,
