@@ -28,25 +28,17 @@ function Picture() {
     }
 
     function handleInputChange(event) {
-        const { name, value } = event.target;
+        const { value } = event.target;
         const handler = document.getElementById('button-upload').dataset.handler;
-        switch (name) {
-            case "picture":
-                return setPicture();
-            case "caption":
-                return setCaption({
-                    caption: value,
-                    validCaption: true
-                });
-            default:
-        }
+        setCaption(value);
+        setPictureUrl(handler);
     }
 
     function addToGallery(event) {
         event.preventDefault();
         API.addPicture({
-            picture: picture,
-            caption: caption.caption
+            pictureUrl: pictureUrl,
+            caption: caption
         })
             .then(res => console.log("Your picture was upload successfully!"))
             .catch(err => {
@@ -64,7 +56,7 @@ function Picture() {
                                 <Label text='Add a caption' />
                                 <Input
                                     name='caption'
-                                    value={caption.caption}
+                                    value={caption}
                                     onChange={handleInputChange}
                                     placeholder='Caption This Photo'
                                 />
