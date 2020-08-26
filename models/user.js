@@ -9,6 +9,12 @@ const User = new Schema({
         unique: true,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email address']
     },
+    trips: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Trip"
+        }
+    ],
     created: { type: Date, required: true, default: Date.now() },
 });
 

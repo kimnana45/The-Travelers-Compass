@@ -65,6 +65,18 @@ router.get("/api/authorized", isAuthenticated, function (req, res) {
   res.json(req.user);
 });
 
+//populate route for users
+app.get("/populateduser", (req, res) => {
+  db.User.find({})
+    .populate("trips")
+    .then(dbUser => {
+      res.json(dbUser);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
 // register a trip 
 router.post("/api/registerTrip", function (req, res) {
   console.log("registering trip");
@@ -76,7 +88,8 @@ router.post("/api/registerTrip", function (req, res) {
       endDate: req.body.dates.endDate,
     },
     password: req.body.password
-  })
+  }).then(({ _id }) => db.User.findOneAndUpdate({},
+    { $push: { trips: _id } }, { new: true }))
     .then(dbTrip => {
       res.json(dbTrip);
     })
@@ -102,7 +115,6 @@ router.post("api/addToGallery", function (req, res) {
     })
 });
 
-
 //findAll pictures that belong to a specific trip ID 
 router.get("/api/gallery/:id", function (req, res) {
   db.Trip.findById(req.params.id)
@@ -114,7 +126,6 @@ router.get("/api/gallery/:id", function (req, res) {
       res.json(err)
     })
 });
-
 
 router.post("api/")
 
