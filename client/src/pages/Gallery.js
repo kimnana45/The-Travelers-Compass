@@ -8,7 +8,6 @@ function Gallery() {
    const [caption, setCaption] = useState();
    const {id} = useParams()
 
-
    useEffect(() => {
     API.getPictures(id)
     .then(pictureUrl => {
@@ -26,6 +25,5 @@ function Gallery() {
             </Container>
         )
     }
-
 
 export default Gallery;
