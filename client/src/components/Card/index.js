@@ -8,8 +8,8 @@ export function CardBody({ children, classes }) {
 	return <div className={classes}>{children}</div>;
 }
 
-export function CardHeader({ children, classes }) {
-	return <div className={classes}>{children}</div>;
+export function CardHeader({ text, classes }) {
+	return <h3 className={"card-header text-center " + (classes ? classes : "")}>{text}</h3>;
 }
 
 export function CardContent({ text }) {

@@ -16,7 +16,9 @@ import Wrapper from './components/Wrapper';
 import MembersDashboard from './pages/MembersDashboard';
 import NewTrip from './pages/NewTrip';
 import JoinTrip from './pages/JoinTrip';
-import Gallery from "./pages/Gallery";
+import TripOverview from './pages/TripOverview';
+import Gallery from './pages/Gallery';
+import AddPicture from './pages/AddPicture';
 
 class App extends Component {
 	state = {
@@ -108,25 +110,34 @@ class App extends Component {
 								)}
 							</Route>
 
-                <Route exact path="/gallery">
-                  {this.state ? (
-                    <Gallery />
-                  ) : (
-                      <Redirect to="/login" />
-                    )}
-                </Route>
+							<Route exact path='/trip/:id'>
+								{this.state.authorized ? (
+									<TripOverview />
+								) : (
+									<Redirect to='/login' />
+								)}
+							</Route>
 
-                <Route>
-                  <Redirect to="/" />
-                </Route>
+							<Route exact path='/gallery/:id'>
+								{this.state ? <Gallery /> : <Redirect to='/login' />}
+							</Route>
 
-              </Switch>
-          ) : ""}
-        </Wrapper>
-        <Footer />
-      </Router>
-    );
-  }
+							<Route exact path='/uploadphoto'>
+								{this.state ? <AddPicture /> : <Redirect to='/login' />}
+							</Route>
+
+							<Route>
+								<Redirect to='/' />
+							</Route>
+						</Switch>
+					) : (
+						''
+					)}
+				</Wrapper>
+				<Footer />
+			</Router>
+		);
+	}
 }
 
 export default App;
