@@ -19,6 +19,12 @@ const Trip = new Schema({
         type: Object,
         required: 'Dates of trip is required'
     },
+    pictures: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Gallery"
+        }
+    ],
     users: Array,
     created: { type: Date, required: true, default: Date.now() },
 });

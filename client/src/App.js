@@ -16,6 +16,7 @@ import Wrapper from './components/Wrapper';
 import MembersDashboard from './pages/MembersDashboard';
 import NewTrip from './pages/NewTrip';
 import JoinTrip from './pages/JoinTrip';
+import Gallery from "./pages/Gallery";
 
 class App extends Component {
 	state = {
@@ -107,18 +108,25 @@ class App extends Component {
 								)}
 							</Route>
 
-							<Route>
-								<Redirect to='/' />
-							</Route>
-						</Switch>
-					) : (
-						''
-					)}
-				</Wrapper>
-				<Footer />
-			</Router>
-		);
-	}
+                <Route exact path="/gallery">
+                  {this.state ? (
+                    <Gallery />
+                  ) : (
+                      <Redirect to="/login" />
+                    )}
+                </Route>
+
+                <Route>
+                  <Redirect to="/" />
+                </Route>
+
+              </Switch>
+          ) : ""}
+        </Wrapper>
+        <Footer />
+      </Router>
+    );
+  }
 }
 
 export default App;
