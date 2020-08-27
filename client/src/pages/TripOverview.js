@@ -41,9 +41,9 @@ function TripOverview() {
 						<Col size='3'>
 							<Link to={`/gallery/${id}`}>photo gallery</Link>
 						</Col>
-						<Col size='3'>
+						{/* <Col size='3'>
 							<Link to={'/uploadphoto'}>add new photos</Link>
-						</Col>
+						</Col> */}
 					</Row>
 				</Col>
 			</Row>

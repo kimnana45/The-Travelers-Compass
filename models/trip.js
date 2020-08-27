@@ -12,7 +12,7 @@ const Trip = new Schema({
         required: 'Password for the trip is required'
     },
     location: {
-        type: String,
+        type: Array,
         required: 'Location is required'
     },
     dates: {

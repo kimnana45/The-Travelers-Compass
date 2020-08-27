@@ -3,7 +3,7 @@ import {
 	BrowserRouter as Router,
 	Route,
 	Switch,
-	Redirect,
+	Redirect
 } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -11,7 +11,7 @@ import Home from './pages/Home';
 import Protected from './pages/Protected';
 import API from './utils/API';
 import Nav from './components/Nav';
-import Footer from './components/Footer';
+import { Footer, FooterSpan } from './components/Footer';
 import Wrapper from './components/Wrapper';
 import MembersDashboard from './pages/MembersDashboard';
 import NewTrip from './pages/NewTrip';
@@ -19,6 +19,7 @@ import JoinTrip from './pages/JoinTrip';
 import TripOverview from './pages/TripOverview';
 import Gallery from './pages/Gallery';
 import AddPicture from './pages/AddPicture';
+import MERN from './assets/mern.png';
 
 class App extends Component {
 	state = {
@@ -84,7 +85,7 @@ class App extends Component {
 
 							<Route exact path='/register'>
 								{this.state.authorized ? (
-									<Redirect to='/register' />
+									<MembersDashboard logout={this.logout} />
 								) : (
 									<Register isAuthorized={this.isAuthorized} />
 								)}
@@ -122,9 +123,9 @@ class App extends Component {
 								{this.state ? <Gallery /> : <Redirect to='/login' />}
 							</Route>
 
-							<Route exact path='/uploadphoto'>
+							{/* <Route exact path='/uploadphoto'>
 								{this.state ? <AddPicture /> : <Redirect to='/login' />}
-							</Route>
+							</Route> */}
 
 							<Route>
 								<Redirect to='/' />
@@ -134,7 +135,34 @@ class App extends Component {
 						''
 					)}
 				</Wrapper>
-				<Footer />
+				<Footer>
+					<FooterSpan classes='text-center mx-right'>
+						View on Github
+						<br />
+						<small>
+							<a href='https://github.com/kimnana45/The-Travelers-Compass' target='_blank' className='text-dark'>project repo</a>
+						</small>
+					</FooterSpan>
+					<FooterSpan classes='text-center mx-auto d-none d-sm-block'>
+						<small>
+							This application was created using the MERN stack.
+							<br />
+							<img
+								src={MERN}
+								alt='mern icon'
+								className='mx-auto'
+								style={{
+									width: '100px',
+								}}
+							/>
+						</small>
+					</FooterSpan>
+					<FooterSpan classes='text-center mx-left'>
+						Developed by
+						<br />
+						<small>Kim Le and Eunah Kim</small>
+					</FooterSpan>
+				</Footer>
 			</Router>
 		);
 	}
