@@ -23,15 +23,26 @@ import MERN from './assets/mern.png';
 
 class App extends Component {
 	state = {
+		userId: '',
 		authorized: false,
 		display: false,
 	};
 
 	componentDidMount() {
 		this.isAuthorized();
-	}
+	};
+
+	findUser() {
+		API.getUser()
+			.then(res => {
+				const { _id } = res.data;
+				this.setState({ userId: _id })
+			})
+			.catch((err) => console.log(err));
+	};
 
 	isAuthorized = () => {
+		this.findUser();
 		API.isAuthorized()
 			.then((res) => {
 				this.setState({
@@ -91,16 +102,16 @@ class App extends Component {
 								)}
 							</Route>
 
-							<Route exact path='/protected'>
+							{/* <Route exact path='/protected'>
 								{this.state.authorized ? (
 									<Protected logout={this.logout} />
 								) : (
 									<Redirect to='/login' />
 								)}
-							</Route>
+							</Route> */}
 
 							<Route exact path='/newtrip'>
-								{this.state ? <NewTrip /> : <Redirect to='/login' />}
+								{this.state.authorized ? <NewTrip userId={this.state.userId} /> : <Redirect to='/login' />}
 							</Route>
 
 							<Route exact path='/jointrip'>
@@ -120,11 +131,11 @@ class App extends Component {
 							</Route>
 
 							<Route exact path='/gallery/:id'>
-								{this.state ? <Gallery /> : <Redirect to='/login' />}
+								{this.state.authorized ? <Gallery /> : <Redirect to='/login' />}
 							</Route>
 
 							{/* <Route exact path='/uploadphoto'>
-								{this.state ? <AddPicture /> : <Redirect to='/login' />}
+								{this.state.authorized ? <AddPicture /> : <Redirect to='/login' />}
 							</Route> */}
 
 							<Route>
