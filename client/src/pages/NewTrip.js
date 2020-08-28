@@ -140,6 +140,7 @@ function Trip() {
 						}
 						text='Start Planning!'
 						onClick={addNewTrip}
+						onClick={}
 						classes='btn-primary'
 						type='submit'
 					/>
