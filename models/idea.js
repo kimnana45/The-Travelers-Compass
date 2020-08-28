@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ideaSchema = new Schema({
-  idea: { type: String, required: true },
+  whatToDo: { type: String, required: true },
   author: { type: String, required: true },
   address: String,
   date: { type: Date, default: Date.now }
