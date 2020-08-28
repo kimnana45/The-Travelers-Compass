@@ -3,5 +3,4 @@ module.exports = {
   Trip: require("./trip"),
   Gallery: require("./gallery"),
   Idea: require("./idea")
-  
 };
