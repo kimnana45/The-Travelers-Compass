@@ -38,9 +38,29 @@ function IdeasList() {
 
     return (
         <Container>
-            
+            <h1>All of Our Ideas</h1>
+            <h3>Click on an idea to view details</h3>
+            {state.ideas.length ? (
+                <List>
+                    {state.ideas.map(idea => (
+                        <ListItem key={idea._id}>
+                            <Link to={"/ideas/" + idea._id}>
+                                <strong>
+                                    {idea.whatToDo} by {idea.author}
+                                </strong>
+                            </Link>
+                            <DeleteBtn onClick={() => removeIdea(idea._id)} />
+                        </ListItem>
+                    ))}
+                </List>
+            ) : (
+                <h3>No idea yet. Someone think of something!</h3>
+            )}
+            <div>
+                <Link to="favorites">View must-do list</Link>
+            </div>
         </Container>
-    )
+    );
 }
 
 export default IdeasList;
