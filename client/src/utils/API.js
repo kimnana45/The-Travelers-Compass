@@ -34,4 +34,10 @@ export default {
   getTripInfo: function(id) {
     return axios.get("/trip/" + id);
   },
+  getIdeas: function() {
+    return axios.get("/api/ideas");
+  },
+  getIdea: function(id) {
+    return axios.get("/api/ideas/" + id);
+  }, 
 };
