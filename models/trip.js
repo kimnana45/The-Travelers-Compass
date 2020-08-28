@@ -4,20 +4,20 @@ const Schema = mongoose.Schema;
 const Trip = new Schema({
     tripName: {
         type: String,
-        required: 'Trip name is required',
-        unique: true,
+        required: true
     },
     password: {
         type: String,
-        required: 'Password for the trip is required'
+        required: true,
+        unique: true
     },
     location: {
         type: Array,
-        required: 'Location is required'
+        required: true
     },
     dates: {
         type: Object,
-        required: 'Dates of trip is required'
+        required: true
     },
     pictures: [
         {
@@ -25,7 +25,12 @@ const Trip = new Schema({
             ref: "Gallery"
         }
     ],
-    users: Array,
+    users: [ 
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
     created: { type: Date, required: true, default: Date.now() },
 });
 

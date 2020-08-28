@@ -4,7 +4,6 @@ import { Col, Row, Container } from '../../components/Grid';
 import { Card, CardBody, CardContent } from '../../components/Card';
 import API from '../../utils/API';
 import './style.css';
-// import Jumbotron from "../components/Jumbotron";
 
 function MembersDashboard() {
 	const [usersTrips, setUsersTrips] = useState([]);
@@ -31,10 +30,13 @@ function MembersDashboard() {
 							<Link to={'/'}>home</Link>
 						</Col>
 						<Col size='4'>
-							<Link to={'/newtrip'}>plan new trip</Link>
+							<Link to={`/newtrip`}>plan new trip</Link>
 						</Col>
 					</Row>
 				</Col>
+			</Row>
+			<Row>
+				<h3>Welcome back {username}</h3>
 			</Row>
 			<Row>
 				<Col size='md-12'>
