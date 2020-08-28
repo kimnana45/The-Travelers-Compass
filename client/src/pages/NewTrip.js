@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import parseISO from 'date-fns/parseISO';
 import { Redirect } from 'react-router-dom';
-import AlgoliaPlaces from 'algolia-places-react';
+import AlgoliaPlaces, { parse } from 'algolia-places-react';
 import { FormGroup, Input, Label, FormBtn } from '../components/Form';
 import { Container, Col, Row } from '../components/Grid';
 import { Datepicker, START_DATE } from '@datepicker-react/styled';
 import API from '../utils/API';
 
-function Trip() {
-	const [tripId, setTripId] = useState()
+function Trip({ userId }) {
+	const [tripId, setTripId] = useState();
 	const [tripName, setTripName] = useState({
 		tripName: '',
 		validTN: false,
@@ -25,6 +26,7 @@ function Trip() {
 		password: '',
 		validPW: false,
 	});
+	const [submission, setSubmission] = useState(false);
 
 	function handleDatesChange(data: OnDatesChangeProps) {
 		if (!data.focusedInput) {
@@ -61,16 +63,30 @@ function Trip() {
 			location: location.location,
 			dates: dates,
 			password: password.password,
-		 }).then(res => console.log(res))
-			.catch(err => {
-			  console.log(err);
+			creatorId: userId
+		})
+			.then(res => {
+				let { trips } = res.data;
+				let mostRecentTrip = trips.length - 1;
+				setTripId(trips[mostRecentTrip]);
+				setSubmission(true);
+			})
+			.catch((err) => {
+				console.log(err);
 			});
 	};
+
+	if (submission) {
+		return <Redirect to={`/trip/${tripId}`} />;
+	}
 
 	return (
 		<Container>
 			<Row className='mt-2'>
 				<form>
+					<Row>
+						<Label text={`Unique trip code to share with others: ${userId}`} />
+					</Row>
 					<Row>
 						<Col size='md-6'>
 							<FormGroup>
@@ -97,7 +113,7 @@ function Trip() {
 					</Row>
 					<FormGroup>
 						<Row>
-							<Label text="Where are you going?" classes='ml-3' />
+							<Label text='Where are you going?' classes='ml-3' />
 						</Row>
 						<Row>
 							<Col size='11'>
@@ -110,7 +126,9 @@ function Trip() {
 										language: 'en',
 										type: 'city',
 									}}
-									onChange={({ suggestion }) => setLocation({ location: suggestion, validLocation: true})}
+									onChange={({ suggestion }) =>
+										setLocation({ location: suggestion, validLocation: true })
+									}
 									onClear={() => {}}
 								/>
 							</Col>
