@@ -40,4 +40,10 @@ export default {
   getIdea: function(id) {
     return axios.get("/api/ideas/" + id);
   }, 
+  deleteIdea: function(id) {
+    return axios.delete("/api/ideas/" + id);
+  },
+  saveIdea: function(ideaData) {
+    return axios.post("api/ideas/", ideaData);
+  }
 };
