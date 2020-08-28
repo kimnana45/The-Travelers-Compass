@@ -5,6 +5,8 @@ const db = require('../models');
 var isAuthenticated = require('../config/middleware/isAuthenticated');
 
 // USER PASSPORT ROUTES
+
+//register a user
 router.post('/api/register', function (req, res) {
 	//Do password validation here before attempting to register user, such as checking for password length, captial letters, special characters, etc.
 	db.User.register(
@@ -21,7 +23,7 @@ router.post('/api/register', function (req, res) {
 		}
 	);
 });
-
+//user log in route
 router.post('/api/login', function (req, res, next) {
 	passport.authenticate('local', function (err, user, info) {
 		if (err) {
@@ -38,12 +40,12 @@ router.post('/api/login', function (req, res, next) {
 		});
 	})(req, res, next);
 });
-
+//user log out route
 router.get('/api/logout', function (req, res) {
 	req.logout();
 	res.json({ message: 'logged out' });
 });
-
+//route to find a specific username
 router.get('/api/user', function (req, res) {
 	const { username } = req.query;
 	if (username) {
@@ -58,6 +60,8 @@ router.get('/api/user', function (req, res) {
 router.get('/api/authorized', isAuthenticated, function ({ user }, res) {
 	res.json(user);
 });
+
+//TRIP ROUTES
 
 // register a trip
 router.post('/api/registerTrip', function (req, res) {
@@ -76,24 +80,6 @@ router.post('/api/registerTrip', function (req, res) {
 		.then(dbTrip => res.json(dbTrip))
 		.catch(err => console.log(err));
 });
-
-
-//add picture to gallery that has id of the specific trip
-router.post('api/uploadphoto', function ({ body }, res) {
-	db.Gallery.create(body)
-		.then(({ _id }) => db.Trip.findOneAndUpdate({}, { $push: { pictures: _id } }, { new: true }))
-		.then(dbGallery => res.json(dbGallery))
-		.catch(err => console.log(err));
-});
-
-//findAll pictures that belong to a specific trip ID
-router.get('/api/gallery/:id', function (req, res) {
-	db.Trip.findById(req.params.id)
-		.populate('pictures')
-		.then(dbTrip => res.json(dbTrip))
-		.catch(err => res.json(err))
-});
-
 // Get user info upon login with populated trips
 router.get('/api/user_data', ({ user }, res) => {
 	if (!user) {
@@ -113,4 +99,22 @@ router.get('/trip/:id', (req, res) => {
 		.catch((err) => res.status(422).json(err));
 });
 
+//PICTURES ROUTES
+
+//add picture to gallery that has id of the specific trip
+router.post('api/uploadphoto', function ({ body }, res) {
+	db.Gallery.create(body)
+		.then(({ _id }) => db.Trip.findOneAndUpdate({}, { $push: { pictures: _id } }, { new: true }))
+		.then(dbGallery => res.json(dbGallery))
+		.catch(err => console.log(err));
+});
+//findAll pictures that belong to a specific trip ID
+router.get('/api/gallery/:id', function (req, res) {
+	db.Trip.findById(req.params.id)
+		.populate('pictures')
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => res.json(err))
+});
+
+//IDEAS ROUTES
 module.exports = router;
