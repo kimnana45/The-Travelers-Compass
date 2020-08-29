@@ -4,12 +4,14 @@ const Schema = mongoose.Schema;
 const Trip = new Schema({
     tripName: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     password: {
         type: String,
         required: true,
-        unique: true
+        min: 8,
+        trim: true
     },
     location: {
         type: Array,
@@ -17,6 +19,10 @@ const Trip = new Schema({
     },
     dates: {
         type: Object,
+        required: true
+    },
+    uniqueCode: {
+        type: String,
         required: true
     },
     pictures: [

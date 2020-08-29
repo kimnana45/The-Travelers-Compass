@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import parseISO from 'date-fns/parseISO';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import AlgoliaPlaces, { parse } from 'algolia-places-react';
-import { FormGroup, Input, Label, FormBtn } from '../components/Form';
-import { Container, Col, Row } from '../components/Grid';
+import * as RandExp from 'randexp';
+import AlgoliaPlaces from 'algolia-places-react';
+import { FormGroup, Input, Label, FormBtn, Small } from '../../components/Form';
+import { Container, Col, Row } from '../../components/Grid';
 import { Datepicker, START_DATE } from '@datepicker-react/styled';
-import API from '../utils/API';
+import API from '../../utils/API';
+import './style.css';
 
 function Trip({ userId }) {
 	const [tripId, setTripId] = useState();
@@ -63,7 +64,10 @@ function Trip({ userId }) {
 			location: location.location,
 			dates: dates,
 			password: password.password,
-			creatorId: userId
+			creatorId: userId,
+			uniqueCode: `${new RandExp(/^[0-9a-z]{6}$/).gen()}-${new RandExp(
+				/^[0-9A-Z]{6}$/
+			).gen()}`,
 		})
 			.then(res => {
 				let { trips } = res.data;
@@ -71,9 +75,7 @@ function Trip({ userId }) {
 				setTripId(trips[mostRecentTrip]);
 				setSubmission(true);
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch(err => console.log(err));
 	};
 
 	if (submission) {
@@ -91,6 +93,7 @@ function Trip({ userId }) {
 						<Col size='md-6'>
 							<FormGroup>
 								<Label text='Trip Name' />
+								<Small text='(Ex: Roadtrip to Rocky Mtns!)' />
 								<Input
 									name='tripName'
 									value={tripName.tripName}
@@ -102,6 +105,7 @@ function Trip({ userId }) {
 						<Col size='md-6'>
 							<FormGroup>
 								<Label text='Set a password for your trip' />
+								<Small text='Must be minimum of 8 characters. (Ex: Micky80Mouse)' />
 								<Input
 									name='password'
 									value={password.password}
@@ -116,7 +120,7 @@ function Trip({ userId }) {
 							<Label text='Where are you going?' classes='ml-3' />
 						</Row>
 						<Row>
-							<Col size='11'>
+							<Col size='12'>
 								<AlgoliaPlaces
 									placeholder='Search by city'
 									name='location'
@@ -132,9 +136,6 @@ function Trip({ userId }) {
 									onClear={() => {}}
 								/>
 							</Col>
-						</Row>
-						<Row>
-							<Label text='On the way to:' classes='ml-3' />
 						</Row>
 					</FormGroup>
 					<FormGroup>
@@ -158,7 +159,7 @@ function Trip({ userId }) {
 						}
 						text='Start Planning!'
 						onClick={addNewTrip}
-						classes='btn-primary'
+						classes='btn-danger'
 						type='submit'
 					/>
 				</form>

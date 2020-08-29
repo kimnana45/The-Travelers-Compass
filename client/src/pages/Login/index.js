@@ -57,11 +57,13 @@ class Login extends Component {
 			<React.Fragment>
 				<Jumbotron>
 					<Row>
-						<Col size='8'>
+						<Col size='md-8 d-none d-sm-block'>
 							<img src={headerIMG} className='img-fluid' />
 						</Col>
-						<Col size='4'>
-							<h1 className='bigWordName mt-4'>start planning your next vacation!</h1>
+						<Col size='md-4'>
+							<h1 className='bigWordName mt-4'>
+								start planning your next vacation!
+							</h1>
 						</Col>
 					</Row>
 				</Jumbotron>
@@ -99,7 +101,7 @@ class Login extends Component {
 									}
 									text='Login'
 									onClick={this.login}
-									classes='btn-primary'
+									classes='btn-danger'
 								/>
 								<Link to='/register'>Not registered? Click here.</Link>
 							</form>
