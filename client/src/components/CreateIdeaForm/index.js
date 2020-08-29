@@ -1,8 +1,10 @@
 import React, { useRef } from "react";
+import { Label, Input, FormGroup, FormBtn } from "../Form"; 
 import { useStoreContext } from "../../utils/GlobalState";
 import { ADD_IDEA, LOADING } from "../../utils/actions";
 import API from "../../utils/API";
-import { Container } from "../Grid";
+import { Col, Row, Container } from "../Grid";
+import AlgoliaPlaces from 'algolia-places-react';
 
 function CreateIdeaForm() {
     const whatToDoRef = useRef();
@@ -56,8 +58,8 @@ function CreateIdeaForm() {
 										language: 'en',
 										type: 'address',
 									}}
-									onChange={({ suggestion }) => setLocation({ location: suggestion, validLocation: true})}
-									onClear={() => {}}
+									// onChange={({ suggestion }) => setLocation({ location: suggestion, validLocation: true})}
+									// onClear={() => {}}
 								/>
 							</Col>
 						</Row>

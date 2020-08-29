@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { ListItem, List } from "../List";
 import DeleteBtn from "../DeleteBtn";
+import { Container } from "../Grid";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../utils/GlobalState";
 import { REMOVE_IDEA, UPDATE_IDEAS, LOADING } from "../../utils/actions";
