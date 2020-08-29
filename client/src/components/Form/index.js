@@ -1,12 +1,12 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import "./style.css";
 
 // This file exports the Input, TextArea, and FormBtn components
 
-export const Input = forwardRef(({ type, classes, placeholder, ...other }) => {
+export function Input({ type, classes, placeholder, ...other }) {
   return <input type={type} className={"form-control " + (classes ? classes : "")} placeholder={placeholder}
-  {...other} />;
-});
+ {...other} />;
+};
 
 export function Label({ text, classes }) {
   return <label className={classes}> {text} </label>;

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState} from "react";
 import { Label, Input, FormGroup, FormBtn } from "../Form"; 
 import { useStoreContext } from "../../utils/GlobalState";
 import { ADD_IDEA, LOADING } from "../../utils/actions";
@@ -7,18 +7,22 @@ import { Col, Row, Container } from "../Grid";
 import AlgoliaPlaces from 'algolia-places-react';
 
 function CreateIdeaForm() {
-    const whatToDoRef = useRef();
-    const addressRef = useRef();
-    const authorRef = useRef();
+    const [whatToDo, setWhatToDo] = useState("");
+    const [address, setAddress] = useState({});
+    const [author, setAuthor] = useState("");
+
     const [state, dispatch] = useStoreContext();
 
     const handleSubmit = e => {
         e.preventDefault();
+        console.log(whatToDo);
+        console.log(address);
+        console.log(author);
         dispatch({ type: LOADING });
         API.saveIdea({
-            whatToDo: whatToDoRef.current.value,
-            address: addressRef.current.value,
-            author: authorRef.current.value
+            whatToDo: whatToDo,
+            address: address,
+            author: author
         })
             .then(res => {
                 dispatch({
@@ -26,10 +30,22 @@ function CreateIdeaForm() {
                     idea: res.data
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
 
-        whatToDoRef.current.value = "";
-        addressRef.current.value = "";
+        setWhatToDo("");
+        setAddress("");
+    };
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        switch (name) {
+            case ('whatToDo'):
+                return setWhatToDo(value);
+            case ('author'):
+                return setAuthor(value);
+            default:
+                return;
+        }
     };
 
     return (
@@ -41,7 +57,9 @@ function CreateIdeaForm() {
 							<FormGroup>
 								<Label text='What should we do?' />
 								<Input
-									required ref={whatToDoRef}
+                                    name="whatToDo"
+                                    value={whatToDo}
+                                    onChange={handleInputChange}
 									placeholder='Your idea for an adventure'
 								/>
 							</FormGroup>
@@ -50,7 +68,6 @@ function CreateIdeaForm() {
                         <Row>
 							<Col size='md-6'>
 								<AlgoliaPlaces
-                                    required ref={addressRef}
 									placeholder='Search for place'
 									options={{
 										appId: process.env.appID,
@@ -58,8 +75,8 @@ function CreateIdeaForm() {
 										language: 'en',
 										type: 'address',
 									}}
-									// onChange={({ suggestion }) => setLocation({ location: suggestion, validLocation: true})}
-									// onClear={() => {}}
+									onChange={({ suggestion }) => setAddress(suggestion)}
+									onClear={() => {}}
 								/>
 							</Col>
 						</Row>
@@ -67,13 +84,15 @@ function CreateIdeaForm() {
                             <Col size="md-6">
                             <Label text="This idea was created by:"/>
                             <Input 
-                            required ref={authorRef}
+                            name="author"
+                            value={author}
+                            onChange={handleInputChange}
                             placeholder="Your name here"
                             />
                             </Col>
                         </Row>
                         <FormBtn
-						disabled={state.loading}
+						// disabled={state.loading}
 						classes='btn-primary'
                         type='submit'
                         text="Add Idea"
