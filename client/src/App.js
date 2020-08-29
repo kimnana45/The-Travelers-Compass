@@ -106,16 +106,12 @@ class App extends Component {
 								)}
 							</Route>
 
-							{/* <Route exact path='/protected'>
+							<Route exact path='/newtrip'>
 								{this.state.authorized ? (
-									<Protected logout={this.logout} />
+									<NewTrip userId={this.state.userId} />
 								) : (
 									<Redirect to='/login' />
 								)}
-							</Route> */}
-
-							<Route exact path='/newtrip'>
-								{this.state.authorized ? <NewTrip userId={this.state.userId} /> : <Redirect to='/login' />}
 							</Route>
 
 							<Route exact path='/jointrip'>
@@ -135,7 +131,11 @@ class App extends Component {
 							</Route>
 
 							<Route exact path='/gallery/:id'>
-								{this.state.authorized ? <Gallery /> : <Redirect to='/login' />}
+								{this.state.authorized ? (
+									<Gallery />
+								) : ( 
+									<Redirect to='/login' />
+								)}
 							</Route>
 
 							{/* <Route exact path='/uploadphoto'>

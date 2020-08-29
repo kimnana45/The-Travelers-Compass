@@ -24,8 +24,10 @@ app.use(routes);
 // app.use(apiRoutes);
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/travelerscompass",
-{ useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/travelerscompass", {
+  useNewUrlParser: true,
+  useFindAndModify: false
+});
 
 // Start the API server
 app.listen(PORT, function() {

@@ -12,6 +12,6 @@ export function CardHeader({ text, classes }) {
 	return <h3 className={"card-header text-center " + (classes ? classes : "")}>{text}</h3>;
 }
 
-export function CardContent({ text }) {
-	return <p className="card-text">{text}</p>;
+export function CardContent({ children }) {
+	return <p className="card-text">{children}</p>;
 }

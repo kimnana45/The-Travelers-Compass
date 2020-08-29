@@ -13,7 +13,7 @@ export function Label({ text, classes }) {
 }
 
 export function Small({ text, classes }) {
-  return <small className={classes}> {text} </small>;
+  return <small className={'form-text text-muted mb-2' + (classes ? classes : '')}> {text} </small>;
 }
 
 export function FormGroup({ children }) {
