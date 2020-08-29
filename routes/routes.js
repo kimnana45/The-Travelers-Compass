@@ -117,4 +117,38 @@ router.get('/api/gallery/:id', function (req, res) {
 });
 
 //IDEAS ROUTES
+
+//route to create the idea
+router.post('/api/ideas', function (req, res) {
+	const { whatToDo, address, author } = req.body;
+	db.Idea.create({
+		whatToDo: whatToDo,
+		address: address,
+		author: author,
+	})
+		.then(dbIdea => res.json(dbIdea))
+		.catch(err => console.log(err));
+});
+
+//route to update the idea to must do 
+router.put('api/ideas/:id', function (req,res) {
+	db.Idea.findByIdAndUpdate(req.body.ADD_FAVORITE)
+	.then(dbIdea => {
+		res.json(dbIdea);
+	})
+	.catch(err => console.log(err))
+});
+//route to delete the idea 
+router.delete('api/deas/:id', function (req,res) {
+	db.Idea.findByIdAndDelete((err, idea) => {
+		if (err) return res.status(500).send(err);
+		const response = {
+			message: "The idea has been removed",
+			id: idea._id
+		};
+		return res.status(200).send(response);
+	})
+})
+
+
 module.exports = router;
