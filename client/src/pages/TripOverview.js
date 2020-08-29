@@ -8,6 +8,7 @@ import API from '../utils/API';
 
 function TripOverview() {
 	const [tripName, setTripName] = useState();
+	const [tripId, setTripId] = useState();
 	const [tripCode, setTripCode] = useState();
 	const [tripLocation, setTripLocation] = useState();
 	const [tripDates, setTripDates] = useState({
@@ -21,8 +22,9 @@ function TripOverview() {
 		API.getTripById(id)
 			.then((res) => {
 				console.log(res.data);
-				const { dates, location, tripName, uniqueCode, users } = res.data;
+				const { dates, location, tripName, uniqueCode, users, _id } = res.data;
 				setTripName(tripName);
+				setTripId(_id);
 				setTripCode(uniqueCode);
 				setTripDates({
 					startDate: parseISO(dates.startDate).toString().slice(0, 15),
@@ -50,7 +52,7 @@ function TripOverview() {
 							<Link to={'/uploadphoto'}>add new photos</Link>
 						</Col>
 						<Col size='3'>
-							<Link to={'/ideas'}>Trip Ideas</Link>
+							<Link to={`/ideas/?trip=${tripId}`}>Trip Ideas</Link>
 						</Col>{' '}
 						<Col size='3'>
 							{/* <Link to={'/newtrip'}>plan new trip</Link> */}

@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import { Label, Input, FormGroup, FormBtn } from "../Form"; 
 import { useStoreContext } from "../../utils/GlobalState";
 import { ADD_IDEA, LOADING } from "../../utils/actions";
@@ -10,19 +10,17 @@ function CreateIdeaForm() {
     const [whatToDo, setWhatToDo] = useState("");
     const [address, setAddress] = useState({});
     const [author, setAuthor] = useState("");
-
+    const [tripId, setTripId] = useState("")
     const [state, dispatch] = useStoreContext();
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(whatToDo);
-        console.log(address);
-        console.log(author);
         dispatch({ type: LOADING });
         API.saveIdea({
             whatToDo: whatToDo,
             address: address,
-            author: author
+            author: author,
+            tripId: tripId
         })
             .then(res => {
                 dispatch({
@@ -35,6 +33,12 @@ function CreateIdeaForm() {
         setWhatToDo("");
         setAddress("");
     };
+
+    useEffect(() => {
+        let query = window.location.search
+        query = query.split("=")
+        setTripId(query[1]);
+    });
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
