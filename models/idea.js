@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ideaSchema = new Schema({
   whatToDo: { type: String, required: true },
-  address: String,
+  address: Object,
   author: { type: String, required: true },
   date: { type: Date, default: Date.now }
 });
