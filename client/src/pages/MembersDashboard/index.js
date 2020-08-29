@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { useInput } from 'react-hanger';
 import { Col, Row, Container } from '../../components/Grid';
 import { FormGroup, Input, Label, Small, FormBtn } from '../../components/Form';
-import { Card, CardBody, CardContent } from '../../components/Card';
+import { Card, CardBody } from '../../components/Card';
 import { Accordion, AccordionContent } from '../../components/Accordion';
 import API from '../../utils/API';
 import './style.css';
