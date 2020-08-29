@@ -31,8 +31,8 @@ export default {
   getTripById: function(id) {
     return axios.get("/api/trip/" + id);
   },
-  getIdeas: function() {
-    return axios.get("/api/ideas");
+  getIdeas: function(id) {
+    return axios.get("/api/ideas?trip=" + id);
   },
   getIdea: function(id) {
     return axios.get("/api/ideas/" + id);
@@ -41,7 +41,7 @@ export default {
     return axios.delete("/api/ideas/" + id);
   },
   saveIdea: function(ideaData) {
-    return axios.post("api/ideas/", ideaData);
+    return axios.post("api/ideas", ideaData);
   },
   joinExistingTrip: function(formData) {
     return axios.post("/api/jointrip", formData);

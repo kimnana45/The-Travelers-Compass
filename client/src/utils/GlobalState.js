@@ -84,7 +84,8 @@ const StoreProvider = ({ value = [], ...props }) => {
       _id: 0,
       whatToDo: "",
       address: "",
-      author: ""
+      author: "",
+      tripId: ""
     },
     favorites: [],
     loading: false

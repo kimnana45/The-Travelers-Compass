@@ -34,7 +34,8 @@ function IdeasList() {
     };
 
     useEffect(() => {
-        getIdeas();
+        // getIdeas();
+        console.log(state);
     }, []);
 
     return (

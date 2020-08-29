@@ -5,6 +5,11 @@ const ideaSchema = new Schema({
   whatToDo: { type: String, required: true },
   address: Object,
   author: { type: String, required: true },
+  tripId:
+    {
+        type: Schema.Types.ObjectId,
+        ref: "Trip"
+    },
   date: { type: Date, default: Date.now }
 });
 

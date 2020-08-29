@@ -77,7 +77,7 @@ router.post('/api/registerTrip', function ({ body }, res) {
 		users: [creatorId],
 		uniqueCode: uniqueCode
 	})
-		.then(({ _id }) => db.User.findOneAndUpdate({ _id: creatorId}, { $push: { trips: _id } }, { new: true }))
+		.then(({ _id }) => db.User.findOneAndUpdate({ _id: creatorId }, { $push: { trips: _id } }, { new: true }))
 		.then(dbTrip => res.json(dbTrip))
 		.catch(err => console.log(err));
 });
@@ -121,23 +121,32 @@ router.get('/api/gallery/:id', function (req, res) {
 
 //route to create the idea
 router.post('/api/ideas', function (req, res) {
-	const { whatToDo, address, author } = req.body;
+	console.log(req.body);
+	const { whatToDo, address, author, tripId } = req.body;
 	db.Idea.create({
 		whatToDo: whatToDo,
 		address: address,
 		author: author,
+		tripId: tripId
 	})
 		.then(dbIdea => res.json(dbIdea))
 		.catch(err => console.log(err));
 });
-
+//get route to get all the ideas
+router.get('api/ideas', function (req, res) {
+	let { tripId } = req.body
+	console.log(tripId);
+	db.Idea.find({ tripId: tripId })
+		.then(dbIdea => console.log(dbIdea))
+		.catch(err => console.log(err));
+})
 //route to update the idea to must do 
-router.put('api/ideas/:id', function (req,res) {
+router.put('api/ideas/:id', function (req, res) {
 	db.Idea.findByIdAndUpdate(req.body.ADD_FAVORITE)
-	.then(dbIdea => {
-		res.json(dbIdea);
-	})
-	.catch(err => console.log(err))
+		.then(dbIdea => {
+			res.json(dbIdea);
+		})
+		.catch(err => console.log(err))
 });
 // Get trip details by trip id
 router.get('/api/trip/:id', (req, res) => {
@@ -148,7 +157,7 @@ router.get('/api/trip/:id', (req, res) => {
 		.catch(err => res.status(422).json(err));
 });
 //route to delete the idea 
-router.delete('api/ideas/:id', function (req,res) {
+router.delete('api/ideas/:id', function (req, res) {
 	db.Idea.findByIdAndDelete((err, idea) => {
 		if (err) return res.status(500).send(err);
 		const response = {
@@ -164,17 +173,17 @@ router.delete('api/ideas/:id', function (req,res) {
 router.post('/api/jointrip', (req, res) => {
 	const { code, password } = req.body;
 	db.Trip.findOneAndUpdate(
-		{ 
+		{
 			uniqueCode: code,
 			password: password
-		}, 
-		{ $push: { users: req.user._id } }, 
+		},
+		{ $push: { users: req.user._id } },
 		{ new: true })
 		.then(({ _id }) => db.User.findOneAndUpdate(
-			{ _id: req.user._id}, 
-			{ $push: { trips: _id } }, 
+			{ _id: req.user._id },
+			{ $push: { trips: _id } },
 			{ new: true }))
-	 	.then(dbTrip => res.json(dbTrip))
+		.then(dbTrip => res.json(dbTrip))
 		.catch(err => res.status(422).json(err));
 });
 
