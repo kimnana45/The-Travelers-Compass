@@ -49,13 +49,13 @@ function Picture() {
 	return (
 		<Container>
 			<Row className='mt-2'>
-				<ReactFilestack
+				{/* <ReactFilestack
 					apikey={process.env.filestackAPI}
 					mode={'pick'}
 					onSuccess={(response) => console.log(response)}
 					onError={(e) => console.log(e)}
 					buttonText={'Pick File'}
-				/>
+				/> */}
 				 
 				{/* <form>
 					<Row>
