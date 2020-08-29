@@ -49,7 +49,9 @@ function TripOverview() {
 						<Col size='3'>
 							<Link to={'/uploadphoto'}>add new photos</Link>
 						</Col>
-						<Col size='3'>{/* <Link to={'/'}>home</Link> */}</Col>
+						<Col size='3'>
+							<Link to={'/ideas'}>Trip Ideas</Link>
+						</Col>{' '}
 						<Col size='3'>
 							{/* <Link to={'/newtrip'}>plan new trip</Link> */}
 						</Col>
@@ -61,9 +63,7 @@ function TripOverview() {
 					<Card>
 						<CardBody>
 							<CardHeader classes='bg-danger' text={tripName} />
-							<CardContent>
-								{'Destination: ' + tripLocation}
-							</CardContent>
+							<CardContent>{'Destination: ' + tripLocation}</CardContent>
 							<CardContent>
 								{tripDates.startDate + ' to ' + tripDates.endDate}
 							</CardContent>
@@ -91,15 +91,17 @@ function TripOverview() {
 								<Card>
 									<CardBody>
 										<CardHeader classes='bg-primary' text='Travelers' />
-												{travelers.map(traveler => (
-													<span 
-														className="card-body d-inline-flex" 
-														key={traveler._id}
-													>
-														<i className="fas fa-suitcase px-2 "></i>
-														<small className="text-monospace">{traveler.firstName} {traveler.lastName}</small>
-													</span>
-												))}
+										{travelers.map((traveler) => (
+											<span
+												className='card-body d-inline-flex'
+												key={traveler._id}
+											>
+												<i className='fas fa-suitcase px-2 '></i>
+												<small className='text-monospace'>
+													{traveler.firstName} {traveler.lastName}
+												</small>
+											</span>
+										))}
 									</CardBody>
 								</Card>
 							</Col>
@@ -112,9 +114,7 @@ function TripOverview() {
 							<Card>
 								<CardBody>
 									<CardHeader classes='bg-warning' text='Emergency Contacts' />
-									<CardContent>
-										{`Travelers: ${travelers.length}`}
-									</CardContent> 
+									<CardContent>{`Travelers: ${travelers.length}`}</CardContent>
 								</CardBody>
 							</Card>
 						</Col>
@@ -124,9 +124,7 @@ function TripOverview() {
 							<Card>
 								<CardBody>
 									<CardHeader classes='bg-info' text='Expenses' />
-									<CardContent>
-										{`Destination: ${tripLocation}`}
-									</CardContent>
+									<CardContent>{`Destination: ${tripLocation}`}</CardContent>
 								</CardBody>
 							</Card>
 						</Col>

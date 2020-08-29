@@ -3,7 +3,7 @@ import {
 	BrowserRouter as Router,
 	Route,
 	Switch,
-	Redirect
+	Redirect,
 } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -23,7 +23,7 @@ import MERN from './assets/mern.png';
 import { StoreProvider } from './utils/GlobalState';
 import MustDoList from './pages/MustDoList';
 import IdeaDetails from './pages/IdeaDetails';
-import IdeasMain from "./pages/IdeasMain";
+import IdeasMain from './pages/IdeasMain';
 
 class App extends Component {
 	state = {
@@ -34,16 +34,16 @@ class App extends Component {
 
 	componentDidMount() {
 		this.isAuthorized();
-	};
+	}
 
 	findUser() {
 		API.getUser()
-			.then(res => {
+			.then((res) => {
 				const { _id } = res.data;
-				this.setState({ userId: _id })
+				this.setState({ userId: _id });
 			})
 			.catch((err) => console.log(err));
-	};
+	}
 
 	isAuthorized = () => {
 		this.findUser();
@@ -131,38 +131,35 @@ class App extends Component {
 							</Route>
 
 							<Route exact path='/gallery/:id'>
-								{this.state.authorized ? (
-									<Gallery />
-								) : ( 
-									<Redirect to='/login' />
-								)}
+								{this.state.authorized ? <Gallery /> : <Redirect to='/login' />}
 							</Route>
 
 							{/* <Route exact path='/uploadphoto'>
 								{this.state.authorized ? <AddPicture /> : <Redirect to='/login' />}
 							</Route> */}
+							
 							<StoreProvider>
-							<Route exact path='/ideas'>
-								{this.state.authorized ? (
-									<IdeasMain />
-								) : (
-									<Redirect to='/login' />
-								)}
-							</Route>
-							<Route exact path='/mustdo'>
-								{this.state.authorized ? (
-									<MustDoList />
-								) : (
-									<Redirect to='/ideas' />
-								)}
-							</Route>
-							<Route exact path='/ideas/:id'>
-								{this.state.authorized ? (
-									<IdeaDetails />
-								) : (
-									<Redirect to='/ideas'/>
-								)}
-							</Route>
+								<Route exact path='/ideas'>
+									{this.state.authorized ? (
+										<IdeasMain />
+									) : (
+										<Redirect to='/login' />
+									)}
+								</Route>
+								<Route exact path='/mustdo'>
+									{this.state.authorized ? (
+										<MustDoList />
+									) : (
+										<Redirect to='/ideas' />
+									)}
+								</Route>
+								<Route exact path='/ideas/:id'>
+									{this.state.authorized ? (
+										<IdeaDetails />
+									) : (
+										<Redirect to='/ideas' />
+									)}
+								</Route>
 							</StoreProvider>
 							<Route>
 								<Redirect to='/' />
@@ -177,7 +174,13 @@ class App extends Component {
 						View on Github
 						<br />
 						<small>
-							<a href='https://github.com/kimnana45/The-Travelers-Compass' target='_blank' className='text-dark'>project repo</a>
+							<a
+								href='https://github.com/kimnana45/The-Travelers-Compass'
+								target='_blank'
+								className='text-dark'
+							>
+								project repo
+							</a>
 						</small>
 					</FooterSpan>
 					<FooterSpan classes='text-center mx-auto d-none d-sm-block'>
