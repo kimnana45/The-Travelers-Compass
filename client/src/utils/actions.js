@@ -1,0 +1,9 @@
+export const UPDATE_IDEAS = "UPDATE_IDEAS";
+export const REMOVE_IDEA = "REMOVE_IDEA";
+export const SET_CURRENT_IDEA = "SET_CURRENT_IDEA";
+export const ADD_IDEA = "ADD_IDEA";
+export const LOADING = "LOADING";
+
+export const ADD_FAVORITE = "ADD_FAVORITE";
+export const REMOVE_FAVORITE = "REMOVE_FAVORITE";
+export const UPDATE_FAVORITES = "UPDATE_FAVORITES";

@@ -5,6 +5,8 @@ const db = require('../models');
 var isAuthenticated = require('../config/middleware/isAuthenticated');
 
 // USER PASSPORT ROUTES
+
+//register a user
 router.post('/api/register', function (req, res) {
 	//Do password validation here before attempting to register user, such as checking for password length, capital letters, special characters, etc.
 	db.User.register(
@@ -21,7 +23,7 @@ router.post('/api/register', function (req, res) {
 		}
 	);
 });
-
+//user log in route
 router.post('/api/login', function (req, res, next) {
 	passport.authenticate('local', function (err, user, info) {
 		if (err) {
@@ -38,12 +40,12 @@ router.post('/api/login', function (req, res, next) {
 		});
 	})(req, res, next);
 });
-
+//user log out route
 router.get('/api/logout', function (req, res) {
 	req.logout();
 	res.json({ message: 'logged out' });
 });
-
+//route to find a specific username
 router.get('/api/user', function (req, res) {
 	const { username } = req.query;
 	if (username) {
@@ -58,6 +60,8 @@ router.get('/api/user', function (req, res) {
 router.get('/api/authorized', isAuthenticated, function ({ user }, res) {
 	res.json(user);
 });
+
+//TRIP ROUTES
 
 // register a trip
 router.post('/api/registerTrip', function ({ body }, res) {
@@ -77,24 +81,6 @@ router.post('/api/registerTrip', function ({ body }, res) {
 		.then(dbTrip => res.json(dbTrip))
 		.catch(err => console.log(err));
 });
-
-
-//add picture to gallery that has id of the specific trip
-router.post('api/uploadphoto', function ({ body }, res) {
-	db.Gallery.create(body)
-		.then(({ _id }) => db.Trip.findOneAndUpdate({}, { $push: { pictures: _id } }, { new: true }))
-		.then(dbGallery => res.json(dbGallery))
-		.catch(err => console.log(err));
-});
-
-//findAll pictures that belong to a specific trip ID
-router.get('/api/gallery/:id', function (req, res) {
-	db.Trip.findById(req.params.id)
-		.populate('pictures')
-		.then(dbTrip => res.json(dbTrip))
-		.catch(err => res.json(err))
-});
-
 // Get user info upon login with populated trips
 router.get('/api/user_data', ({ user }, res) => {
 	if (!user) {
@@ -107,6 +93,52 @@ router.get('/api/user_data', ({ user }, res) => {
 	}
 });
 
+router.get('/trip/:id', (req, res) => {
+	let { id } = req.params;
+	db.Trip.findById(id)
+		.then(dbTrip => res.json(dbTrip))
+		.catch((err) => res.status(422).json(err));
+});
+
+//PICTURES ROUTES
+
+//add picture to gallery that has id of the specific trip
+router.post('api/uploadphoto', function ({ body }, res) {
+	db.Gallery.create(body)
+		.then(({ _id }) => db.Trip.findOneAndUpdate({}, { $push: { pictures: _id } }, { new: true }))
+		.then(dbGallery => res.json(dbGallery))
+		.catch(err => console.log(err));
+});
+//findAll pictures that belong to a specific trip ID
+router.get('/api/gallery/:id', function (req, res) {
+	db.Trip.findById(req.params.id)
+		.populate('pictures')
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => res.json(err))
+});
+
+//IDEAS ROUTES
+
+//route to create the idea
+router.post('/api/ideas', function (req, res) {
+	const { whatToDo, address, author } = req.body;
+	db.Idea.create({
+		whatToDo: whatToDo,
+		address: address,
+		author: author,
+	})
+		.then(dbIdea => res.json(dbIdea))
+		.catch(err => console.log(err));
+});
+
+//route to update the idea to must do 
+router.put('api/ideas/:id', function (req,res) {
+	db.Idea.findByIdAndUpdate(req.body.ADD_FAVORITE)
+	.then(dbIdea => {
+		res.json(dbIdea);
+	})
+	.catch(err => console.log(err))
+});
 // Get trip details by trip id
 router.get('/api/trip/:id', (req, res) => {
 	let { id } = req.params;
@@ -115,6 +147,18 @@ router.get('/api/trip/:id', (req, res) => {
 		.then(dbTrip => res.json(dbTrip))
 		.catch(err => res.status(422).json(err));
 });
+//route to delete the idea 
+router.delete('api/ideas/:id', function (req,res) {
+	db.Idea.findByIdAndDelete((err, idea) => {
+		if (err) return res.status(500).send(err);
+		const response = {
+			message: "The idea has been removed",
+			id: idea._id
+		};
+		return res.status(200).send(response);
+	})
+})
+
 
 // Join an existing trip with trip's unique code & pw
 router.post('/api/jointrip', (req, res) => {
