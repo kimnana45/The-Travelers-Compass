@@ -8,11 +8,11 @@ function Home() {
     <Container fluid>
       <Jumbotron>
         <Row>
-          <Col size="8">
-            <img src={headerIMG} className="img-fluid" />
+          <Col size='md-8 d-none d-sm-block'>
+            <img src={headerIMG} className='img-fluid' />
           </Col>
-          <Col size="4">
-          <h1 className='bigWordName mt-4'>start planning your next vacation!</h1>
+          <Col size='md-4'>
+            <h1 className='bigWordName mt-4'>start planning your next vacation!</h1>
           </Col>
         </Row>
       </Jumbotron>

@@ -16,22 +16,22 @@ export default {
   availableUN: function (username) {
     return axios.get("/api/user/?username=" + username);
   },
-  availableTN: function (tripName) {
-    return axios.get("/api/trip/tripname=" + tripName);
-  },
   getUser: function () {
     return axios.get("/api/user_data");
   },
   registerTrip: function (trip) {
-    return axios.post("api/registerTrip", trip);
+    return axios.post("/api/registerTrip", trip);
   },
   getPictures: function (id) {
     return axios.get("/api/gallery/" + id);
   },
   addPicture: function (gallery) {
-    return axios.post("api/addToGallery", gallery);
+    return axios.post("/api/addToGallery", gallery);
   },
-  getTripInfo: function(id) {
-    return axios.get("/trip/" + id);
+  getTripById: function(id) {
+    return axios.get("/api/trip/" + id);
   },
+  joinExistingTrip: function(formData) {
+    return axios.post("/api/jointrip", formData);
+  }
 };

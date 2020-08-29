@@ -6,9 +6,9 @@ var isAuthenticated = require('../config/middleware/isAuthenticated');
 
 // USER PASSPORT ROUTES
 router.post('/api/register', function (req, res) {
-	//Do password validation here before attempting to register user, such as checking for password length, captial letters, special characters, etc.
+	//Do password validation here before attempting to register user, such as checking for password length, capital letters, special characters, etc.
 	db.User.register(
-		new db.User({ username: req.body.username, email: req.body.email }),
+		new db.User({ firstName: req.body.firstName, lastName: req.body.lastName, username: req.body.username, email: req.body.email }),
 		req.body.password,
 		function (err, user) {
 			if (err) {
@@ -60,8 +60,8 @@ router.get('/api/authorized', isAuthenticated, function ({ user }, res) {
 });
 
 // register a trip
-router.post('/api/registerTrip', function (req, res) {
-	const { tripName, location, dates, password, creatorId } = req.body;
+router.post('/api/registerTrip', function ({ body }, res) {
+	const { tripName, location, dates, password, creatorId, uniqueCode } = body;
 	db.Trip.create({
 		tripName: tripName,
 		location: location,
@@ -70,7 +70,8 @@ router.post('/api/registerTrip', function (req, res) {
 			endDate: dates.endDate,
 		},
 		password: password,
-		users: [creatorId]
+		users: [creatorId],
+		uniqueCode: uniqueCode
 	})
 		.then(({ _id }) => db.User.findOneAndUpdate({ _id: creatorId}, { $push: { trips: _id } }, { new: true }))
 		.then(dbTrip => res.json(dbTrip))
@@ -106,11 +107,31 @@ router.get('/api/user_data', ({ user }, res) => {
 	}
 });
 
-router.get('/trip/:id', (req, res) => {
+// Get trip details by trip id
+router.get('/api/trip/:id', (req, res) => {
 	let { id } = req.params;
 	db.Trip.findById(id)
+		.populate('users')
 		.then(dbTrip => res.json(dbTrip))
-		.catch((err) => res.status(422).json(err));
+		.catch(err => res.status(422).json(err));
+});
+
+// Join an existing trip with trip's unique code & pw
+router.post('/api/jointrip', (req, res) => {
+	const { code, password } = req.body;
+	db.Trip.findOneAndUpdate(
+		{ 
+			uniqueCode: code,
+			password: password
+		}, 
+		{ $push: { users: req.user._id } }, 
+		{ new: true })
+		.then(({ _id }) => db.User.findOneAndUpdate(
+			{ _id: req.user._id}, 
+			{ $push: { trips: _id } }, 
+			{ new: true }))
+	 	.then(dbTrip => res.json(dbTrip))
+		.catch(err => res.status(422).json(err));
 });
 
 module.exports = router;
