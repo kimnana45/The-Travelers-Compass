@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Card, CardBody, CardContent } from '../components/Card';
+import { Card, CardBody } from '../components/Card';
 import { Container } from '../components/Grid';
 import Picture from './AddPicture';
 import API from '../utils/API';

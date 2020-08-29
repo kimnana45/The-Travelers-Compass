@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { FormGroup, Input, Label, Small, FormBtn } from "../../components/Form";
+import { FormGroup, Input, Label, FormBtn } from "../../components/Form";
 import { Col, Row} from '../../components/Grid';
 import API from "../../utils/API";
 import './style.css';

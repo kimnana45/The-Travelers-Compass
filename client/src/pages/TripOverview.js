@@ -61,10 +61,12 @@ function TripOverview() {
 					<Card>
 						<CardBody>
 							<CardHeader classes='bg-danger' text={tripName} />
-							<CardContent text={'Destination: ' + tripLocation} />
-							<CardContent
-								text={tripDates.startDate + ' to ' + tripDates.endDate}
-							/>
+							<CardContent>
+								{'Destination: ' + tripLocation}
+							</CardContent>
+							<CardContent>
+								{tripDates.startDate + ' to ' + tripDates.endDate}
+							</CardContent>
 						</CardBody>
 					</Card>
 				</Col>
