@@ -9,6 +9,10 @@ const Gallery = new Schema({
     caption: {
         type: String,
     },
+    tripId: {
+        type: Schema.Types.ObjectId,
+        ref: "Trip"
+    },
     users: Array,
     created: { type: Date, required: true, default: Date.now() },
 });

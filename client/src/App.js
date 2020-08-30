@@ -134,9 +134,9 @@ class App extends Component {
 								{this.state.authorized ? <Gallery /> : <Redirect to='/login' />}
 							</Route>
 
-							{/* <Route exact path='/uploadphoto'>
+							<Route exact path='/uploadphoto'>
 								{this.state.authorized ? <AddPicture /> : <Redirect to='/login' />}
-							</Route> */}
+							</Route>
 							
 							<StoreProvider>
 								<Route exact path='/ideas'>
