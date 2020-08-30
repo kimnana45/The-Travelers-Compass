@@ -103,7 +103,7 @@ router.get('/trip/:id', (req, res) => {
 //PICTURES ROUTES
 
 //add picture to gallery that has id of the specific trip
-router.post('api/uploadphoto', function ({ body }, res) {
+router.post('api/addToGallery', function ({ body }, res) {
 	db.Gallery.create(body)
 		.then(({ _id }) => db.Trip.findOneAndUpdate({}, { $push: { pictures: _id } }, { new: true }))
 		.then(dbGallery => res.json(dbGallery))

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import API from '../utils/API';
 import { Row, Col, Container } from '../components/Grid';
 import { Input, Label, FormGroup, FormBtn } from '../components/Form';
@@ -9,7 +10,8 @@ function Picture() {
 	// const env = dotenv.config();
 	// console.log(process.env.filestackAPI);
 	const [picturePath, setPicturePath] = useState();
-	const [caption, setCaption] = useState();
+	const [caption, setCaption] = useState("");
+	const [tripId, setTripId] = useState("");
 	const [submission, setSubmission] = useState(false);
 
 	function onSuccess(response) {
@@ -23,20 +25,29 @@ function Picture() {
 		setPicturePath(picturePath);
 	}
 
+	useEffect(() => {
+        let query = window.location.search
+        query = query.split("=")
+        setTripId(query[1]);
+    });
+
 	function addToGallery(event) {
 		event.preventDefault();
 		API.addPicture({
 			picturePath: picturePath,
 			caption: caption,
+			tripId: tripId
 		})
 			.then(res => {
 				console.log('Your picture was upload successfully!');
 				console.log(res);
 				setSubmission(true);
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch(err =>  console.log(err));
+	};
+
+	if (submission) {
+		return <Redirect to={`/gallery/${tripId}`} />
 	}
 
 	return (
@@ -45,14 +56,12 @@ function Picture() {
 				<ReactFilestack
 					apikey={"AG4hPSOMQruX3SKmPWtD0z"}
 					mode={'pick'}
-					// componentDisplayMode={{
-					// 	type: 'button',
-					// 	customText: <i class="fas fa-upload"></i>,
-					// 	customColor: 'black'
-					// }}
 					onSuccess={(response) => onSuccess(response)}
 					onError={(e) => console.log(e)}
-					buttonText={'Pick File'}
+					componentDisplayMode={{
+						customText: <i class="fas fa-images"></i>,
+						customColor: 'pink'
+					}}
 				/>
 				<form>
 					<Row>
