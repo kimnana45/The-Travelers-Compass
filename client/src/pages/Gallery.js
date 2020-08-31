@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Card, CardBody } from '../components/Card';
 import { Container } from '../components/Grid';
 import API from '../utils/API';
