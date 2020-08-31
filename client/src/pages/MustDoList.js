@@ -3,7 +3,7 @@ import { Container } from "../components/Grid";
 import { ListItem, List } from "../components/List";
 import DeleteBtn from "../components/DeleteBtn";
 import { Link } from "react-router-dom";
-import { useStoreContext } from "../utils/GlobalState";
+import { useStoreContext } from "../utils/IdeaGlobalState";
 import { REMOVE_FAVORITE, LOADING, UPDATE_FAVORITES } from "../utils/actions";
 
 const MustDoList = () => {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
-import { useStoreContext } from "../utils/GlobalState";
+import { useStoreContext } from "../utils/IdeaGlobalState";
 import { SET_CURRENT_IDEA, ADD_FAVORITE, REMOVE_FAVORITE } from "../utils/actions";
 
 const IdeaDetails = props => {

@@ -45,5 +45,14 @@ export default {
   },
   joinExistingTrip: function(formData) {
     return axios.post("/api/jointrip", formData);
+  },
+  getTransactions: function(id) {
+    return axios.get("/api/transactions" + id);
+  },
+  addTransaction: function(transaction) {
+    return axios.post("/api/transaction", transaction);
+  },
+  deleteTransaction: function(id) {
+    return axios.delete("/api/transaction" + id);
   }
 };

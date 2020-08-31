@@ -20,7 +20,7 @@ import TripOverview from './pages/TripOverview';
 import Gallery from './pages/Gallery';
 import AddPicture from './pages/AddPicture';
 import MERN from './assets/mern.png';
-import { StoreProvider } from './utils/GlobalState';
+import { StoreProvider } from './utils/IdeaGlobalState';
 import MustDoList from './pages/MustDoList';
 import IdeaDetails from './pages/IdeaDetails';
 import IdeasMain from './pages/IdeasMain';
