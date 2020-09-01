@@ -77,7 +77,7 @@ const reducer = (state, action) => {
   }
 };
 
-const StoreProvider = ({ value = [], ...props }) => {
+const IdeaStoreProvider = ({ value = [], ...props }) => {
   const [state, dispatch] = useReducer(reducer, {
     ideas: [],
     currentIdea: {
@@ -94,8 +94,8 @@ const StoreProvider = ({ value = [], ...props }) => {
   return <Provider value={[state, dispatch]} {...props} />;
 };
 
-const useStoreContext = () => {
+const useIdeaStoreContext = () => {
   return useContext(StoreContext);
 };
 
-export { StoreProvider, useStoreContext };
+export { IdeaStoreProvider, useIdeaStoreContext };
