@@ -20,10 +20,11 @@ import TripOverview from './pages/TripOverview';
 import Gallery from './pages/Gallery';
 import AddPicture from './pages/AddPicture';
 import MERN from './assets/mern.png';
-import { StoreProvider } from './utils/GlobalState';
+import { IdeaStoreProvider } from './utils/IdeaGlobalState';
 import MustDoList from './pages/MustDoList';
 import IdeaDetails from './pages/IdeaDetails';
 import IdeasMain from './pages/IdeasMain';
+import Budget from './pages/Budget';
 
 class App extends Component {
 	state = {
@@ -134,11 +135,15 @@ class App extends Component {
 								{this.state.authorized ? <Gallery /> : <Redirect to='/login' />}
 							</Route>
 
-							{/* <Route exact path='/uploadphoto'>
+							<Route exact path='/uploadphoto'>
 								{this.state.authorized ? <AddPicture /> : <Redirect to='/login' />}
-							</Route> */}
+							</Route>
 							
-							<StoreProvider>
+							<Route exact path='/budget'>
+								{this.state.authorized ? <Budget /> : <Redirect to='/login' />}
+							</Route>
+
+							<IdeaStoreProvider>
 								<Route exact path='/ideas'>
 									{this.state.authorized ? (
 										<IdeasMain />
@@ -160,7 +165,7 @@ class App extends Component {
 										<Redirect to='/ideas' />
 									)}
 								</Route>
-							</StoreProvider>
+							</IdeaStoreProvider>
 							<Route>
 								<Redirect to='/' />
 							</Route>

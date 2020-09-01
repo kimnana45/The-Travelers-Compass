@@ -91,8 +91,19 @@ router.post('/api/trip', function ({ body }, res) {
 		.then(dbTrip => res.json(dbTrip))
 		.catch(err => console.log(err));
 });
-// Get trip details by trip id
-router.get('/api/trip/:id', (req, res) => {
+// Get user info upon login with populated trips
+router.get('/api/user_data', ({ user }, res) => {
+	if (!user) {
+		res.json({});
+	} else {
+		db.User.findById(user.id)
+			.populate('trips')
+			.then(dbUser => res.json(dbUser))
+			.catch(err => res.status(422).json(err));
+	}
+});
+//find trip by its id
+router.get('/trip/:id', (req, res) => {
 	let { id } = req.params;
 	db.Trip.findById(id)
 		.populate('travelers')
@@ -149,10 +160,35 @@ router.put('/api/trip', (req, res) => {
 				})
 	})
 });
+// Get trip details by trip id
+router.get('/api/trip/:id', (req, res) => {
+	let { id } = req.params;
+	db.Trip.findById(id)
+		.populate('users')
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => res.status(422).json(err));
+});
+// Join an existing trip with trip's unique code & pw
+router.post('/api/jointrip', (req, res) => {
+	const { code, password } = req.body;
+	db.Trip.findOneAndUpdate(
+		{
+			uniqueCode: code,
+			password: password
+		},
+		{ $push: { users: req.user._id } },
+		{ new: true })
+		.then(({ _id }) => db.User.findOneAndUpdate(
+			{ _id: req.user._id },
+			{ $push: { trips: _id } },
+			{ new: true }))
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => res.status(422).json(err));
+});
 
 //PICTURES ROUTES
 //add picture to gallery that has id of the specific trip
-router.post('api/uploadphoto', function ({ body }, res) {
+router.post('api/addToGallery', function ({ body }, res) {
 	db.Gallery.create(body)
 		.then(({ _id }) => db.Trip.findOneAndUpdate({}, { $push: { pictures: _id } }, { new: true }))
 		.then(dbGallery => res.json(dbGallery))
@@ -217,6 +253,41 @@ router.put('/api/emergencyContact', function (req, res) {
 		{ new: true })
 		.then(dbUser => res.json(dbUser))
 		.catch(err => console.log(err))
+});
+
+//BUDGET & TRANSACTION ROUTES
+
+//route to create transaction
+router.post('/api/transaction', function (req, res) {
+	console.log(req.body);
+	const { reason, amount } = req.body;
+	db.Budget.create({
+		reason: reason,
+		amount: amount,	
+	})
+		.then(dbBudget => res.json(dbBudget))
+		.catch(err => console.log(err));
+});
+//route to get all transactions
+router.get('api/transactions', function (req, res) {
+	let { tripId } = req.body
+	console.log(tripId);
+	db.Budget.find({ tripId: tripId })
+		.then(dbBudget=> console.log(dbBudget))
+		.catch(err => console.log(err));
+})
+//route to add a transaction into budget? is that the same as create route?
+
+//route to delete a transaction
+router.delete('api/transaction/:id', function (req, res) {
+	db.Budget.findByIdAndDelete((err, transaction) => {
+		if (err) return res.status(500).send(err);
+		const response = {
+			message: "The transaction has been removed",
+			id: transaction._id
+		};
+		return res.status(200).send(response);
+	})
 });
 
 module.exports = router;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ListItem, List } from '../List';
 import { Small, FormBtn } from '../Form';
 import { Container } from '../Grid';
-import { useStoreContext } from '../../utils/GlobalState';
+import { useStoreContext } from '../../utils/IdeaGlobalState';
 import { REMOVE_IDEA, UPDATE_IDEAS, LOADING } from '../../utils/actions';
 import API from '../../utils/API';
 

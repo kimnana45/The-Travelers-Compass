@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Label, Input, FormGroup, FormBtn } from '../Form';
 import { Card, CardBody } from '../Card';
-import { useStoreContext } from '../../utils/GlobalState';
+import { useStoreContext } from '../../utils/IdeaGlobalState';
 import { ADD_IDEA, LOADING } from '../../utils/actions';
 import API from '../../utils/API';
 import { Col, Row, Container } from '../Grid';

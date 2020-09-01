@@ -54,5 +54,14 @@ export default {
   },
   saveEmergencyContact: function(contactInfo) {
     return axios.put("/api/emergencyContact", contactInfo);
+  },
+  getTransactions: function(tripId) {
+    return axios.get("/api/transactions" + tripId);
+  },
+  addTransaction: function(transaction) {
+    return axios.post("/api/transaction", transaction);
+  },
+  deleteTransaction: function(id) {
+    return axios.delete("/api/transaction" + id);
   }
 }; 
