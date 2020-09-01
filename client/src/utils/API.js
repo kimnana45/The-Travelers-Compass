@@ -19,8 +19,20 @@ export default {
   getUser: function () {
     return axios.get("/api/user_data");
   },
-  registerTrip: function (trip) {
-    return axios.post("/api/registerTrip", trip);
+  getTripById: function(id) {
+    return axios.get("/api/trip/" + id);
+  },
+  saveTrip: function (trip) {
+    return axios.post("/api/trip", trip);
+  },
+  deleteTrip: function(tripId, userId) {
+    return axios.delete(`/api/trip/${tripId}`);
+  },
+  removeTravelerFromTrip: function(ids) {
+    return axios.put("/api/trip", ids)
+  },
+  joinExistingTrip: function(formData) {
+    return axios.put("/api/jointrip", formData);
   },
   getPictures: function (id) {
     return axios.get("/api/gallery/" + id);
@@ -28,11 +40,8 @@ export default {
   addPicture: function (gallery) {
     return axios.post("/api/addToGallery", gallery);
   },
-  getTripById: function(id) {
-    return axios.get("/api/trip/" + id);
-  },
   getIdeas: function(id) {
-    return axios.get("/api/ideas?trip=" + id);
+    return axios.get("/api/ideas/" + id);
   },
   getIdea: function(id) {
     return axios.get("/api/ideas/" + id);
@@ -41,10 +50,10 @@ export default {
     return axios.delete("/api/ideas/" + id);
   },
   saveIdea: function(ideaData) {
-    return axios.post("api/ideas", ideaData);
+    return axios.post("/api/ideas", ideaData);
   },
-  joinExistingTrip: function(formData) {
-    return axios.post("/api/jointrip", formData);
+  saveEmergencyContact: function(contactInfo) {
+    return axios.put("/api/emergencyContact", contactInfo);
   },
   getTransactions: function(tripId) {
     return axios.get("/api/transactions" + tripId);
@@ -55,4 +64,4 @@ export default {
   deleteTransaction: function(id) {
     return axios.delete("/api/transaction" + id);
   }
-};
+}; 

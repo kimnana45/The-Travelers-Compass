@@ -1,18 +1,26 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ideaSchema = new Schema({
-  whatToDo: { type: String, required: true },
-  address: Object,
-  author: { type: String, required: true },
-  tripId:
-    {
-        type: Schema.Types.ObjectId,
-        ref: "Trip"
-    },
-  date: { type: Date, default: Date.now }
-});
+	toDo: { 
+		type: String, 
+		required: true,
+		trim: true
+	},
+	address: { 
+		type: Object, 
+		required: true,
+		unique: true
+	},
+	user: { type: Object, required: true },
+	numFavorited: Number,
+    tripId: {
+		type: Schema.Types.ObjectId,
+		ref: "Trip"
+	},
+	date: { type: Date, default: Date.now }
+    });
 
-const Idea = mongoose.model("Idea", ideaSchema);
+const Idea = mongoose.model('Idea', ideaSchema);
 
 module.exports = Idea;

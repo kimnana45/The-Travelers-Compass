@@ -55,15 +55,21 @@ class Login extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<Jumbotron>
+				<Jumbotron 
+					style={{
+						backgroundColor:"#222323", height:"auto", 
+						color: "white"
+					}}
+				>
 					<Row>
 						<Col size='md-8 d-none d-sm-block'>
 							<img src={headerIMG} className='img-fluid' />
 						</Col>
 						<Col size='md-4'>
-							<h1 className='bigWordName mt-4'>
-								start planning your next vacation!
-							</h1>
+						<h1 
+							className='mt-4' 
+							id="headerWord" 
+						>start planning your next vacation!</h1>
 						</Col>
 					</Row>
 				</Jumbotron>

@@ -20,6 +20,16 @@ const User = new Schema({
         trim: true,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email address']
     },
+    emergencyContact: {
+        name: {
+            type: String,
+            trim: true
+        },
+        number: {
+            type: String,
+            trim: true
+        }
+    },
     trips: [
         {
             type: Schema.Types.ObjectId,

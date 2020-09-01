@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Container } from "../components/Grid";
 import { ListItem, List } from "../components/List";
-import DeleteBtn from "../components/DeleteBtn";
+import { FormBtn } from "../components/Form";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../utils/IdeaGlobalState";
 import { REMOVE_FAVORITE, LOADING, UPDATE_FAVORITES } from "../utils/actions";
@@ -30,7 +30,6 @@ const MustDoList = () => {
             <h1>Must Do List</h1>
             {state.favorites.length ? (
                 <List>
-                    <h3>Click on an idea to view its details</h3>
                     {state.favorites.map(idea => (
                         <ListItem key={idea._id}>
                             <Link to={"/ideas/" + idea._id}>
@@ -40,7 +39,11 @@ const MustDoList = () => {
                                     by: {idea.author}
                                 </strong>
                             </Link>
-                            <DeleteBtn onClick={() => removeFromFavorites(idea._id)} />
+                            <FormBtn 
+                                onClick={() => removeFromFavorites(idea._id)} 
+                                text="x"
+                                style={{width: "10%"}}
+                            />
                         </ListItem>
                     ))}
                 </List>
