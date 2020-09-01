@@ -94,8 +94,8 @@ const IdeaStoreProvider = ({ value = [], ...props }) => {
   return <Provider value={[state, dispatch]} {...props} />;
 };
 
-const useIdeaStoreContext = () => {
+const useStoreContext = () => {
   return useContext(StoreContext);
 };
 
-export { IdeaStoreProvider, useIdeaStoreContext };
+export { IdeaStoreProvider, useStoreContext };

@@ -7,6 +7,7 @@ import { BudgetGlobalProvider } from "../utils/BudgetGlobalState";
 import { Container } from "../components/Grid";
 
 function Budget() {
+    return (
     <BudgetGlobalProvider>
         <Container>
             <h2>Budget For The Trip</h2>
@@ -16,6 +17,7 @@ function Budget() {
             <AddTransaction />
         </Container>
     </BudgetGlobalProvider>
+    )
 }
 
 export default Budget; 
