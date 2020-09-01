@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Gallery = new Schema({
-    picture: {
+const Budget = new Schema({
+    reason: {
         type: String,
-        required: true
+        trim: true,
+        required: [true, 'Please state a reason for the expense/money']
     },
-    caption: {
-        type: String,
+    amount: {
+        type: Number,
+        required: [true, 'Please add positive or negative number']
     },
     tripId: {
         type: Schema.Types.ObjectId,
@@ -19,4 +21,4 @@ const Gallery = new Schema({
 
 // User.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('Gallery', Gallery);
+module.exports = mongoose.model('Budget', Budget);

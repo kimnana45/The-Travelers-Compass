@@ -55,7 +55,7 @@ function TripOverview() {
 							<Link to={`/ideas/?trip=${tripId}`}>Trip Ideas</Link>
 						</Col>{' '}
 						<Col size='3'>
-							{/* <Link to={'/newtrip'}>plan new trip</Link> */}
+							<Link to={'/budget'}>Budget & Expenses</Link>
 						</Col>
 					</Row>
 				</Col>

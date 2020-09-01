@@ -1,63 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import API from '../utils/API';
 import { Row, Col, Container } from '../components/Grid';
 import { Input, Label, FormGroup, FormBtn } from '../components/Form';
-// import ReactFilestack from 'filestack-react';
+// import dotenv from "dotenv";
+import ReactFilestack from 'filestack-react';
 
 function Picture() {
-	const [pictureUrl, setPictureUrl] = useState();
-    const [caption, setCaption] = useState();
+	// const env = dotenv.config();
+	// console.log(process.env.filestackAPI);
+	const [picturePath, setPicturePath] = useState();
+	const [caption, setCaption] = useState("");
+	const [tripId, setTripId] = useState("");
+	const [submission, setSubmission] = useState(false);
 
-	// function uploadImg() {
-	// 	filepicker.pick(
-	// 		{
-	// 	    mimetype: 'image/*',
-	// 	    container: 'modal',
-	// 	    services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'URL', 'IMGUR', 'PICASA'],
-	// 	    openTo: 'COMPUTER'
-	// 	  },
-	// 	  function(Blob){
-	// 	    console.log(JSON.stringify(Blob));
-	// 	    const handler = Blob.url.substring(Blob.url.lastIndexOf('/') + 1);
-	// 	    document.getElementById('button-upload').dataset.handler = handler;
-	// 	  },
-	// 	  function(FPError){
-	// 	  	console.log(FPError.toString());
-	// 	  }
-	// 	);
-	// }
+	function onSuccess(response) {
+		console.log(response.filesUploaded[0].url);
+		setPicturePath(response.filesUploaded[0].url);
+	}
 
 	function handleInputChange(event) {
 		const { value } = event.target;
-		const handler = document.getElementById('button-upload').dataset.handler;
 		setCaption(value);
-		setPictureUrl(handler);
+		setPicturePath(picturePath);
 	}
+
+	useEffect(() => {
+        let query = window.location.search
+        query = query.split("=")
+        setTripId(query[1]);
+    });
 
 	function addToGallery(event) {
 		event.preventDefault();
 		API.addPicture({
-			pictureUrl: pictureUrl,
+			picturePath: picturePath,
 			caption: caption,
+			tripId: tripId
 		})
-			.then((res) => console.log('Your picture was upload successfully!'))
-			.catch((err) => {
-				console.log(err);
-			});
+			.then(res => {
+				console.log('Your picture was upload successfully!');
+				console.log(res);
+				setSubmission(true);
+			})
+			.catch(err =>  console.log(err));
+	};
+
+	if (submission) {
+		return <Redirect to={`/gallery/${tripId}`} />
 	}
 
 	return (
 		<Container>
 			<Row className='mt-2'>
-				{/* <ReactFilestack
-					apikey={process.env.filestackAPI}
+				<ReactFilestack
+					apikey={"AG4hPSOMQruX3SKmPWtD0z"}
 					mode={'pick'}
-					onSuccess={(response) => console.log(response)}
+					onSuccess={(response) => onSuccess(response)}
 					onError={(e) => console.log(e)}
-					buttonText={'Pick File'}
-				/> */}
-				 
-				{/* <form>
+					componentDisplayMode={{
+						customText: <i class="fas fa-images"></i>,
+						customColor: 'pink'
+					}}
+				/>
+				<form>
 					<Row>
 						<Col size='md-6'>
 							<FormGroup>
@@ -70,24 +76,13 @@ function Picture() {
 								/>
 							</FormGroup>
 						</Col>
-						<Col>
-							<FormGroup>
-								<Label text='Picture' />
-								<FormBtn
-									id='button-upload'
-									type='button'
-									className='btn btn-default filepicker'
-									onClick={() => uploadImg()}
-								/>
-							</FormGroup>
-						</Col>
 						<FormBtn
-							text='Upload Picture'
+							text='Add Picture'
 							onClick={addToGallery}
 							classes='btn-primary'
 						/>
 					</Row>
-				</form> */}
+				</form>
 			</Row>
 		</Container>
 	);
