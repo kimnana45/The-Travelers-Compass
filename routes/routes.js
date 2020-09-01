@@ -164,7 +164,7 @@ router.put('/api/trip', (req, res) => {
 router.get('/api/trip/:id', (req, res) => {
 	let { id } = req.params;
 	db.Trip.findById(id)
-		.populate('users')
+		.populate('travelers')
 		.then(dbTrip => res.json(dbTrip))
 		.catch(err => res.status(422).json(err));
 });
@@ -176,7 +176,7 @@ router.post('/api/jointrip', (req, res) => {
 			uniqueCode: code,
 			password: password
 		},
-		{ $push: { users: req.user._id } },
+		{ $push: { travelers: req.user._id } },
 		{ new: true })
 		.then(({ _id }) => db.User.findOneAndUpdate(
 			{ _id: req.user._id },

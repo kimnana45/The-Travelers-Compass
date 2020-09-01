@@ -25,7 +25,7 @@ export const AddTransaction = () => {
                 <h3>Add New Transaction</h3>
                 <form onSubmit={handleSubmit}>
                     <Row>
-                        <Col>
+                        <Col size="md-6">
                             <FormGroup>
                                 <Label text="State the reason for this transaction" />
                                 <Input
@@ -38,7 +38,7 @@ export const AddTransaction = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col size="md-6">
                             <FormGroup>
                                 <Label text="Transaction Amount" />
                                 <Input

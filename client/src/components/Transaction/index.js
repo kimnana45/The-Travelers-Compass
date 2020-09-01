@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { BudgetGlobalContext } from "../../utils/BudgetGlobalState";
 import { numberWithCommas } from "../../utils/format";
-import DeleteBtn from "../DeleteBtn";
+import { FormBtn } from "../Form";
 import { List, ListItem } from "../List";
 
 export const Transaction = ({ transaction }) => {
@@ -14,7 +14,10 @@ export const Transaction = ({ transaction }) => {
             <ListItem>
                 {transaction.text}
                 <span>{sign}${numberWithCommas(Math.abs(transaction.amount))}</span>
-                <DeleteBtn onClick={() => deleteTransaction(transaction._id)} />
+                <FormBtn 
+                    onClick={() => deleteTransaction(transaction._id)} 
+                    text="x"
+                />
             </ListItem>
         </List>
     )
