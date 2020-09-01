@@ -24,6 +24,7 @@ import { IdeaStoreProvider } from './utils/IdeaGlobalState';
 import MustDoList from './pages/MustDoList';
 import IdeaDetails from './pages/IdeaDetails';
 import IdeasMain from './pages/IdeasMain';
+import Budget from './pages/Budget';
 
 class App extends Component {
 	state = {
@@ -138,6 +139,10 @@ class App extends Component {
 								{this.state.authorized ? <AddPicture /> : <Redirect to='/login' />}
 							</Route>
 							
+							<Route exact path='/budget'>
+								{this.state.authorized ? <Budget /> : <Redirect to='/login' />}
+							</Route>
+
 							<IdeaStoreProvider>
 								<Route exact path='/ideas'>
 									{this.state.authorized ? (

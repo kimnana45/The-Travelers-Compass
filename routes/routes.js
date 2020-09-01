@@ -92,12 +92,37 @@ router.get('/api/user_data', ({ user }, res) => {
 			.catch(err => res.status(422).json(err));
 	}
 });
-
+//find trip by its id
 router.get('/trip/:id', (req, res) => {
 	let { id } = req.params;
 	db.Trip.findById(id)
 		.then(dbTrip => res.json(dbTrip))
 		.catch((err) => res.status(422).json(err));
+});
+// Get trip details by trip id
+router.get('/api/trip/:id', (req, res) => {
+	let { id } = req.params;
+	db.Trip.findById(id)
+		.populate('users')
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => res.status(422).json(err));
+});
+// Join an existing trip with trip's unique code & pw
+router.post('/api/jointrip', (req, res) => {
+	const { code, password } = req.body;
+	db.Trip.findOneAndUpdate(
+		{
+			uniqueCode: code,
+			password: password
+		},
+		{ $push: { users: req.user._id } },
+		{ new: true })
+		.then(({ _id }) => db.User.findOneAndUpdate(
+			{ _id: req.user._id },
+			{ $push: { trips: _id } },
+			{ new: true }))
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => res.status(422).json(err));
 });
 
 //PICTURES ROUTES
@@ -148,14 +173,6 @@ router.put('api/ideas/:id', function (req, res) {
 		})
 		.catch(err => console.log(err))
 });
-// Get trip details by trip id
-router.get('/api/trip/:id', (req, res) => {
-	let { id } = req.params;
-	db.Trip.findById(id)
-		.populate('users')
-		.then(dbTrip => res.json(dbTrip))
-		.catch(err => res.status(422).json(err));
-});
 //route to delete the idea 
 router.delete('api/ideas/:id', function (req, res) {
 	db.Idea.findByIdAndDelete((err, idea) => {
@@ -167,24 +184,5 @@ router.delete('api/ideas/:id', function (req, res) {
 		return res.status(200).send(response);
 	})
 })
-
-
-// Join an existing trip with trip's unique code & pw
-router.post('/api/jointrip', (req, res) => {
-	const { code, password } = req.body;
-	db.Trip.findOneAndUpdate(
-		{
-			uniqueCode: code,
-			password: password
-		},
-		{ $push: { users: req.user._id } },
-		{ new: true })
-		.then(({ _id }) => db.User.findOneAndUpdate(
-			{ _id: req.user._id },
-			{ $push: { trips: _id } },
-			{ new: true }))
-		.then(dbTrip => res.json(dbTrip))
-		.catch(err => res.status(422).json(err));
-});
 
 module.exports = router;
