@@ -39,8 +39,8 @@ const reducer = (state, action) => {
   case REMOVE_IDEA:
     return {
       ...state,
-      ideas: state.ideas.filter((idea) => {
-        return idea._id !== idea._id; 
+      ideas: state.ideas.filter(idea => {
+        return idea._id !== action._id; 
       })
     };
 
@@ -82,15 +82,16 @@ const StoreProvider = ({ value = [], ...props }) => {
     ideas: [],
     currentIdea: {
       _id: 0,
-      whatToDo: "",
+      toDo: "",
       address: "",
-      author: "",
-      tripId: ""
+      user: "",
+      tripId: "",
+      numFavorited: 0
     },
     favorites: [],
     loading: false
   });
-
+  console.log(state);
   return <Provider value={[state, dispatch]} {...props} />;
 };
 

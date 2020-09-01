@@ -28,7 +28,7 @@ function Trip({ userId }) {
 		validPW: false,
 	});
 	const [submission, setSubmission] = useState(false);
-
+	
 	function handleDatesChange(data: OnDatesChangeProps) {
 		if (!data.focusedInput) {
 			setDates({ ...data, focusedInput: START_DATE });
@@ -39,7 +39,6 @@ function Trip({ userId }) {
 
 	function handleInputChange(event) {
 		const { name, value } = event.target;
-
 		switch (name) {
 			case 'tripName':
 				return setTripName({
@@ -59,7 +58,7 @@ function Trip({ userId }) {
 
 	const addNewTrip = (e) => {
 		e.preventDefault();
-		API.registerTrip({
+		API.saveTrip({
 			tripName: tripName.tripName.toUpperCase(),
 			location: location.location,
 			dates: dates,
@@ -67,7 +66,7 @@ function Trip({ userId }) {
 			creatorId: userId,
 			uniqueCode: `${new RandExp(/^[0-9a-z]{6}$/).gen()}-${new RandExp(
 				/^[0-9A-Z]{6}$/
-			).gen()}`,
+			).gen()}`
 		})
 			.then(res => {
 				let { trips } = res.data;
@@ -105,7 +104,7 @@ function Trip({ userId }) {
 						<Col size='md-6'>
 							<FormGroup>
 								<Label text='Set a password for your trip' />
-								<Small text='Must be minimum of 8 characters. (Ex: Micky80Mouse)' />
+								<Small text='Must be minimum of 6 characters.' />
 								<Input
 									name='password'
 									value={password.password}

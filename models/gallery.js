@@ -9,7 +9,6 @@ const Gallery = new Schema({
     caption: {
         type: String,
     },
-    users: Array,
     created: { type: Date, required: true, default: Date.now() },
 });
 

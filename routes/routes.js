@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 var isAuthenticated = require('../config/middleware/isAuthenticated');
+const { query } = require('express');
 
 // USER PASSPORT ROUTES
-
 //register a user
 router.post('/api/register', function (req, res) {
 	//Do password validation here before attempting to register user, such as checking for password length, capital letters, special characters, etc.
@@ -56,32 +56,7 @@ router.get('/api/user', function (req, res) {
 		res.json({ message: 'no username entered for query' });
 	}
 });
-
-router.get('/api/authorized', isAuthenticated, function ({ user }, res) {
-	res.json(user);
-});
-
-//TRIP ROUTES
-
-// register a trip
-router.post('/api/registerTrip', function ({ body }, res) {
-	const { tripName, location, dates, password, creatorId, uniqueCode } = body;
-	db.Trip.create({
-		tripName: tripName,
-		location: location,
-		dates: {
-			startDate: dates.startDate,
-			endDate: dates.endDate,
-		},
-		password: password,
-		users: [creatorId],
-		uniqueCode: uniqueCode
-	})
-		.then(({ _id }) => db.User.findOneAndUpdate({ _id: creatorId }, { $push: { trips: _id } }, { new: true }))
-		.then(dbTrip => res.json(dbTrip))
-		.catch(err => console.log(err));
-});
-// Get user info upon login with populated trips
+// Get user data
 router.get('/api/user_data', ({ user }, res) => {
 	if (!user) {
 		res.json({});
@@ -92,16 +67,90 @@ router.get('/api/user_data', ({ user }, res) => {
 			.catch(err => res.status(422).json(err));
 	}
 });
+router.get('/api/authorized', isAuthenticated, function ({ user }, res) {
+	res.json(user);
+});
 
-router.get('/trip/:id', (req, res) => {
+//TRIP ROUTES
+// register a trip
+router.post('/api/trip', function ({ body }, res) {
+	const { tripName, location, dates, password, creatorId, uniqueCode, emergencyContact } = body;
+	db.Trip.create({
+		tripName: tripName,
+		location: location,
+		dates: {
+			startDate: dates.startDate,
+			endDate: dates.endDate,
+		},
+		password: password,
+		creator: creatorId,
+		travelers: [creatorId],
+		uniqueCode: uniqueCode
+	})
+		.then(({ _id }) => db.User.findOneAndUpdate({ _id: creatorId }, { $push: { trips: _id } }, { new: true }))
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => console.log(err));
+});
+// Get trip details by trip id
+router.get('/api/trip/:id', (req, res) => {
 	let { id } = req.params;
 	db.Trip.findById(id)
+		.populate('travelers')
 		.then(dbTrip => res.json(dbTrip))
-		.catch((err) => res.status(422).json(err));
+		.catch(err => res.status(422).json(err));
+});
+// Delete trip by trip Id & remove trip Id's from users
+router.delete('/api/trip/:id', (req, res) => {
+	let { id } = req.params;
+	db.Trip.findByIdAndRemove(id, function(err, trip) {
+		console.log("deleting trip");
+		if (err) throw err;
+		db.User.updateMany(
+			{ _id: { $in: trip.travelers } }, 
+			{ $pull: { trips: { $in: trip._id } } }, 
+			function(err, data) {
+				if (err) throw err;
+				res.json({ success: true, message: "Deleted trip"})
+			})
+	})
+});
+// Join an existing trip with trip's unique code & pw
+router.put('/api/jointrip', (req, res) => {
+	const { code, password } = req.body;
+	db.Trip.findOneAndUpdate(
+		{
+			uniqueCode: code,
+			password: password
+		},
+		{ $push: { travelers: req.user._id } },
+		{ new: true })
+		.then(({ _id }) => db.User.findOneAndUpdate(
+			{ _id: req.user._id },
+			{ $push: { trips: _id } },
+			{ new: true }))
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => res.status(422).json(err));
+});
+// Delete a traveler from an existing trip & remove trip from the traveler
+router.put('/api/trip', (req, res) => {
+	let { userId, tripId } = req.body;
+	db.Trip.updateOne(
+		{ _id: tripId }, 
+		{ $pull: { travelers: { $in: userId } } }, 
+		function(err, trip) {
+			console.log("updating trip", trip);
+			if (err) throw err;
+			db.User.updateOne(
+				{ _id: userId }, 
+				{ $pull: { trips: { $in: tripId } } }, 
+				function(err, data) {
+					if (err) throw err;
+					res.json({ success: true, message: "Deleted traveler from the trip"})
+				})
+	})
 });
 
 //PICTURES ROUTES
-
 //add picture to gallery that has id of the specific trip
 router.post('api/uploadphoto', function ({ body }, res) {
 	db.Gallery.create(body)
@@ -118,73 +167,56 @@ router.get('/api/gallery/:id', function (req, res) {
 });
 
 //IDEAS ROUTES
-
 //route to create the idea
 router.post('/api/ideas', function (req, res) {
-	console.log(req.body);
-	const { whatToDo, address, author, tripId } = req.body;
+	const { idea, address, userInfo, tripId } = req.body;
 	db.Idea.create({
-		whatToDo: whatToDo,
+		toDo: idea,
 		address: address,
-		author: author,
+		user: userInfo,
 		tripId: tripId
 	})
 		.then(dbIdea => res.json(dbIdea))
 		.catch(err => console.log(err));
 });
-//get route to get all the ideas
-router.get('api/ideas', function (req, res) {
-	let { tripId } = req.body
-	console.log(tripId);
-	db.Idea.find({ tripId: tripId })
-		.then(dbIdea => console.log(dbIdea))
-		.catch(err => console.log(err));
-})
+//get route to get all the ideas for that specific trip
+router.get('/api/ideas/:id', function (req, res) {
+	const { id } = req.params;
+    db.Idea.find({ tripId: id })
+      .sort({ date: -1 })
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+});
 //route to update the idea to must do 
-router.put('api/ideas/:id', function (req, res) {
+router.put('/api/ideas/:id', function (req, res) {
 	db.Idea.findByIdAndUpdate(req.body.ADD_FAVORITE)
 		.then(dbIdea => {
 			res.json(dbIdea);
 		})
 		.catch(err => console.log(err))
 });
-// Get trip details by trip id
-router.get('/api/trip/:id', (req, res) => {
-	let { id } = req.params;
-	db.Trip.findById(id)
-		.populate('users')
-		.then(dbTrip => res.json(dbTrip))
+//route to delete the idea 
+router.delete('/api/ideas/:id', function (req, res) {
+	db.Idea.findById({ _id: req.params.id})
+		.then(dbModel => dbModel.remove())
+		.then(dbModel => res.json(dbModel))
 		.catch(err => res.status(422).json(err));
 });
-//route to delete the idea 
-router.delete('api/ideas/:id', function (req, res) {
-	db.Idea.findByIdAndDelete((err, idea) => {
-		if (err) return res.status(500).send(err);
-		const response = {
-			message: "The idea has been removed",
-			id: idea._id
-		};
-		return res.status(200).send(response);
-	})
-})
 
-
-// Join an existing trip with trip's unique code & pw
-router.post('/api/jointrip', (req, res) => {
-	const { code, password } = req.body;
-	db.Trip.findOneAndUpdate(
-		{
-			uniqueCode: code,
-			password: password
+//Route to save emergency contact info
+router.put('/api/emergencyContact', function (req, res) {
+	const { id, name, number } = req.body;
+	db.User.findOneAndUpdate(
+		{ _id: id }, 
+		{ $set: 
+			{ emergencyContact: { 
+				name: name,
+				number: number 
+			}}
 		},
-		{ $push: { users: req.user._id } },
 		{ new: true })
-		.then(({ _id }) => db.User.findOneAndUpdate(
-			{ _id: req.user._id },
-			{ $push: { trips: _id } },
-			{ new: true }))
-		.then(dbTrip => res.json(dbTrip))
-		.catch(err => res.status(422).json(err));
+		.then(dbUser => res.json(dbUser))
+		.catch(err => console.log(err))
 });
 
 module.exports = router;

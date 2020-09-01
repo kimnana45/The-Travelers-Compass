@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import parseISO from 'date-fns/parseISO';
 import { Link, useParams } from 'react-router-dom';
 import { Col, Row, Container } from '../components/Grid';
-import { Accordion, AccordionContent } from '../components/Accordion';
+import { List, ListItem } from '../components/List';
+import { Accordion, AccordionHeader, AccordionContent } from '../components/Accordion';
 import { Card, CardBody, CardContent, CardHeader } from '../components/Card';
 import API from '../utils/API';
 
@@ -16,13 +17,13 @@ function TripOverview() {
 		endDate: '',
 	});
 	const [travelers, setTravelers] = useState([]);
+	const [hasEmergencyContact, setHasEmergencyContact] = useState(false);
 
 	const { id } = useParams();
 	useEffect(() => {
 		API.getTripById(id)
 			.then((res) => {
-				console.log(res.data);
-				const { dates, location, tripName, uniqueCode, users, _id } = res.data;
+				const { dates, location, tripName, uniqueCode, travelers, _id } = res.data;
 				setTripName(tripName);
 				setTripId(_id);
 				setTripCode(uniqueCode);
@@ -30,7 +31,12 @@ function TripOverview() {
 					startDate: parseISO(dates.startDate).toString().slice(0, 15),
 					endDate: parseISO(dates.endDate).toString().slice(0, 15),
 				});
-				setTravelers(users);
+				setTravelers(travelers);
+				for (let i = 0; i < travelers.length; i++) {
+					if (travelers[i].emergencyContact) {
+						setHasEmergencyContact(true)
+					}
+				}
 				if (!location[0].administrative) {
 					setTripLocation(`${location[0].name}, ${location[0].country}`);
 				} else {
@@ -75,16 +81,17 @@ function TripOverview() {
 				<Col size='md-4'>
 					<Row className='mt-3'>
 						<Col size='md-12'>
-							<Accordion
-								title='Reveal Unique Code For This Trip'
-								text='Share this code with fellow travelers to allow them access to your itinerary.'
-							>
-								<AccordionContent>
-									<p className='text-center text-monospace text-muted'>
-										{tripCode}
-									</p>
-								</AccordionContent>
-							</Accordion>
+								<Accordion>
+									<AccordionHeader 
+										title='Reveal Unique Code For This Trip'
+										text='Share this code with fellow travelers to allow them access to your itinerary.'>
+										<AccordionContent>
+											<p className='text-center text-monospace text-muted'>
+												{tripCode}
+											</p>
+										</AccordionContent>
+									</AccordionHeader>
+								</Accordion>
 						</Col>
 					</Row>
 					{travelers.length > 1 ? (
@@ -116,7 +123,28 @@ function TripOverview() {
 							<Card>
 								<CardBody>
 									<CardHeader classes='bg-warning' text='Emergency Contacts' />
-									<CardContent>{`Travelers: ${travelers.length}`}</CardContent>
+									{hasEmergencyContact ? (
+										<CardBody>
+											{travelers.filter(person => person.emergencyContact).map(traveler => {
+												return (
+												<List key={traveler._id}>
+													<ListItem >
+													<span className='text-center' >
+														<strong>{`Traveler: ${traveler.firstName} ${traveler.lastName}`}</strong><br/>
+														<i className="far fa-address-card fa-3x ml-4 float-left"></i>
+														<strong className='ml-4'>name: {traveler.emergencyContact.name}</strong><br/>
+														<strong className='ml-4'>number: {traveler.emergencyContact.number}</strong>
+													</span>
+													</ListItem>
+												</List>)
+											})}
+										</CardBody>
+									) : (
+										<CardBody classes="p-3">
+											<h6 className="font-italic text-monospace">No emergency contact information is available yet. <br/>
+											If you would like yours listed, please set up yours on the home page.</h6>
+										</CardBody>
+									)}
 								</CardBody>
 							</Card>
 						</Col>

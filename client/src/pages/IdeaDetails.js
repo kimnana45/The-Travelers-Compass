@@ -9,11 +9,11 @@ import { SET_CURRENT_IDEA, ADD_FAVORITE, REMOVE_FAVORITE } from "../utils/action
 const IdeaDetails = props => {
     const [state, dispatch] = useStoreContext();
 
-    useEffect(() => {
-        API.getIdea(props.match.params.id)
-        .then(res => dispatch({ type: SET_CURRENT_IDEA, idea: res.data }))
-        .catch(err => console.log(err));
-    }, []);
+    // useEffect(() => {
+    //     API.getIdea(props.match.params.id)
+    //     .then(res => dispatch({ type: SET_CURRENT_IDEA, idea: res.data }))
+    //     .catch(err => console.log(err));
+    // }, []);
 
     const addFavorite = () => {
         dispatch({
