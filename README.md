@@ -31,10 +31,14 @@ User's upcoming trips will also be display on this page.
 
 Once they click on a trip, user will be direct to a trip overview page. On top of the page is a navbar contains links to upload photo, add trip ideas, budget & expenses. 
 
-## Contributers 
+## Contributors 
 * Kim Le 
 https://github.com/kimnana45
 * Eunah Kim 
 https://github.com/eunahk92
 
 ## Deployment 
+
+## Questions
+
+If you have any questions about the repo, you can open an issue, or contact us directly at Eunahkim92@gmail.com / kimle.lek@gmail.com
