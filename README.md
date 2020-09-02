@@ -9,3 +9,10 @@ The Travelers Compass allows the users to create their trip which has a unique c
 ```
 The Travelers Compass Is Your Guide To Your Next Adventure!
 ```
+## User Story
+
+AS A traveler 
+I WANT all my travel itinerary to be in one place
+SO THAT my campanions and I can have access to the same information and update it as we need
+
+## Technology Use
