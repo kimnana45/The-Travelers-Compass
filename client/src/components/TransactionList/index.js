@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { Transaction } from "../Transaction";
 import { BudgetGlobalContext } from "../../utils/BudgetGlobalState";
-import { List } from "../List";
 
 export const TransactionList = () => {
-    const { transactions, getTransactions} = useContext(BudgetGlobalContext);
+    const { transactions, getTransactions } = useContext(BudgetGlobalContext);
 
     useEffect(() => {
         getTransactions();
@@ -12,13 +11,13 @@ export const TransactionList = () => {
 
     return (
         <>
-        <h3>History</h3>
-        <List>
-            {transactions.map(transaction => (<Transaction
-            key={transaction._id}
-            transaction={transaction}
-            />))}
-        </List>
+            <h3>History</h3>
+            <ul className="list">
+                {transactions.map(transaction => (<Transaction
+                    key={transaction._id}
+                    transaction={transaction}
+                />))}
+            </ul>
         </>
     )
 }
