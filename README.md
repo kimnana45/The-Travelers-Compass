@@ -16,3 +16,12 @@ I WANT all my travel itinerary to be in one place
 SO THAT my campanions and I can have access to the same information and update it as we need
 
 ## Technology Use
+* React
+* Mongoose 
+* Filestack- react
+* Algolia- places- react
+* @datepicker-react/styled
+* React-router
+* Axios
+
+## 
