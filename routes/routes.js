@@ -211,7 +211,6 @@ router.put('/api/trip/:id/ideas', function (req, res) {
 });
 //route to delete the idea 
 router.put('/api/trip/:tripId/ideas/:ideaId', function (req, res) {
-	console.log(req.params);
 	db.Trip.findByIdAndUpdate({ _id: req.params.tripId}, { $pull : { toDos: { _id: req.params.ideaId } } }, { new: true } )
 		.then(dbIdea => res.json(dbIdea))
 		.catch(err => console.log(err));
