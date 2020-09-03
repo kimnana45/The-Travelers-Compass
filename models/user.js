@@ -13,6 +13,7 @@ const User = new Schema({
         required: true,
         trim: true
     },
+    profilePic: String,
     email: {
         type: String,
         required: 'Email address is required',

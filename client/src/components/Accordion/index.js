@@ -1,17 +1,17 @@
 import React from 'react';
 
-export function Accordion({ title, text, children }) {
+export function Accordion({ children }) {
 	return (
 		<div className='accordion' id='accordionExample'>
-				{children}
-			</div>
+			{children}
+		</div>
 	);
 };
 
-export function AccordionHeader({ num, text, title, children}) {
+export function AccordionHeader({ classes, num, text, title, children}) {
 	return (
 	<div className='card'>
-		<div className='card-header' id={`heading${num}`}>
+		<div className={'card-header ' + (classes ? classes : '')} id={`heading${num}`}>
 			<button
 				className='btn btn-link text-left'
 				type='button'
@@ -20,7 +20,7 @@ export function AccordionHeader({ num, text, title, children}) {
 				aria-expanded='true'
 				aria-controls={`collapse${num}`}
 			>
-				{title}
+				<h5>{title}</h5>
 			</button>
 			<small className='m-0 p-0 font-italic'>{text}</small>
 		</div>

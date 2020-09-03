@@ -6,6 +6,7 @@ import { ADD_IDEA, LOADING } from '../../utils/actions';
 import API from '../../utils/API';
 import { Col, Row, Container } from '../Grid';
 import AlgoliaPlaces from 'algolia-places-react';
+import { set } from 'mongoose';
 
 function CreateIdeaForm() {
 	const [idea, setIdea] = useState('');
@@ -16,6 +17,8 @@ function CreateIdeaForm() {
 		lastName: '',
 	});
 	const [tripId, setTripId] = useState('');
+	const [mustDo, setMustDo] = useState(false);
+	const [suggestion, setSuggestion] = useState(false);
 	const [state, dispatch] = useStoreContext();
 
 	useEffect(() => {
@@ -28,12 +31,14 @@ function CreateIdeaForm() {
 	function handleSubmit(e) {
 		e.preventDefault();
 		dispatch({ type: LOADING });
-		API.saveIdea({
+		let toDo = {
 			idea: idea,
 			address: address,
-			userInfo: userInfo,
-			tripId: tripId,
-		})
+			user: userInfo,
+			mustDo: mustDo,
+			suggestion: suggestion
+		}
+		API.saveIdea(tripId, toDo)
 			.then((res) => {
 				dispatch({
 					type: ADD_IDEA,
@@ -41,7 +46,6 @@ function CreateIdeaForm() {
 				});
 			})
 			.catch((err) => console.log(err));
-
 		setIdea('');
 		setAddress('');
 	}
@@ -60,31 +64,33 @@ function CreateIdeaForm() {
 	}
 
 	function handleInputChange(e) {
-		const { value } = e.target;
-		setIdea(value);
+		const { name, value } = e.target;
+		if (name === 'idea') setIdea(value);
+		if (e.target.checked) {
+			if (value === 'mustDo') setMustDo(true);
+			else setSuggestion(true);
+		} 
 	}
 
 	return (
-		<Container>
-			<Card classes="border-dark p-3">
+		<div>
+			<Card classes="border-dark">
 				<h1 className="text-center">Get To Planning</h1>
 				<h4 className="text-center">Start adding ideas for our trip</h4>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} style={{ margin: '0'}}>
 					<Row>
-						<Col size='md-12'>
-							<FormGroup>
-								<Label text='What to see, what to do, what to eat?' />
-								<Input
-									name='idea'
-									value={idea}
-									onChange={handleInputChange}
-									placeholder='Ex: Grand Canyon'
-								/>
-							</FormGroup>
-						</Col>
+						<FormGroup className="px-4" style={{ width: '100%'}}>
+							<Label text='What to see, what to do, what to eat?' />
+							<Input
+								name='idea'
+								value={idea}
+								onChange={handleInputChange}
+								placeholder='Ex: Grand Canyon'
+							/>
+						</FormGroup>
 					</Row>
 					<Row>
-						<Col size='md-12'>
+					<FormGroup className="px-4" style={{ width: '100%'}}>
 							<Label text='Add the address of the location:' />
 							<AlgoliaPlaces
 								placeholder='Search by address'
@@ -96,21 +102,38 @@ function CreateIdeaForm() {
 								}}
 								onChange={({ suggestion }) => setAddress(suggestion)}
 							/>
-						</Col>
+						</FormGroup>
+					</Row>
+					<Row>
+						<FormGroup className="px-4" style={{ width: '100%'}}>
+							<Label classes="mt-2" text='Is this a must do or a suggestion?' />
+							<div className="checkform ml-4">
+								<div className="form-check form-check-inline">
+									<Input 
+										className="form-check-input" type="radio" name="typeOfIdea" id="mustDoIdea" value="mustDo" onChange={handleInputChange} />
+									<Label className="form-check-label" htmlFor="mustDoIdea" text="Must Do"/>
+								</div>
+								<div className="form-check form-check-inline">
+									<Input 
+										className="form-check-input" type="radio" name="typeOfIdea" id="suggestionIdea" value="suggestion" onChange={handleInputChange} />
+									<Label className="form-check-label" htmlFor="suggestionIdea" text="Suggestion"/>
+								</div>
+							</div>
+						</FormGroup>
 					</Row>
 					<Row className='row mt-2 justify-content-md-center'>
-						<Col size='md-6'>
+						<Col size='md-12'>
 							<FormBtn
 								// disabled={state.loading}
 								classes='btn-danger btn-sm'
 								type='submit'
-								text='Add Idea'
+								text='Add To List'
 							/>
 						</Col>
 					</Row>
 				</form>
 			</Card>
-		</Container>
+		</div>
 	);
 }
 

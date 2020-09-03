@@ -25,6 +25,10 @@ const Trip = new Schema({
         type: String,
         required: true
     },
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }, 
     lodging: {
         service: String,
         address: String,
@@ -35,42 +39,54 @@ const Trip = new Schema({
         checkIn: Date,
         checkOut: Date
     },
-    flight: {
-        airline: String,
-        flightNo: Number,
-        departing: {
-            airport: String,
-            date: Date,
-            time: String,
-            seat: String
-        },
-        arriving: {
-            airport: String,
-            date: Date,
-            time: String,
-            seat: String
-        }
-    },
-    pictures: [
+    flights: [
         {
-            type: Schema.Types.ObjectId,
-            ref: "Gallery"
+            user: String,
+            airline: String,
+            flightNo: String,
+            departing: {
+                airport: String,
+                date: Date,
+                time: String,
+                seat: String
+            },
+            arriving: {
+                airport: String,
+                date: Date,
+                time: String,
+                seat: String
+            }
         }
     ],
-    creator: {
-            type: Schema.Types.ObjectId,
-            ref: "User"
-    },
+    pictures: [
+        {
+            src: {
+                type: String,
+                required: true,
+            },
+            caption: String
+        }
+    ],
     travelers: [ 
         {
             type: Schema.Types.ObjectId,
             ref: "User"
         }
     ],
-    toDoIdeas: [
+    toDos: [
         {
-            type: Schema.Types.ObjectId,
-            ref: "Idea"
+            idea: {
+				type: String,
+				required: true
+			},
+			address: { 
+				type: Object, 
+                required: true,
+                unique: true
+			},
+			user: { type: Object, required: true },
+			mustDo: Boolean,
+			suggestion: Boolean
         }
     ],
     favoriteIdeas: [

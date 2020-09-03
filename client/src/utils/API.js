@@ -34,26 +34,23 @@ export default {
   joinExistingTrip: function(formData) {
     return axios.put("/api/jointrip", formData);
   },
-  getPictures: function (id) {
-    return axios.get("/api/gallery/" + id);
+  updateFlightDetail: function(id, flight) {
+    return axios.put(`/api/trip/${id}/flight`, flight);
   },
-  addPicture: function (gallery) {
-    return axios.post("/api/addToGallery", gallery);
+  addPicture: function (id, image) {
+    return axios.put("/api/trip/" + id, image);
   },
-  getIdeas: function(id) {
-    return axios.get("/api/ideas/" + id);
+  deletePicture: function(picId, tripId) {
+    return axios.put(`/api/trip/picture/${picId}`, tripId)
   },
-  getIdea: function(id) {
-    return axios.get("/api/ideas/" + id);
-  }, 
-  deleteIdea: function(id) {
-    return axios.delete("/api/ideas/" + id);
+  removeIdea: function(ideaId, tripId) {
+    return axios.put(`/api/trip/${tripId}/ideas/${ideaId}`);
   },
-  saveIdea: function(ideaData) {
-    return axios.post("/api/ideas", ideaData);
+  saveIdea: function(id, idea) {
+    return axios.put(`/api/trip/${id}/ideas`, idea);
   },
   saveEmergencyContact: function(contactInfo) {
-    return axios.put("/api/emergencyContact", contactInfo);
+    return axios.put("/api/trip/emergencyContact", contactInfo);
   },
   getTransactions: function(tripId) {
     return axios.get("/api/transactions" + tripId);
