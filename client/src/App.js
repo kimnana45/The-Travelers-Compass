@@ -18,7 +18,6 @@ import NewTrip from './pages/NewTrip';
 import JoinTrip from './pages/JoinTrip';
 import TripOverview from './pages/TripOverview';
 import Gallery from './pages/Gallery';
-import AddPicture from './pages/AddPicture';
 import MERN from './assets/mern.png';
 import { IdeaStoreProvider } from './utils/IdeaGlobalState';
 import MustDoList from './pages/MustDoList';
@@ -133,10 +132,6 @@ class App extends Component {
 
 							<Route exact path='/gallery/:id'>
 								{this.state.authorized ? <Gallery /> : <Redirect to='/login' />}
-							</Route>
-
-							<Route exact path='/uploadphoto'>
-								{this.state.authorized ? <AddPicture /> : <Redirect to='/login' />}
 							</Route>
 							
 							<Route exact path='/budget'>

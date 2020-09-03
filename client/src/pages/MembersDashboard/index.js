@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useInput } from 'react-hanger';
 import parseISO from 'date-fns/parseISO';
-import Jumbotron from '../../components/Jumbotron';
 import { Col, Row, Container } from '../../components/Grid';
 import { FormGroup, Input, Label, Small, FormBtn } from '../../components/Form';
-import { Card, CardBody } from '../../components/Card';
+import { Card, CardBody, CardImage } from '../../components/Card';
 import { Accordion, AccordionHeader, AccordionContent } from '../../components/Accordion';
 import API from '../../utils/API';
 import './style.css';
 
 function MembersDashboard() {
-	const [usersTrips, setUsersTrips] = useState([]);
-	const [userId, setUserId] = useState();
-	const [userFullname, setUserFullname] = useState();
-	const [errorMsg, setErrorMsg] = useState();
+	const [user, setUser] = useState({
+		trips: [],
+		id: '',
+		name: '',
+		username: '',
+		profilePic: ''
+	});
 	const [emergencyContactInfo, setEmergencyContactInfo] = useState({
 		set: false,
 		name: '',
 		number: '',
 	});
+	const [errorMsg, setErrorMsg] = useState();
 	const [joinedTripId, setJoinedTripId] = useState();
 	const tripCode = useInput('');
 	const tripPassword = useInput('');
@@ -27,17 +30,19 @@ function MembersDashboard() {
 	const emergencyContactNum = useInput('');
 	const [joinTripClicked, setJoinTripClicked] = useState(false);
 	const [newTripClicked, setNewTripClicked] = useState(false);
-	const [deleteTripClicked, setDeleteTripClicked] = useState(false);
-
-	let history = useHistory();
+	const [refreshPage, setRefreshPage] = useState(false);
 
 	useEffect(() => {
 		API.getUser()
 			.then((res) => {
-				const { trips, firstName, lastName, _id, emergencyContact } = res.data;
-				setUsersTrips(trips);
-				setUserId(_id);
-				setUserFullname(`${firstName} ${lastName}`);
+				const { trips, firstName, lastName, username, _id, profilePic, emergencyContact } = res.data;
+				setUser({
+					trips: trips,
+					id: _id,
+					name: `${firstName} ${lastName}`,
+					username: username,
+					profilePic: profilePic
+				})
 				if (emergencyContact) {
 					setEmergencyContactInfo({
 						set: true,
@@ -47,7 +52,7 @@ function MembersDashboard() {
 				}
 			})
 			.catch((err) => console.log(err));
-	}, []);
+	}, [refreshPage]);
 
 	const handleJoinTripSubmit = (event) => {
 		event.preventDefault();
@@ -71,7 +76,7 @@ function MembersDashboard() {
 	const handleECSubmit = (event) => {
 		event.preventDefault();
 		API.saveEmergencyContact({
-			id: userId,
+			id: user.id,
 			name: emergencyContactName.value,
 			number: emergencyContactNum.value,
 		})
@@ -93,7 +98,7 @@ function MembersDashboard() {
 	const deleteTrip = (tripId) => {
 		API.deleteTrip(tripId)
 			.then((res) => {
-				setDeleteTripClicked(true)
+				setRefreshPage(true)
 			})
 			.catch((err) => {
 				if (err) console.log(err);
@@ -105,7 +110,7 @@ function MembersDashboard() {
 			userId: idOfTraveler,
 			tripId: idOfTrip
 		})
-			.then((res) => setDeleteTripClicked(true))
+			.then((res) => setRefreshPage(true))
 			.catch((err) => {
 				if (err) console.log(err);
 			});
@@ -113,7 +118,7 @@ function MembersDashboard() {
 
 	if (joinTripClicked) {
 		console.log(joinTripClicked)
-		let tripId = usersTrips.length - 1;
+		let tripId = user.trips.length - 1;
 		return <Redirect to={`/trip/${joinedTripId}`} />;
 	}
 
@@ -123,16 +128,23 @@ function MembersDashboard() {
 
 	return (
 		<Container>
-			<Jumbotron className='mt-3' style={{ border: '3px dashed black' }}>
-				<Row style={{ height: 'auto' }}>
-					<h3 id='headerWord' className='text-center mx-auto mt-3'>
-						Hello {userFullname}!
-					</h3>
-				</Row>
-			</Jumbotron>
 			<div className='mt-3'>
 				<Row>
 					<Col size='md-4'>
+						<Card>
+							<CardBody classes="mx-auto my-2">
+								<CardImage src={user.profilePic} alt={user.username} classes="img-thumbnail" id="profilePic"/>
+							</CardBody>
+							<CardBody classes='mx-auto'>
+								<h2 id='subHeaderWord'>{user.username}</h2>
+								<h4 className="text-center">{user.name}</h4>
+								{ user.trips.length === 1 ? (
+									<h6 className="text-center">{user.trips.length} trip planned currently</h6>
+								) : (
+									<h6 className="text-center">{user.trips.length} trips planned currently</h6>
+								)}
+							</CardBody>
+						</Card>
 						<Accordion>
 							<AccordionHeader num='One' title='Join an existing itinerary'>
 								<AccordionContent num='One'>
@@ -222,15 +234,15 @@ function MembersDashboard() {
 							classes='btn-info btn-lg'
 							onClick={() => setNewTripClicked(true)}
 						/>
-						{usersTrips.length ? (
+						{user.trips.length ? (
 							<Card classes='p-2 justify-content-center'>
 								<h1>upcoming trips</h1>
-								{usersTrips.map((trip) => (
+								{user.trips.map((trip) => (
 									<CardBody
 										key={trip._id}
 										classes='p-2 m-1 border rounded-lg text-center'
 									>
-										{trip.creator === userId ? (
+										{trip.creator === user.id ? (
 											<FormBtn
 												classes='float-right btn-sm text-danger'
 												text="delete trip"
@@ -242,46 +254,48 @@ function MembersDashboard() {
 												classes='float-right btn-sm text-danger'
 												text="remove me from this trip"
 												style={{ width: 'auto' }}
-												onClick={() => removeTravelerFromTrip(userId, trip._id)}
+												onClick={() => removeTravelerFromTrip(user.id, trip._id)}
 											/>
 										)}
-										<Link
-											to={`/trip/${trip._id}`}
-											key={trip._id}
-											className='text-dark'
-										>
-											<h3 id='subHeaderWord' className='mb-4'>
-												{trip.tripName}
-											</h3>
-											<Row>
-												<Col size='md-4'>
-													<i className='far fa-compass fa-2x mx-auto'></i>
-													<p className='text-center'>
-														{trip.location[0].name +
-															', ' +
-															(trip.location[0].administrative
-																? trip.location[0].administrative
-																: trip.location[0].country)}
-													</p>
-												</Col>
-												<Col size='md-4'>
-													<i className='fas fa-calendar-alt fa-2x mx-auto'></i>
-													<p className='text-center'>
-														{parseISO(trip.dates.startDate)
-															.toString()
-															.slice(4, 15)}{' '}
-														-{' '}
-														{parseISO(trip.dates.endDate)
-															.toString()
-															.slice(4, 15)}
-													</p>
-												</Col>
-												<Col size='md-4'>
-													<i className='fas fa-key fa-2x mx-auto'></i>
-													<p className='text-center'>{trip.uniqueCode}</p>
-												</Col>
-											</Row>
+										<Link to={`/trip/${trip._id}`} key={trip._id}>
+											<FormBtn
+												classes='float-left btn-sm text-info'
+												text="view itinerary"
+												style={{ width: 'auto' }}
+											/>
+											<br/>
 										</Link>
+										<h3 id='subHeaderWord' className='mt-2 mb-4 text-center'>
+											{trip.tripName}
+										</h3>
+										<Row>
+											<Col size='md-4'>
+												<i className='far fa-compass fa-2x mx-auto'></i>
+												<p className='text-center'>
+													{trip.location[0].name +
+														', ' +
+														(trip.location[0].administrative
+															? trip.location[0].administrative
+															: trip.location[0].country)}
+												</p>
+											</Col>
+											<Col size='md-4'>
+												<i className='fas fa-calendar-alt fa-2x mx-auto'></i>
+												<p className='text-center'>
+													{parseISO(trip.dates.startDate)
+														.toString()
+														.slice(4, 15)}{' '}
+													-{' '}
+													{parseISO(trip.dates.endDate)
+														.toString()
+														.slice(4, 15)}
+												</p>
+											</Col>
+											<Col size='md-4'>
+												<i className='fas fa-key fa-2x mx-auto'></i>
+												<p className='text-center'>{trip.uniqueCode}</p>
+											</Col>
+										</Row>
 									</CardBody>
 								))}
 							</Card>

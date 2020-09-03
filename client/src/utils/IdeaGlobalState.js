@@ -82,11 +82,11 @@ const IdeaStoreProvider = ({ value = [], ...props }) => {
     ideas: [],
     currentIdea: {
       _id: 0,
-      toDo: "",
+      idea: "",
       address: "",
       user: "",
-      tripId: "",
-      numFavorited: 0
+      mustDo: false,
+      suggestion: false
     },
     favorites: [],
     loading: false

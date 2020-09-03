@@ -13,3 +13,8 @@
     letter-spacing: -3px;
     text-transform: lowercase;
 }
+
+#profilePic {
+    max-width: 200px;
+    max-height: fit-content;
+}

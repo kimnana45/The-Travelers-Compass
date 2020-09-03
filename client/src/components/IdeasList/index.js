@@ -12,9 +12,8 @@ function IdeasList() {
 	const [state, dispatch] = useStoreContext();
 
 	const removeIdea = (id) => {
-		console.log(`removeid is ${id}`);
-		API.deleteIdea(id)
-			.then(() => {
+		API.removeIdea(id, tripId)
+			.then((res) => {
 				dispatch({
 					type: REMOVE_IDEA,
 					_id: id,
@@ -25,11 +24,11 @@ function IdeasList() {
 
 	const getIdeas = (id) => {
 		dispatch({ type: LOADING });
-		API.getIdeas(id)
+		API.getTripById(id)
 			.then(({ data }) => {
 				dispatch({
 					type: UPDATE_IDEAS,
-					ideas: data,
+					ideas: data.toDos,
 				});
 			})
 			.catch((err) => console.log(err));
@@ -39,7 +38,7 @@ function IdeasList() {
 		let query = window.location.search;
 		query = query.split('='); 
 		setTripId(query[1]);
-		getIdeas(query[1]);
+		getIdeas(query[1])
 	}, []);
 
 	return (
@@ -56,21 +55,23 @@ function IdeasList() {
 								text={<i className="far fa-times-circle"></i>}
 								style={{width: "auto"}}
 							/>
-							<FormBtn 
+							{idea.suggestion ? (
+								<FormBtn 
 								classes="float-right btn-sm btn-outline-danger" 
 								text={<i className="fas fa-heart"></i>}
 								type="button"
 								style={{width: "auto"}}
 							/>
+							) : (
+								""
+							)}
                             <i className='fas fa-map-marked-alt fa-2x mx-3'></i>
                             <Link to={'/ideas/' + idea._id}>
                                 <strong>
-                                    {idea.toDo} by{' '}
-                                    {`${idea.user.firstName} ${idea.user.lastName}`}
+                                    {`${idea.idea} by ${idea.user.firstName} ${idea.user.lastName}`}
                                 </strong>
 							</Link>	
 						</ListItem>
-
 					))}
 				</List>
 			) : (

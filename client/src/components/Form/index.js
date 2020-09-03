@@ -8,16 +8,16 @@ export function Input({ type, classes, placeholder, ...other }) {
  {...other} />;
 };
 
-export function Label({ text, classes }) {
-  return <label className={classes}> {text} </label>;
+export function Label({ text, classes, ...other }) {
+  return <label className={classes} {...other}> {text} </label>;
 }
 
 export function Small({ text, classes }) {
-  return <small className={'form-text text-muted mb-2' + (classes ? classes : '')}> {text} </small>;
+  return <small className={'form-text text-muted mb-2 ' + (classes ? classes : '')}> {text} </small>;
 }
 
-export function FormGroup({ children }) {
-  return <div className="form-group"> {children} </div>;
+export function FormGroup({ children, ...other }) {
+  return <div className="form-group" {...other}> {children} </div>;
 }
 
 export function FormBtn({text, classes, ...rest}) {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ReactFilestack from 'filestack-react';
 import { FormGroup, Input, Label, Small, FormBtn } from '../../components/Form';
+import { CardImage } from '../../components/Card';
 import { Row, Col } from '../../components/Grid';
 import API from '../../utils/API';
 import './style.css';
@@ -13,6 +15,7 @@ class Register extends Component {
 		email: '',
 		password: '',
 		confirm: '',
+		profilePic: '',
 		validUN: false,
 		validEM: false,
 		validPW: false,
@@ -67,10 +70,12 @@ class Register extends Component {
 			username: this.state.username.toLowerCase(),
 			email: this.state.email.toUpperCase(),
 			password: this.state.password,
+			profilePic: this.state.profilePic
 		})
 			.then((res) => {
 				if (res.data.message) {
 					this.setState({
+						...this.state,
 						error: res.data.message,
 					});
 				} else {
@@ -80,10 +85,14 @@ class Register extends Component {
 			})
 			.catch((err) => {
 				console.log(err);
-				this.setState({ error: 'A server error has occured.' });
+				this.setState({ 
+					...this.state,
+					error: 'A server error has occured.'
+			 	});
 			});
 
 		this.setState({
+			...this.state,
 			password: '',
 			confirm: '',
 		});
@@ -92,18 +101,49 @@ class Register extends Component {
 	handleInputChange = (event) => {
 		const { name, value } = event.target;
 		this.setState({
-			[name]: value,
+			...this.state,
+			[name]: value
 		});
 		this.validateField(name, value);
 	};
+
+	onSuccess = (response) => {
+		this.setState({
+			...this.state,
+			profilePic: response.filesUploaded[0].url
+		});
+	}
 
 	render() {
 		return (
 			<div className='container registerContainer mt-2'>
 				<form>
-					<FormGroup>
-						<Row>
-							<Col size='md-6'>
+						<FormGroup>
+							<Row>
+							<Col size='md-4'>
+								{this.state.profilePic ? (
+									<CardImage
+										src={this.state.profilePic}
+										classes='img-thumbnail'
+									/>
+								) : (
+									<CardImage
+										src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
+										classes='img-thumbnail'
+									/>
+								)}
+								<ReactFilestack
+									apikey={'AG4hPSOMQruX3SKmPWtD0z'}
+									mode={'pick'}
+									onSuccess={(response) => this.onSuccess(response)}
+									onError={(e) => console.log(e)}
+									componentDisplayMode={{
+										type: 'button',
+										customText: 'upload profile pic',
+									}}
+								/>
+							</Col>
+							<Col size='md-8'>
 								<Label text='First Name' />
 								<Input
 									name='firstName'
@@ -112,9 +152,7 @@ class Register extends Component {
 									placeholder='First Name'
 									type='text'
 								/>
-                <br/>
-							</Col>
-							<Col size='md-6'>
+								<br />
 								<Label text='Last Name' />
 								<Input
 									name='lastName'
@@ -123,7 +161,7 @@ class Register extends Component {
 									placeholder='Last Name'
 									type='text'
 								/>
-                <br/>
+								<br />
 							</Col>
 						</Row>
 						<Label text='Username' />
@@ -189,9 +227,7 @@ class Register extends Component {
 					<FormGroup>
 						<FormBtn
 							disabled={
-								this.state.validUN &&
-								this.state.validEM &&
-								this.state.validCF
+								this.state.validUN && this.state.validEM && this.state.validCF
 									? ''
 									: 'disabled'
 							}
