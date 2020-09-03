@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { BudgetGlobalContext } from "../../utils/BudgetGlobalState";
 import { numberWithCommas } from "../../utils/format";
-import { Container, Row } from "../Grid";
 
 export const BudgetExpenses = () => {
     const { transactions } = useContext(BudgetGlobalContext);
@@ -18,15 +17,15 @@ export const BudgetExpenses = () => {
             .reduce((acc, item) => (acc += item), 0) * -1).toFixed(2);
 
     return (
-        <Container>
-            <Row>
+        <div className="bud-exp-container">
+            <div>
                 <h4>Budget</h4>
-                <p>${numberWithCommas(budget)}</p>
-            </Row>
-            <Row>
+                <p className="money plus">${numberWithCommas(budget)}</p>
+            </div>
+            <div>
                 <h4>Expense</h4>
-                <p>${numberWithCommas(expense)}</p>
-            </Row>
-        </Container>
+                <p className="money minus">${numberWithCommas(expense)}</p>
+            </div>
+        </div>
     )
 }
