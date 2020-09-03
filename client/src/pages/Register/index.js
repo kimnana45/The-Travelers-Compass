@@ -124,12 +124,12 @@ class Register extends Component {
 								{this.state.profilePic ? (
 									<CardImage
 										src={this.state.profilePic}
-										classes='img-thumbnail'
+										classes='img-thumbnail mt-2'
 									/>
 								) : (
 									<CardImage
 										src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
-										classes='img-thumbnail'
+										classes='img-thumbnail mt-2'
 									/>
 								)}
 								<ReactFilestack
