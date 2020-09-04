@@ -8,7 +8,6 @@ import {
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
-import Protected from './pages/Protected';
 import API from './utils/API';
 import Nav from './components/Nav';
 import { Footer, FooterSpan } from './components/Footer';
@@ -134,7 +133,7 @@ class App extends Component {
 								{this.state.authorized ? <Gallery /> : <Redirect to='/login' />}
 							</Route>
 							
-							<Route exact path='/budget'>
+							<Route exact path='/budget/:id'>
 								{this.state.authorized ? <Budget /> : <Redirect to='/login' />}
 							</Route>
 

@@ -2,22 +2,23 @@ import React, { useEffect, useState } from 'react';
 import parseISO from 'date-fns/parseISO';
 import { Link, useParams } from 'react-router-dom';
 import { useInput } from 'react-hanger';
-import { Col, Row, Container } from '../components/Grid';
-import { List, ListItem } from '../components/List';
+import { Col, Row, Container } from '../../components/Grid';
+import { List, ListItem } from '../../components/List';
 import {
 	Accordion,
 	AccordionHeader,
 	AccordionContent,
-} from '../components/Accordion';
-import { FormGroup, Label, Small, Input, FormBtn } from '../components/Form';
+} from '../../components/Accordion';
+import { FormGroup, Label, Small, Input, FormBtn } from '../../components/Form';
 import {
 	Card,
 	CardBody,
 	CardContent,
 	CardHeader,
 	CardImage,
-} from '../components/Card';
-import API from '../utils/API';
+} from '../../components/Card';
+import API from '../../utils/API';
+import './style.css';
 
 function TripOverview() {
 	const [tripName, setTripName] = useState();
@@ -131,10 +132,10 @@ function TripOverview() {
 							<Link to={`/gallery/${id}`}>photo gallery</Link>
 						</Col>
 						<Col size='3'>
-							<Link to={`/ideas/?trip=${tripId}`}>trip Ideas</Link>
+							<Link to={`/ideas/?trip=${id}`}>trip Ideas</Link>
 						</Col>{' '}
 						<Col size='3'>
-							<Link to={'/budget'}>expenses</Link>
+							<Link to={`/budget/${id}`}>expenses</Link>
 						</Col>
 					</Row>
 				</Col>
@@ -290,13 +291,14 @@ function TripOverview() {
 														src={traveler.profilePic}
 														alt={traveler.username}
 														classes='img-thumbnail'
-														style={{width: "50px"}}
+														id='thumbnailPic'
 													/>
 												) : (
 													<i className='fas fa-suitcase px-2 '></i>
 												)}
-												<small className='text-monospace'>
-													{traveler.firstName} {traveler.lastName}
+												<small className='text-monospace my-auto ml-2'>
+													{traveler.firstName}
+													<br /> {traveler.lastName}
 												</small>
 											</span>
 										))}

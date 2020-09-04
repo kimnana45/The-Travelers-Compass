@@ -67,6 +67,20 @@ const Trip = new Schema({
             caption: String
         }
     ],
+    expenses: [
+        {
+            reason: {
+                type: String,
+                trim: true,
+                required: [true, 'Please state a reason for the expense/money']
+            },
+            amount: {
+                type: Number,
+                required: [true, 'Please add positive or negative number']
+            },
+            user: String
+        }
+    ],
     travelers: [ 
         {
             type: Schema.Types.ObjectId,

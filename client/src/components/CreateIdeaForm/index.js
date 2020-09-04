@@ -111,12 +111,12 @@ function CreateIdeaForm() {
 								<div className="form-check form-check-inline">
 									<Input 
 										className="form-check-input" type="radio" name="typeOfIdea" id="mustDoIdea" value="mustDo" onChange={handleInputChange} />
-									<Label className="form-check-label" htmlFor="mustDoIdea" text="Must Do"/>
+									<Label className="form-check-label m-0" htmlFor="mustDoIdea" text="Must Do"/>
 								</div>
 								<div className="form-check form-check-inline">
 									<Input 
 										className="form-check-input" type="radio" name="typeOfIdea" id="suggestionIdea" value="suggestion" onChange={handleInputChange} />
-									<Label className="form-check-label" htmlFor="suggestionIdea" text="Suggestion"/>
+									<Label className="form-check-label m-0" htmlFor="suggestionIdea" text="Just a Suggestion"/>
 								</div>
 							</div>
 						</FormGroup>

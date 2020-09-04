@@ -203,52 +203,33 @@ router.put('/api/trip/picture/:picId', function (req, res) {
 
 
 //IDEAS ROUTES
-//route to create the idea
+//route to add the idea
 router.put('/api/trip/:id/ideas', function (req, res) {
 	db.Trip.findByIdAndUpdate({ _id: req.params.id }, { $push : { toDos: req.body } }, { new: true } )
-		.then(dbIdea => res.json(dbIdea))
+		.then(dbTrip => res.json(dbTrip))
 		.catch(err => console.log(err));
 });
 //route to delete the idea 
 router.put('/api/trip/:tripId/ideas/:ideaId', function (req, res) {
 	db.Trip.findByIdAndUpdate({ _id: req.params.tripId}, { $pull : { toDos: { _id: req.params.ideaId } } }, { new: true } )
-		.then(dbIdea => res.json(dbIdea))
+		.then(dbTrip => res.json(dbTrip))
 		.catch(err => console.log(err));
 });
 
 
 //BUDGET & TRANSACTION ROUTES
-//route to create transaction
-router.post('/api/transaction', function (req, res) {
-	console.log(req.body);
-	const { reason, amount } = req.body;
-	db.Budget.create({
-		reason: reason,
-		amount: amount,	
-	})
-		.then(dbBudget => res.json(dbBudget))
+//route to add transaction
+router.put('/api/trip/:id/transaction', function (req, res) {
+	db.Trip.findByIdAndUpdate({ _id: req.params.id }, { $push : { expenses: req.body } }, { new: true } )
+		.then(({expenses}) => res.json(expenses[expenses.length - 1]))
 		.catch(err => console.log(err));
 });
-//route to get all transactions
-router.get('/api/transactions', function (req, res) {
-	let { tripId } = req.body
-	console.log(tripId);
-	db.Budget.find({ tripId: tripId })
-		.then(dbBudget=> console.log(dbBudget))
+//route to remove a transaction
+router.put('/api/trip/:tripId/transaction/:transactionId', function (req, res) {
+	console.log(req.params)
+	db.Trip.findByIdAndUpdate({ _id: req.params.tripId}, { $pull : { expenses: { _id: req.params.transactionId } } }, { new: true } )
+		.then(dbTrip => res.json(dbTrip))
 		.catch(err => console.log(err));
-})
-//route to add a transaction into budget? is that the same as create route?
-
-//route to delete a transaction
-router.delete('/api/transaction/:id', function (req, res) {
-	db.Budget.findByIdAndDelete((err, transaction) => {
-		if (err) return res.status(500).send(err);
-		const response = {
-			message: "The transaction has been removed",
-			id: transaction._id
-		};
-		return res.status(200).send(response);
-	})
 });
 
 module.exports = router;

@@ -58,7 +58,8 @@ function IdeasList() {
 							{idea.suggestion ? (
 								<FormBtn 
 								classes="float-right btn-sm btn-outline-danger" 
-								text={<i className="fas fa-heart"></i>}
+								text={<i className="fas fa-thumbs-up"></i>}
+								onClick={() => console.log(idea._id)} 
 								type="button"
 								style={{width: "auto"}}
 							/>
