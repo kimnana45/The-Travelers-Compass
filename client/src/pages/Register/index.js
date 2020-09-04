@@ -116,7 +116,7 @@ class Register extends Component {
 
 	render() {
 		return (
-			<div className='container registerContainer mt-2'>
+			<div className='container registerContainer'>
 				<form>
 						<FormGroup>
 							<Row>
@@ -178,7 +178,7 @@ class Register extends Component {
 							<Small text='Username is not available' />
 						)}
 					</FormGroup>
-					<FormGroup>
+					<FormGroup classes="m-0 p-0">
 						<Label text='Email' />
 						<Input
 							name='email'
@@ -193,7 +193,7 @@ class Register extends Component {
 							<Small text='Email is invalid' />
 						)}
 					</FormGroup>
-					<FormGroup>
+					<FormGroup classes="m-0 p-0">
 						<Label text='Password' />
 						<Input
 							name='password'
@@ -208,7 +208,7 @@ class Register extends Component {
 							<Small text='Password must be at least 8 characters' />
 						)}
 					</FormGroup>
-					<FormGroup>
+					<FormGroup classes="m-0 p-0">
 						<Label text='Confirm Password' />
 						<Input
 							name='confirm'
@@ -224,7 +224,7 @@ class Register extends Component {
 					</FormGroup>
 					{this.state.error ? <Small text={this.state.error} /> : ''}
 
-					<FormGroup>
+					<FormGroup classes="m-0 p-0">
 						<FormBtn
 							disabled={
 								this.state.validUN && this.state.validEM && this.state.validCF

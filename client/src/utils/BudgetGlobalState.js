@@ -41,12 +41,12 @@ export const BudgetGlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     //Actions
-    async function getTransactions() {
+    async function getTransactions(id) {
         try {
-            const res = await axios.get('/api/transactions');
+            const { data } = await axios.get(`/api/trip/${id}`);
             dispatch({
                 type: GET_TRANSACTIONS,
-                payload: res.data.data
+                payload: data.expenses
             });
         } catch (err) {
             dispatch({
@@ -56,12 +56,12 @@ export const BudgetGlobalProvider = ({ children }) => {
         }
     }
 
-    async function deleteTransaction(id) {
+    async function deleteTransaction(tripId, transactionId) {
         try {
-            await axios.delete(`/api/transactions/${id}`);
+            await axios.put(`/api/trip/${tripId}/transaction/${transactionId}`);
             dispatch({
                 type: REMOVE_TRANSACTION,
-                payload: id
+                payload: transactionId
             });
         } catch (err) {
             dispatch({
@@ -71,17 +71,17 @@ export const BudgetGlobalProvider = ({ children }) => {
         }
     }
 
-    async function addTransaction(transaction) {
+    async function addTransaction(id, transaction) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         }
         try {
-            const res = await axios.post('/api/transactions/', transaction, config);
+            const { data } = await axios.put(`/api/trip/${id}/transaction`, transaction, config);
             dispatch({
                 type: ADD_TRANSACTION,
-                payload: res.data.data
+                payload: data
             });
         } catch (err) {
             dispatch({

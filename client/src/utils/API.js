@@ -20,7 +20,7 @@ export default {
     return axios.get("/api/user_data");
   },
   getTripById: function(id) {
-    return axios.get("/api/trip/" + id);
+    return axios.get(`/api/trip/${id}`);
   },
   saveTrip: function (trip) {
     return axios.post("/api/trip", trip);
@@ -52,13 +52,10 @@ export default {
   saveEmergencyContact: function(contactInfo) {
     return axios.put("/api/trip/emergencyContact", contactInfo);
   },
-  getTransactions: function(tripId) {
-    return axios.get("/api/transactions" + tripId);
+  addTransaction: function(id, transaction) {
+    return axios.put(`/api/trip/${id}/transaction`, transaction);
   },
-  addTransaction: function(transaction) {
-    return axios.post("/api/transaction", transaction);
-  },
-  deleteTransaction: function(id) {
-    return axios.delete("/api/transaction" + id);
+  removeTransaction: function(tripId, transactionId) {
+    return axios.put(`/api/trip/${tripId}/transaction/${transactionId}`);
   }
 }; 
