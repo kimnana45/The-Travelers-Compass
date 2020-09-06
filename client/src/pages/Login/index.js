@@ -68,7 +68,7 @@ class Login extends Component {
 						<Col size='md-4'>
 						<h1 
 							className='mt-4' 
-							id="headerWord" 
+							id="headerWordRed" 
 						>start planning your next vacation!</h1>
 						</Col>
 					</Row>
@@ -107,7 +107,7 @@ class Login extends Component {
 									}
 									text='Login'
 									onClick={this.login}
-									classes='btn-danger'
+									classes='btn-light'
 								/>
 								<Link to='/register'>Not registered? Click here.</Link>
 							</form>

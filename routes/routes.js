@@ -162,7 +162,7 @@ router.put('/api/trip/emergencyContact', function (req, res) {
 		.then(dbUser => res.json(dbUser))
 		.catch(err => console.log(err))
 });
-//Route to update flights on the trip
+//Route to add flights on the trip
 router.put('/api/trip/:id/flight', function (req, res) {
 	const { body } = req;
 	const { id } = req.params;
@@ -172,6 +172,22 @@ router.put('/api/trip/:id/flight', function (req, res) {
 		{ new: true })
 		.then(dbTrip => res.json(dbTrip.flights))
 		.catch(err => console.log(err))
+});
+//Route to add lodging on the trip
+router.put('/api/trip/:id/lodging', function (req, res) {
+	const { body } = req;
+	const { id } = req.params;
+	db.Trip.findOneAndUpdate({ _id: id }, { $push: { lodging: body } }, { new: true })
+		.then(dbTrip => res.json(dbTrip.lodging))
+		.catch(err => console.log(err))
+});
+//Route to remove lodging on the trip
+router.put('/api/trip/:tripId/lodging/:lodgingId', function (req, res) {
+	const { tripId, lodgingId } = req.params;
+	console.log(req.params)
+	db.Trip.findByIdAndUpdate({ _id: tripId}, { $pull : { lodging: { _id: lodgingId } } }, { new: true } )
+		.then(dbTrip => res.json(dbTrip))
+		.catch(err => console.log(err));
 });
 
 
@@ -206,7 +222,7 @@ router.put('/api/trip/picture/:picId', function (req, res) {
 //route to add the idea
 router.put('/api/trip/:id/ideas', function (req, res) {
 	db.Trip.findByIdAndUpdate({ _id: req.params.id }, { $push : { toDos: req.body } }, { new: true } )
-		.then(dbTrip => res.json(dbTrip))
+		.then(dbTrip => res.json(dbTrip.toDos))
 		.catch(err => console.log(err));
 });
 //route to delete the idea 

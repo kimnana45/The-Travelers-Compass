@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Redirect } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useInput } from 'react-hanger';
 import ReactFilestack from 'filestack-react';
-import {
-	Card,
-	CardBody,
-	CardContent,
-	CardImage,
-	CardHeader,
-} from '../../components/Card';
-import { Label, FormBtn, FormGroup, Input } from '../../components/Form';
+import { Card, CardBody, CardImage } from '../../components/Card';
+import { FormBtn, FormGroup, Input, Small } from '../../components/Form';
 import { Row, Col, Container } from '../../components/Grid';
 import API from '../../utils/API';
 import './style.css';
@@ -26,9 +20,7 @@ function Gallery() {
 		API.getUser()
 			.then(({ data }) => setUsername(data.username))
 		API.getTripById(id)
-			.then(({ data }) => {
-				setPictures(data.pictures);
-			})
+			.then(({ data }) => setPictures(data.pictures))
 			.catch((err) => console.log(err));
 	}, [refreshPage]);
 
@@ -56,9 +48,7 @@ function Gallery() {
 	
 	function deletePicture(picId, tripId) {
 		API.deletePicture(picId, {tripId: tripId})
-			.then(({data}) => {
-				setRefreshPage(true);
-			})
+			.then(({data}) => setRefreshPage(true))
 	};
 
 	return (
@@ -69,28 +59,26 @@ function Gallery() {
 						<h3 id="subHeaderWord">upload new photo</h3><br/>
 						<Row classes="justify-content-center">
 							<Col size="md-10">
-								<Card classes="border-0">
-									<CardBody classes="mx-auto my-2">
-										{picturePath ? (
-											<CardImage src={picturePath} classes='mb-2 img-thumbnail' id="uploadPhoto" />
-										) : (
-											<CardImage
-												src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
-												classes='img-thumbnail'
-											/>
-										)}
-									</CardBody>
-									<ReactFilestack
-											apikey={'AG4hPSOMQruX3SKmPWtD0z'}
-											mode={'pick'}
-											onSuccess={(response) => onSuccess(response)}
-											onError={(e) => console.log(e)}
-											componentDisplayMode={{
-												type: 'button',
-												customText: 'upload',
-											}}
+								<CardBody classes="mx-auto my-2">
+									{picturePath ? (
+										<CardImage src={picturePath} classes='mb-2 img-thumbnail' id="uploadPhoto" />
+									) : (
+										<CardImage
+											src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
+											classes='img-thumbnail'
 										/>
-								</Card>
+									)}
+								</CardBody>
+								<ReactFilestack
+										apikey={'AG4hPSOMQruX3SKmPWtD0z'}
+										mode={'pick'}
+										onSuccess={(response) => onSuccess(response)}
+										onError={(e) => console.log(e)}
+										componentDisplayMode={{
+											type: 'button',
+											customText: 'upload',
+										}}
+									/>
 							</Col>
 						</Row>
 						<Row classes='mt-2'>
@@ -113,7 +101,10 @@ function Gallery() {
 					</form>
 				</Col>
 				<Col size='md-9'>
-					<Row classes="overflow-auto p-1">
+					<Row>
+						<h3 id="subHeaderWord" className="mx-auto">gallery</h3><br/>
+					</Row>
+					<Row id="galleryDiv" classes="justify-content-center p-1">
 						{pictures.map((pic) => (
 							<Card 
 							key={pic._id} 
@@ -129,9 +120,11 @@ function Gallery() {
 											style={{ width: 'auto' }}
 											onClick={() => deletePicture(pic._id, id)}
 										/>
-									<CardBody classes="ml-4 overflow-auto" style={{width: "200px"}}>
-										<strong>{username}</strong>
-										{pic.caption ? (<p>{pic.caption}</p>) : ""}
+									<CardBody classes="ml-4">
+									<strong>{username}</strong>
+									</CardBody>
+									<CardBody classes="ml-4 overflow-auto" style={{width: "240px", height: "50px"}}>
+										{pic.caption ? (<Small text={pic.caption} />) : ""}
 									</CardBody>
 								</CardBody>
 							</Card>

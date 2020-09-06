@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Label, Input, FormGroup, FormBtn } from '../Form';
-import { Card, CardBody } from '../Card';
+import { Card } from '../Card';
 import { useStoreContext } from '../../utils/IdeaGlobalState';
 import { ADD_IDEA, LOADING } from '../../utils/actions';
 import API from '../../utils/API';
-import { Col, Row, Container } from '../Grid';
+import { Col, Row } from '../Grid';
 import AlgoliaPlaces from 'algolia-places-react';
-import { set } from 'mongoose';
 
 function CreateIdeaForm() {
 	const [idea, setIdea] = useState('');
@@ -26,10 +25,10 @@ function CreateIdeaForm() {
 		query = query.split('=');
 		setTripId(query[1]);
 		getUserData();
-	}, [tripId]);
+	}, []);
 
-	function handleSubmit(e) {
-		e.preventDefault();
+	function handleSubmit(event) {
+		event.preventDefault();
 		dispatch({ type: LOADING });
 		let toDo = {
 			idea: idea,
@@ -39,10 +38,12 @@ function CreateIdeaForm() {
 			suggestion: suggestion
 		}
 		API.saveIdea(tripId, toDo)
-			.then((res) => {
+			.then(res => {
+				console.log(res.data)
+				let index = res.data.length - 1;
 				dispatch({
 					type: ADD_IDEA,
-					idea: res.data,
+					idea: res.data[index],
 				});
 			})
 			.catch((err) => console.log(err));
@@ -74,9 +75,9 @@ function CreateIdeaForm() {
 
 	return (
 		<div>
-			<Card classes="border-dark">
-				<h1 className="text-center">Get To Planning</h1>
-				<h4 className="text-center">Start adding ideas for our trip</h4>
+			<Card classes="border-dark" style={{backgroundColor: "#f8f5f0"}}>
+				<h1 className="text-center" id="headerWordTeal">Get To Planning</h1>
+				<h4 className="text-center" id="subHeaderWord">Start adding ideas for our trip</h4>
 				<form onSubmit={handleSubmit} style={{ margin: '0'}}>
 					<Row>
 						<FormGroup className="px-4" style={{ width: '100%'}}>
@@ -121,8 +122,8 @@ function CreateIdeaForm() {
 							</div>
 						</FormGroup>
 					</Row>
-					<Row className='row mt-2 justify-content-md-center'>
-						<Col size='md-12'>
+					<Row className='row mt-2 justify-content-md-center pb-2'>
+						<Col size='md-11'>
 							<FormBtn
 								// disabled={state.loading}
 								classes='btn-danger btn-sm'

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useInput } from 'react-hanger';
-import parseISO from 'date-fns/parseISO';
+import moment from 'moment';
 import { Col, Row, Container } from '../../components/Grid';
 import { FormGroup, Input, Label, Small, FormBtn } from '../../components/Form';
 import { Card, CardBody, CardImage } from '../../components/Card';
 import { Accordion, AccordionHeader, AccordionContent } from '../../components/Accordion';
+import TripCard from '../../components/TripCard';
 import API from '../../utils/API';
 import './style.css';
 
@@ -15,13 +16,16 @@ function MembersDashboard() {
 		id: '',
 		name: '',
 		username: '',
-		profilePic: ''
+		profilePic: '',
 	});
 	const [emergencyContactInfo, setEmergencyContactInfo] = useState({
 		set: false,
 		name: '',
 		number: '',
 	});
+	const [pastTrips, setPastTrips] = useState([]);
+	const [currentTrips, setCurrentTrips] = useState([]);
+	const [futureTrips, setFutureTrips] = useState([]);
 	const [errorMsg, setErrorMsg] = useState();
 	const [joinedTripId, setJoinedTripId] = useState();
 	const tripCode = useInput('');
@@ -32,17 +36,25 @@ function MembersDashboard() {
 	const [newTripClicked, setNewTripClicked] = useState(false);
 	const [refreshPage, setRefreshPage] = useState(false);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		API.getUser()
 			.then((res) => {
-				const { trips, firstName, lastName, username, _id, profilePic, emergencyContact } = res.data;
+				const {
+					trips,
+					firstName,
+					lastName,
+					username,
+					_id,
+					profilePic,
+					emergencyContact,
+				} = res.data;
 				setUser({
 					trips: trips,
 					id: _id,
 					name: `${firstName} ${lastName}`,
 					username: username,
-					profilePic: profilePic
-				})
+					profilePic: profilePic,
+				});
 				if (emergencyContact) {
 					setEmergencyContactInfo({
 						set: true,
@@ -50,6 +62,7 @@ function MembersDashboard() {
 						number: emergencyContact.number,
 					});
 				}
+				checkTripStatus(trips);
 			})
 			.catch((err) => console.log(err));
 	}, [refreshPage]);
@@ -61,7 +74,7 @@ function MembersDashboard() {
 			password: tripPassword.value,
 		})
 			.then(({ data }) => {
-				let tripIndex = data.trips.length - 1
+				let tripIndex = data.trips.length - 1;
 				setJoinedTripId(data.trips[tripIndex]);
 				setJoinTripClicked(true);
 			})
@@ -98,7 +111,7 @@ function MembersDashboard() {
 	const deleteTrip = (tripId) => {
 		API.deleteTrip(tripId)
 			.then((res) => {
-				setRefreshPage(true)
+				setRefreshPage(true);
 			})
 			.catch((err) => {
 				if (err) console.log(err);
@@ -108,7 +121,7 @@ function MembersDashboard() {
 	const removeTravelerFromTrip = (idOfTraveler, idOfTrip) => {
 		API.removeTravelerFromTrip({
 			userId: idOfTraveler,
-			tripId: idOfTrip
+			tripId: idOfTrip,
 		})
 			.then((res) => setRefreshPage(true))
 			.catch((err) => {
@@ -116,8 +129,32 @@ function MembersDashboard() {
 			});
 	};
 
+	const checkTripStatus = (trips) => {
+		let past = [];
+		let current = [];
+		let future = [];
+		for (let i = 0; i < trips.length; i++) {
+			let startDate = moment(trips[i].dates.startDate).format('YYYY-MM-D');
+			let endDate = moment(trips[i].dates.endDate).format('YYYY-MM-D');
+			let currentDate = moment().format('YYYY-MM-D');
+			let checkIsBefore = moment(currentDate).isBefore(startDate);
+			let checkIsAfter = moment(currentDate).isAfter(startDate);
+			let checkIsBetween = moment(currentDate).isBetween(startDate, endDate);
+			if (checkIsBefore) {
+				future.push(trips[i]);
+			} else if (checkIsBetween) {
+				current.push(trips[i]);
+			} else if (checkIsAfter) {
+				past.push(trips[i]);
+			}
+		}
+		setPastTrips(past);
+		setCurrentTrips(current);
+		setFutureTrips(future);
+	};
+
 	if (joinTripClicked) {
-		console.log(joinTripClicked)
+		console.log(joinTripClicked);
 		let tripId = user.trips.length - 1;
 		return <Redirect to={`/trip/${joinedTripId}`} />;
 	}
@@ -132,22 +169,43 @@ function MembersDashboard() {
 				<Row>
 					<Col size='md-4'>
 						<Card>
-							<CardBody classes="mx-auto my-2">
-								<CardImage src={user.profilePic} alt={user.username} classes="img-thumbnail" id="profilePic"/>
+							<CardBody classes='mx-auto my-2'>
+								<CardImage
+									src={user.profilePic}
+									alt={user.username}
+									classes='img-thumbnail'
+									id='profilePic'
+								/>
 							</CardBody>
 							<CardBody classes='mx-auto'>
 								<h2 id='subHeaderWord'>{user.username}</h2>
-								<h4 className="text-center">{user.name}</h4>
-								{ user.trips.length === 1 ? (
-									<h6 className="text-center">{user.trips.length} trip planned currently</h6>
-								) : (
-									<h6 className="text-center">{user.trips.length} trips planned currently</h6>
+								<h4 className='text-center'>{user.name}</h4>
+								{futureTrips.length > 0 && (
+									<h6 className='text-center'>
+										{futureTrips.length} future {futureTrips.length === 1 ? "trip" : "trips"} being planned
+									</h6>
+								)}
+								{pastTrips.length > 0 && (
+									<h6 className='text-center'>
+										{pastTrips.length} past {pastTrips.length === 1 ? "trip" : "trips"}
+									</h6>
 								)}
 							</CardBody>
 						</Card>
 						<Accordion>
-							<AccordionHeader num='One' title='Join an existing itinerary'>
+							{pastTrips.length > 0 && (
+							<AccordionHeader num='One' title='All Past Itineraries'>
 								<AccordionContent num='One'>
+									{pastTrips.map(trip => (
+										<Link to={`/trip/${trip._id}`} key={trip._id}>
+											{trip.tripName} to {trip.location[0].name}
+										</Link>
+									))}
+								</AccordionContent>
+							</AccordionHeader>
+							)}
+							<AccordionHeader num='Two' title='Join an existing itinerary'>
+								<AccordionContent num='Two'>
 									<form>
 										<FormGroup>
 											<Label text='Enter Unique Trip Code' />
@@ -175,10 +233,10 @@ function MembersDashboard() {
 								</AccordionContent>
 							</AccordionHeader>
 							<AccordionHeader
-								num='Two'
+								num='Three'
 								title='Set your emergency contact info'
 							>
-								<AccordionContent num='Two'>
+								<AccordionContent num='Three'>
 									{emergencyContactInfo.set ? (
 										<span className='text-center'>
 											Current emergency contact:
@@ -231,75 +289,42 @@ function MembersDashboard() {
 						<FormBtn
 							type='button'
 							text='start a new itinerary'
-							classes='btn-info btn-lg'
+							classes='btn-dark btn-lg'
 							onClick={() => setNewTripClicked(true)}
 						/>
-						{user.trips.length ? (
+						<Card id="currentTripsContainer">
+						{currentTrips.length > 0 && (
 							<Card classes='p-2 justify-content-center'>
-								<h1>upcoming trips</h1>
-								{user.trips.map((trip) => (
-									<CardBody
+								<h1 id='headerWordTeal' className="text-left">current {currentTrips.length === 1 ? "trip" : "trips"}</h1>
+								{currentTrips.map((trip) => (
+									<TripCard
 										key={trip._id}
-										classes='p-2 m-1 border rounded-lg text-center'
-									>
-										{trip.creator === user.id ? (
-											<FormBtn
-												classes='float-right btn-sm text-danger'
-												text="delete trip"
-												style={{ width: 'auto' }}
-												onClick={() => deleteTrip(trip._id)}
-											/>
-										) : (
-											<FormBtn
-												classes='float-right btn-sm text-danger'
-												text="remove me from this trip"
-												style={{ width: 'auto' }}
-												onClick={() => removeTravelerFromTrip(user.id, trip._id)}
-											/>
-										)}
-										<Link to={`/trip/${trip._id}`} key={trip._id}>
-											<FormBtn
-												classes='float-left btn-sm text-info'
-												text="view itinerary"
-												style={{ width: 'auto' }}
-											/>
-											<br/>
-										</Link>
-										<h3 id='subHeaderWord' className='mt-2 mb-4 text-center'>
-											{trip.tripName}
-										</h3>
-										<Row>
-											<Col size='md-4'>
-												<i className='far fa-compass fa-2x mx-auto'></i>
-												<p className='text-center'>
-													{trip.location[0].name +
-														', ' +
-														(trip.location[0].administrative
-															? trip.location[0].administrative
-															: trip.location[0].country)}
-												</p>
-											</Col>
-											<Col size='md-4'>
-												<i className='fas fa-calendar-alt fa-2x mx-auto'></i>
-												<p className='text-center'>
-													{parseISO(trip.dates.startDate)
-														.toString()
-														.slice(4, 15)}{' '}
-													-{' '}
-													{parseISO(trip.dates.endDate)
-														.toString()
-														.slice(4, 15)}
-												</p>
-											</Col>
-											<Col size='md-4'>
-												<i className='fas fa-key fa-2x mx-auto'></i>
-												<p className='text-center'>{trip.uniqueCode}</p>
-											</Col>
-										</Row>
-									</CardBody>
+										trip={trip}
+										deleteTrip={deleteTrip}
+										removeTravelerFromTrip={removeTravelerFromTrip}
+										userId={user.id}
+									/>
 								))}
 							</Card>
-						) : (
+						)}
+						</Card>
+						<Card id="futureTripsContainer">
+						{futureTrips.length > 0 && (
+							<Card classes='p-2 justify-content-center'>
+								<h1 id='headerWordTeal' className="text-left">upcoming {futureTrips.length === 1 ? "trip" : "trips"}</h1>
+								{futureTrips.map((trip) => (
+									<TripCard
+										key={trip._id}
+										trip={trip}
+										deleteTrip={deleteTrip}
+										removeTravelerFromTrip={removeTravelerFromTrip}
+										userId={user.id}
+									/>
+								))}
+							</Card>
+						)}
+						</Card>
+						{user.trips.length === 0 ? (
 							<Card>
 								<CardBody classes='p-3'>
 									<h2 id='subHeaderWord'>bummer, no upcoming trips...</h2>
@@ -307,7 +332,9 @@ function MembersDashboard() {
 										join an existing itinerary or start planning a new one.
 									</h2>
 								</CardBody>
-							</Card>
+							</Card> 
+						) : (
+							''
 						)}
 					</Col>
 				</Row>

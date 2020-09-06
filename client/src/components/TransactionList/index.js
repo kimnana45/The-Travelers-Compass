@@ -9,7 +9,6 @@ export const TransactionList = () => {
 
     useEffect(() => {
         getExpenseInfo(id)
-        console.log(id)
     }, []);
 
     function getExpenseInfo(id) {
@@ -18,7 +17,7 @@ export const TransactionList = () => {
 
     return (
         <div>
-            <h3>History</h3>
+            <h2 id="subHeaderWord">History</h2>
             <ul className="list">
                 {transactions.map(transaction => (
                     <Transaction
@@ -30,4 +29,4 @@ export const TransactionList = () => {
             </ul>
         </div>
     )
-}
+} 

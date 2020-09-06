@@ -15,13 +15,13 @@ function Home() {
             <img src={headerIMG} className='img-fluid' />
           </Col>
           <Col size='md-4'>
-            <h1 id="headerWord">start planning your next vacation!</h1>
+            <h1 id="headerWordRed">start planning your next vacation!</h1>
           </Col>
         </Row>
-        <Row style={{ color: "mistyrose", textAlign: 'left', paddingTop: '40px' }}>
+        <Row style={{ textAlign: 'left', paddingTop: '40px' }}>
           <Col size="md-11">
             <br />
-            <h1>Your Guide To Your Next Adventure <i class="fas fa-suitcase-rolling"></i></h1>
+            <h3 id="subHeaderWord">Your Guide To Your Next Adventure <i className="fas fa-suitcase-rolling"></i></h3>
           </Col>
         </Row>
       </Jumbotron>

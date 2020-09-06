@@ -19,11 +19,11 @@ export const BudgetExpenses = () => {
     return (
         <div className="bud-exp-container">
             <div>
-                <h4>Budget</h4>
+                <h4 id="subHeaderWord">Budget</h4>
                 <p className="money plus">${numberWithCommas(budget)}</p>
             </div>
             <div>
-                <h4>Expense</h4>
+                <h4 id="subHeaderWord">Expense</h4>
                 <p className="money minus">${numberWithCommas(expense)}</p>
             </div>
         </div>

@@ -34,8 +34,14 @@ export default {
   joinExistingTrip: function(formData) {
     return axios.put("/api/jointrip", formData);
   },
-  updateFlightDetail: function(id, flight) {
+  addFlightDetail: function(id, flight) {
     return axios.put(`/api/trip/${id}/flight`, flight);
+  },
+  addLodgingDetail: function(id, lodging) {
+    return axios.put(`/api/trip/${id}/lodging`, lodging);
+  },
+  removeLodgingDetail: function(lodgingId, tripId) {
+    return axios.put(`/api/trip/${tripId}/lodging/${lodgingId}`);
   },
   addPicture: function (id, image) {
     return axios.put("/api/trip/" + id, image);

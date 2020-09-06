@@ -2,15 +2,15 @@
 import React from "react";
 
 export function Card({ children, classes, ...rest }) {
-	return <div className={"card border-light bg-white my-1 " + (classes ? classes : "")} {...rest}>{children}</div>;
+	return <div className={"card border-light my-1 " + (classes ? classes : "")} {...rest}>{children}</div>;
 }
 
 export function CardBody({ children, classes, ...other }) {
 	return <div className={classes} {...other}>{children}</div>;
 }
 
-export function CardHeader({ text, classes }) {
-	return <h3 className={"card-header text-center " + (classes ? classes : "")}>{text}</h3>;
+export function CardHeader({ text, classes, ...other }) {
+	return <h3 className={"card-header text-center " + (classes ? classes : "")} {...other}>{text}</h3>;
 }
 
 export function CardContent({ children, classes }) {
