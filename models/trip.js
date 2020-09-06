@@ -103,12 +103,6 @@ const Trip = new Schema({
 			suggestion: Boolean
         }
     ],
-    favoriteIdeas: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Idea"
-        }
-    ],
     created: { type: Date, required: true, default: Date.now() },
 });
 
