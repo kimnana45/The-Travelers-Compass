@@ -13,7 +13,7 @@ function Budget() {
             <Container className="budget-container">
                 <Row>
                     <Col size="md-12">
-                    <h1>Budget For The Trip</h1>
+                    <h3 id="headerWordCreme" className="p-2 m-2">Budget For The Trip</h3>
                     </Col>
                 </Row>
             <Row>

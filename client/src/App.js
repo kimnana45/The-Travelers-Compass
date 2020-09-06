@@ -19,9 +19,7 @@ import TripOverview from './pages/TripOverview';
 import Gallery from './pages/Gallery';
 import MERN from './assets/mern.png';
 import { IdeaStoreProvider } from './utils/IdeaGlobalState';
-import MustDoList from './pages/MustDoList';
-import IdeaDetails from './pages/IdeaDetails';
-import IdeasMain from './pages/IdeasMain';
+import Ideas from './pages/Ideas';
 import Budget from './pages/Budget';
 
 class App extends Component {
@@ -140,23 +138,9 @@ class App extends Component {
 							<IdeaStoreProvider>
 								<Route exact path='/ideas'>
 									{this.state.authorized ? (
-										<IdeasMain />
+										<Ideas/>
 									) : (
 										<Redirect to='/login' />
-									)}
-								</Route>
-								<Route exact path='/mustdo'>
-									{this.state.authorized ? (
-										<MustDoList />
-									) : (
-										<Redirect to='/ideas' />
-									)}
-								</Route>
-								<Route exact path='/ideas/:id'>
-									{this.state.authorized ? (
-										<IdeaDetails />
-									) : (
-										<Redirect to='/ideas' />
 									)}
 								</Route>
 							</IdeaStoreProvider>

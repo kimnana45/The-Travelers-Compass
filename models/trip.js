@@ -29,16 +29,19 @@ const Trip = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }, 
-    lodging: {
-        service: String,
-        address: String,
-        wifiInfo: {
-            name: String,
-            password: String
-        },
-        checkIn: Date,
-        checkOut: Date
-    },
+    lodging: [
+        {
+            service: String,
+            address: String,
+            hotelNum: String,
+            wifiInfo: {
+                name: String,
+                password: String
+            },
+            checkIn: Date,
+            checkOut: Date
+        }
+    ],
     flights: [
         {
             user: String,
@@ -91,14 +94,11 @@ const Trip = new Schema({
         {
             idea: {
 				type: String,
-				required: true
 			},
 			address: { 
 				type: Object, 
-                required: true,
-                unique: true
 			},
-			user: { type: Object, required: true },
+			user: { type: Object },
 			mustDo: Boolean,
 			suggestion: Boolean
         }

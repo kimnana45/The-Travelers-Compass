@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { ListItem, List } from '../List';
 import { Small, FormBtn } from '../Form';
 import { Container } from '../Grid';
@@ -9,6 +8,7 @@ import API from '../../utils/API';
 
 function IdeasList() {
 	const [tripId, setTripId] = useState('');
+	// const [refresh, setRefresh] = useState(false);
 	const [state, dispatch] = useStoreContext();
 
 	const removeIdea = (id) => {
@@ -18,6 +18,7 @@ function IdeasList() {
 					type: REMOVE_IDEA,
 					_id: id,
 				});
+				// setRefresh(true)
 			})
 			.catch((err) => console.log(err));
 	};
@@ -43,12 +44,13 @@ function IdeasList() {
 
 	return (
 		<Container>
-			<h1 className="text-center">Current Ideas</h1>
-			<Small text="Add to favorites if you want to do it too!" />
+			<h1 className="text-center" id="headerWordGreen">Current Ideas</h1>
+			<Small text="Add to favorites if you want to do it too!" classes="text-center"/>
 			{state.ideas.length ? (
 				<List>
 					{state.ideas.map((idea) => (
 						<ListItem key={idea._id}>
+							{console.log(idea)}
 							<FormBtn 
 								classes="float-right btn-sm mx-1 btn-outline-danger" 
 								onClick={() => removeIdea(idea._id)} 
@@ -67,20 +69,15 @@ function IdeasList() {
 								""
 							)}
                             <i className='fas fa-map-marked-alt fa-2x mx-3'></i>
-                            <Link to={'/ideas/' + idea._id}>
-                                <strong>
-                                    {`${idea.idea} by ${idea.user.firstName} ${idea.user.lastName}`}
-                                </strong>
-							</Link>	
+							<strong>
+								{`${idea.idea} by ${idea.user.firstName} ${idea.user.lastName}`}
+							</strong>
 						</ListItem>
 					))}
 				</List>
 			) : (
-				<h3>No idea yet. Someone think of something!</h3>
+				<h3 id="subHeaderWord" className="my-5">No idea yet. Someone think of something!</h3>
 			)}
-			<div className="mt-4">
-				<Link to='favorites'>View must-do list</Link>
-			</div>
 		</Container>
 	);
 }

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useParams } from 'react-router-dom';
 import { BudgetGlobalContext } from "../../utils/BudgetGlobalState";
-import { FormGroup } from "../Form";
+import { FormGroup, FormBtn } from "../Form";
 
 export const AddTransaction = () => {
     const [reason, setReason] = useState("");
@@ -22,7 +22,7 @@ export const AddTransaction = () => {
 
     return (
         <div>
-            <h3>Add New Transaction</h3>
+            <h2 id="subHeaderWord">Add New Expense</h2>
             <form onSubmit={handleSubmit} className="px-5">
                 <FormGroup>
                 <label htmlFor="text">Expense Description</label>
@@ -46,7 +46,7 @@ export const AddTransaction = () => {
                         placeholder="Ex: -400.00"
                     />
                 </FormGroup>
-                <button className="Budgetbtn">Add Transaction</button>
+                <FormBtn classes='btn-dark' text="Add Transaction" />
             </form>
         </div>
     )

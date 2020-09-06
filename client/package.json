@@ -10,10 +10,12 @@
     "@testing-library/user-event": "^7.2.1",
     "algolia-places-react": "^1.6.0",
     "filestack-react": "^3.2.1",
+    "moment": "^2.27.0",
     "randexp": "^0.5.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hanger": "^2.2.1",
+    "react-moment": "^0.9.7",
     "react-scripts": "3.4.3",
     "styled-components": "^5.1.1"
   },
