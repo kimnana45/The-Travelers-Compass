@@ -38,6 +38,14 @@
     text-transform: lowercase;
 }
 
+#subHeaderWordCreme {
+    color: #fef5da;
+    font-size: 40px;
+    line-height: 25px;
+    letter-spacing: -3px;
+    text-transform: lowercase;
+}
+
 #profilePic {
     width: 220px;
     height: 250px;

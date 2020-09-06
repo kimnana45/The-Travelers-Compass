@@ -8,17 +8,15 @@ import API from '../../utils/API';
 
 function IdeasList() {
 	const [tripId, setTripId] = useState('');
-	// const [refresh, setRefresh] = useState(false);
 	const [state, dispatch] = useStoreContext();
 
 	const removeIdea = (id) => {
 		API.removeIdea(id, tripId)
-			.then((res) => {
+			.then(res => {
 				dispatch({
 					type: REMOVE_IDEA,
 					_id: id,
 				});
-				// setRefresh(true)
 			})
 			.catch((err) => console.log(err));
 	};
@@ -44,39 +42,27 @@ function IdeasList() {
 
 	return (
 		<Container>
-			<h1 className="text-center" id="headerWordGreen">Current Ideas</h1>
-			<Small text="Add to favorites if you want to do it too!" classes="text-center"/>
+			<h1 className="text-center" id="headerWordCreme">Current Ideas</h1>
 			{state.ideas.length ? (
 				<List>
 					{state.ideas.map((idea) => (
 						<ListItem key={idea._id}>
-							{console.log(idea)}
 							<FormBtn 
 								classes="float-right btn-sm mx-1 btn-outline-danger" 
 								onClick={() => removeIdea(idea._id)} 
 								text={<i className="far fa-times-circle"></i>}
 								style={{width: "auto"}}
 							/>
-							{idea.suggestion ? (
-								<FormBtn 
-								classes="float-right btn-sm btn-outline-danger" 
-								text={<i className="fas fa-thumbs-up"></i>}
-								onClick={() => console.log(idea._id)} 
-								type="button"
-								style={{width: "auto"}}
-							/>
-							) : (
-								""
-							)}
                             <i className='fas fa-map-marked-alt fa-2x mx-3'></i>
-							<strong>
-								{`${idea.idea} by ${idea.user.firstName} ${idea.user.lastName}`}
-							</strong>
+							<small className="d-inline-flex text-monospace mr-3">
+								{`${idea.idea} by ${idea.user.firstName} ${idea.user.lastName}`} 
+							</small>
+							{idea.mustDo ? (<Small text="(must do)" classes="d-inline-flex"/>) : (<Small text="(suggestion)" classes="d-inline-flex"/>)}
 						</ListItem>
 					))}
 				</List>
 			) : (
-				<h3 id="subHeaderWord" className="my-5">No idea yet. Someone think of something!</h3>
+				<h4 id="subHeaderWord" className="my-5">No idea yet.<br/> Someone think of something!</h4>
 			)}
 		</Container>
 	);

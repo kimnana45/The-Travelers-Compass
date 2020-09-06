@@ -4,9 +4,6 @@ import {
   REMOVE_IDEA,
   UPDATE_IDEAS,
   ADD_IDEA,
-  ADD_FAVORITE,
-  UPDATE_FAVORITES,
-  REMOVE_FAVORITE,
   LOADING
 } from "./actions";
 
@@ -40,28 +37,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       ideas: state.ideas.filter(idea => {
-        return idea._id !== action._id; 
-      })
-    };
-
-  case ADD_FAVORITE:
-    return {
-      ...state,
-      favorites: [action.idea, ...state.favorites],
-      loading: false
-    };
-
-  case UPDATE_FAVORITES:
-    return {
-      ...state,
-      favorites: [...state.favorites],
-      loading: false
-    };
-
-  case REMOVE_FAVORITE:
-    return {
-      ...state,
-      favorites: state.favorites.filter((idea) => {
         return idea._id !== action._id; 
       })
     };

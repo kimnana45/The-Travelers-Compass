@@ -449,7 +449,7 @@ function TripOverview() {
 											})}
 									</CardBody>
 								) : (
-									<CardBody classes='p-3 bg-white'>
+									<CardBody classes='p-3 bg-white border'>
 										<h6 className='font-italic text-monospace'>
 											No emergency contact information is available
 										</h6>
@@ -544,7 +544,7 @@ function TripOverview() {
 											})}
 									</CardBody>
 								) : (
-									<CardBody classes='p-3 bg-white'>
+									<CardBody classes='p-3 bg-white border'>
 										<h6 className='font-italic text-monospace'>
 											No lodging information is available
 										</h6>
@@ -553,102 +553,106 @@ function TripOverview() {
 							</CardBody>
 						</Col>
 					</Row>
-					{flightDetails.length > 0 ? (
-						<Row>
-							<Col size='md-12'>
-								<CardBody>
-									<CardHeader text='Flight Details' id="headerDiv" />
-									<CardBody classes='overflow-auto bg-white' style={{height: '260px'}}>
-										{flightDetails.map((flight) => {
-											return (
-												<CardBody
-													classes='rounded p-2 border-bottom'
-													key={flight._id}
-												>
-													<Row>
-														<Col size='5'>
-															<Small text='Passenger Name' />
-															<p className='ml-2 text-monospace'>{flight.user}</p>
-														</Col>
-														<Col size='7'>
-															<Small text='Flight Number' />
-															<p className='ml-2 text-monospace'>
-																{flight.flightNo}
-															</p>
-														</Col>
-													</Row>
-													<Row>
-														<h6 className='text-bold mb-0 mt-2 ml-3'>
-															Departing:
-														</h6>
-													</Row>
-													<Row>
-														<Col size='md-3 6'>
-															<Small text='From' />
-															<p className='ml-2 mb-0 text-monospace'>
-																{flight.departing.airport}
-															</p>
-														</Col>
-														<Col size='md-3 6'>
-															<Small text='Date' />
-															<p className='ml-2 mb-0 text-monospace'>
-																{`${flight.departing.date.substring(5,10)}-${flight.departing.date.substring(0,2)}`}
-															</p>
-														</Col>
-														<Col size='md-3 6'>
-															<Small text='Time' />
-															<p className='ml-2 mb-0 text-monospace'>
-																{flight.departing.time}
-															</p>
-														</Col>
-														<Col size='md-3 6'>
-															<Small text='Seat' />
-															<p className='ml-2 mb-0 text-monospace'>
-																{flight.departing.seat}
-															</p>
-														</Col>
-													</Row>
-													<Row>
-														<h6 className='text-bold mb-0 mt-2 ml-3'>
-															Arriving:
-														</h6>
-													</Row>
-													<Row>
-														<Col size='md-3 6'>
-															<Small text='To' />
-															<p className='ml-2 mb-0 text-monospace'>
-																{flight.arriving.airport}
-															</p>
-														</Col>
-														<Col size='md-3 6'>
-															<Small text='Date' />
-															<p className='ml-2 mb-0 text-monospace'>
-																{`${flight.arriving.date.substring(5, 10)}-${flight.arriving.date.substring(0,2)}`}
-															</p>
-														</Col>
-														<Col size='md-3 6'>
-															<Small text='Time' />
-															<p className='ml-2 mb-0 text-monospace'>
-																{flight.arriving.time}
-															</p>
-														</Col>
-														<Col size='md-3 6'>
-															<Small text='Seat' />
-															<p className='ml-2 mb-0 text-monospace'>
-																{flight.arriving.seat}
-															</p>
-														</Col>
-													</Row>
-												</CardBody>
-											);
-										})}
-									</CardBody>
+					<Row>
+						<Col size='md-12'>
+							<CardBody>
+								<CardHeader text='Flight Details' id="headerDiv" />
+								{flightDetails.length > 0 ? (
+								<CardBody classes='overflow-auto bg-white' style={{height: '260px'}}>
+									{flightDetails.map((flight) => {
+										return (
+											<CardBody
+												classes='rounded p-2 border-bottom'
+												key={flight._id}
+											>
+												<Row>
+													<Col size='5'>
+														<Small text='Passenger Name' />
+														<p className='ml-2 text-monospace'>{flight.user}</p>
+													</Col>
+													<Col size='7'>
+														<Small text='Flight Number' />
+														<p className='ml-2 text-monospace'>
+															{flight.flightNo}
+														</p>
+													</Col>
+												</Row>
+												<Row>
+													<h6 className='text-bold mb-0 mt-2 ml-3'>
+														Departing:
+													</h6>
+												</Row>
+												<Row>
+													<Col size='md-3 6'>
+														<Small text='From' />
+														<p className='ml-2 mb-0 text-monospace'>
+															{flight.departing.airport}
+														</p>
+													</Col>
+													<Col size='md-3 6'>
+														<Small text='Date' />
+														<p className='ml-2 mb-0 text-monospace'>
+															{`${flight.departing.date.substring(5,10)}-${flight.departing.date.substring(0,2)}`}
+														</p>
+													</Col>
+													<Col size='md-3 6'>
+														<Small text='Time' />
+														<p className='ml-2 mb-0 text-monospace'>
+															{flight.departing.time}
+														</p>
+													</Col>
+													<Col size='md-3 6'>
+														<Small text='Seat' />
+														<p className='ml-2 mb-0 text-monospace'>
+															{flight.departing.seat}
+														</p>
+													</Col>
+												</Row>
+												<Row>
+													<h6 className='text-bold mb-0 mt-2 ml-3'>
+														Arriving:
+													</h6>
+												</Row>
+												<Row>
+													<Col size='md-3 6'>
+														<Small text='To' />
+														<p className='ml-2 mb-0 text-monospace'>
+															{flight.arriving.airport}
+														</p>
+													</Col>
+													<Col size='md-3 6'>
+														<Small text='Date' />
+														<p className='ml-2 mb-0 text-monospace'>
+															{`${flight.arriving.date.substring(5, 10)}-${flight.arriving.date.substring(0,2)}`}
+														</p>
+													</Col>
+													<Col size='md-3 6'>
+														<Small text='Time' />
+														<p className='ml-2 mb-0 text-monospace'>
+															{flight.arriving.time}
+														</p>
+													</Col>
+													<Col size='md-3 6'>
+														<Small text='Seat' />
+														<p className='ml-2 mb-0 text-monospace'>
+															{flight.arriving.seat}
+														</p>
+													</Col>
+												</Row>
+											</CardBody>
+										);
+									})}
 								</CardBody>
-							</Col>
-						</Row>
-					) : (
-						''
-					)}
+							) : (
+								<CardBody classes='p-3 bg-white border border'>
+									<h6 className='font-italic text-monospace'>
+										No flight information is available
+									</h6>
+								</CardBody>
+							)}
+							</CardBody>
+						</Col>
+					</Row>
 				</Col>
 			</Row>
 		</Container>
