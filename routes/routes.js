@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require('../models');
 var isAuthenticated = require('../config/middleware/isAuthenticated');
 const { query } = require('express');
+const path = require("path");
 
 // USER PASSPORT ROUTES
 //register a user
@@ -253,8 +254,9 @@ router.put('/api/trip/:tripId/transaction/:transactionId', function (req, res) {
 		.catch(err => console.log(err));
 });
 
-app.get('*', (req, res) => {
-	res.sendFile(path.resolve(__dirname, 'client', 'built', 'index.html'))
+// If no API routes are hit, send the React app
+router.use(function(req, res) {
+	res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 module.exports = router;
