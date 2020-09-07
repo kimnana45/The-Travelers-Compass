@@ -28,10 +28,10 @@ SO THAT my campanions and I can have access to the same information and update i
 
 After user log in, they will be direct to a member dashboard, where they can join in an existing trip, or create a new trip. 
 User's upcoming trips will also be display on this page. 
-<img src="homeScreen.png" alt="Member dashboard" />
+<img src="../client/src/assets/homeScreen.png" alt="Member dashboard" />
 
 Once they click on a trip, user will be direct to a trip overview page. On top of the page is a navbar contains links to upload photo, add trip ideas, budget & expenses. 
-<img src="MDashboard.png" alt="Member dashboard" />
+<img src="../client/src/assets/MDashboard.png" alt="Member dashboard" />
 
 ## Contributors 
 * Kim Le 
