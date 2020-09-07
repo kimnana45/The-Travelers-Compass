@@ -38,16 +38,8 @@ function MembersDashboard() {
 
 	useLayoutEffect(() => {
 		API.getUser()
-			.then((res) => {
-				const {
-					trips,
-					firstName,
-					lastName,
-					username,
-					_id,
-					profilePic,
-					emergencyContact,
-				} = res.data;
+			.then(res => {
+				const { trips, firstName, lastName, username, _id, profilePic, emergencyContact } = res.data;
 				setUser({
 					trips: trips,
 					id: _id,
@@ -144,6 +136,10 @@ function MembersDashboard() {
 				future.push(trips[i]);
 			} else if (checkIsBetween) {
 				current.push(trips[i]);
+			} else if (currentDate === startDate) {
+				console.log(currentDate)
+				console.log(startDate)
+				current.push(trips[i])
 			} else if (checkIsAfter) {
 				past.push(trips[i]);
 			}
@@ -154,7 +150,6 @@ function MembersDashboard() {
 	};
 
 	if (joinTripClicked) {
-		console.log(joinTripClicked);
 		let tripId = user.trips.length - 1;
 		return <Redirect to={`/trip/${joinedTripId}`} />;
 	}
@@ -171,7 +166,7 @@ function MembersDashboard() {
 						<Card>
 							<CardBody classes='mx-auto my-2'>
 								<CardImage
-									src={user.profilePic}
+									src={user.profilePic ? (user.profilePic) : ("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png")}
 									alt={user.username}
 									classes='img-thumbnail'
 									id='profilePic'
@@ -180,11 +175,14 @@ function MembersDashboard() {
 							<CardBody classes='mx-auto'>
 								<h2 id='subHeaderWord'>{user.username}</h2>
 								<h4 className='text-center'>{user.name}</h4>
-								{futureTrips.length > 0 && (
+								{currentTrips.length > 0 && (
 									<h6 className='text-center'>
-										{futureTrips.length} future {futureTrips.length === 1 ? "trip" : "trips"} being planned
+										{currentTrips.length} current {currentTrips.length === 1 ? "trip" : "trips"}
 									</h6>
 								)}
+								<h6 className='text-center'>
+										{futureTrips.length} future {futureTrips.length === 1 ? "trip" : "trips"} being planned
+								</h6>
 								{pastTrips.length > 0 && (
 									<h6 className='text-center'>
 										{pastTrips.length} past {pastTrips.length === 1 ? "trip" : "trips"}
@@ -324,7 +322,7 @@ function MembersDashboard() {
 							</Card>
 						)}
 						</Card>
-						{user.trips.length === 0 ? (
+						{user.trips.length === 0 && (
 							<Card>
 								<CardBody classes='p-3'>
 									<h2 id='subHeaderWord'>bummer, no upcoming trips...</h2>
@@ -333,8 +331,6 @@ function MembersDashboard() {
 									</h2>
 								</CardBody>
 							</Card> 
-						) : (
-							''
 						)}
 					</Col>
 				</Row>

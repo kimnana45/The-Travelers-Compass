@@ -58,8 +58,9 @@ function TripCard({ trip, deleteTrip, removeTravelerFromTrip, userId }) {
                     </p>
                 </Col>
                 <Col size='md-4'>
-                    <i className='fas fa-key fa-2x mx-auto'></i>
+                    <small className="m-0 p-0">share this code to allow others to join</small>
                     <p className='text-center'>{trip.uniqueCode}</p>
+                    <small className="m-0 p-0 text-monospace">[pw: {trip.password}]</small> 
                 </Col>
             </Row>
         </CardBody>

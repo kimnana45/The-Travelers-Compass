@@ -102,7 +102,9 @@ function Gallery() {
 				</Col>
 				<Col size='md-9'>
 					<Row>
-						<h3 id="subHeaderWord" className="mx-auto">gallery</h3><br/>
+						<Col size="12">
+						<h3 id="subHeaderWord" className="mx-auto">gallery</h3>
+						</Col>
 					</Row>
 					<Row id="galleryDiv" classes="justify-content-center p-1">
 						{pictures.map((pic) => (
@@ -123,7 +125,7 @@ function Gallery() {
 									<CardBody classes="ml-4">
 									<strong>{username}</strong>
 									</CardBody>
-									<CardBody classes="ml-4 overflow-auto" style={{width: "240px", height: "50px"}}>
+									<CardBody classes="ml-4 overflow-auto bg-white" style={{width: "240px", height: "50px"}}>
 										{pic.caption ? (<Small text={pic.caption} />) : ""}
 									</CardBody>
 								</CardBody>

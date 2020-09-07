@@ -73,7 +73,7 @@ function TripOverview() {
 					setTripLocation(`${location[0].name}, ${location[0].administrative}`);
 				}
 			})
-			.catch((err) => console.log(err));
+			.catch(err => console.log(err));
 	}, []);
 
 	function handleFlightSubmit(event) {
@@ -97,7 +97,7 @@ function TripOverview() {
 		};
 		API.addFlightDetail(tripId, flightDetails)
 			.then(({ data }) => setFlightDetails(data))
-			.catch((err) => console.log(err));
+			.catch(err => console.log(err));
 		airlineInput.setValue('');
 		flightNoInput.setValue('');
 		departingAirportInput.setValue('');
@@ -125,7 +125,7 @@ function TripOverview() {
 		};
 		API.addLodgingDetail(tripId, lodging)
 			.then(({ data }) => setLodgingDetails(data))
-			.catch((err) => console.log(err));
+			.catch(err => console.log(err));
 		hotelInput.setValue('');
 		addressInput.setValue('');
 		roomNumberInput.setValue('');
@@ -138,7 +138,7 @@ function TripOverview() {
 	function removeLodging(id) {
 		API.removeLodgingDetail(id, tripId)
 			.then(({ data }) => setLodgingDetails(data.lodging))
-			.catch((err) => console.log(err));
+			.catch(err => console.log(err));
 	};
 
 	return (
@@ -393,26 +393,22 @@ function TripOverview() {
 					</Row>
 				</Col>
 				<Col size='md-4'>
-					{travelers.length > 1 ? (
+					{travelers.length > 1 && (
 						<Row>
 							<Col size='md-12'>
-								<CardBody>
+								<CardBody classes="bg-white">
 									<CardHeader text='Travelers' id="headerDiv" />
 									{travelers.map((traveler) => (
 										<span
 											className='card-body d-inline-flex'
 											key={traveler._id}
 										>
-											{traveler.profilePic ? (
 												<CardImage
-													src={traveler.profilePic}
+													src={traveler.profilePic ? (traveler.profilePic) : ("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png")}
 													alt={traveler.username}
 													classes='img-thumbnail'
 													id='thumbnailPic'
 												/>
-											) : (
-												<i className='fas fa-suitcase px-2 '></i>
-											)}
 											<h6 className='text-monospace my-auto ml-2'>
 												{traveler.firstName}
 												<br /> {traveler.lastName}
@@ -422,8 +418,6 @@ function TripOverview() {
 								</CardBody>
 							</Col>
 						</Row>
-					) : (
-						<span></span>
 					)}
 					<Row>
 						<Col size='md-12'>
