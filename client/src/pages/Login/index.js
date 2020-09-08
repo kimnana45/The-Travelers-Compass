@@ -109,7 +109,7 @@ class Login extends Component {
 									onClick={this.login}
 									classes='btn-light'
 								/>
-								<Link to='/register'>Not registered? Click here.</Link>
+								<Link to='/register'><p className="text-white mt-2">Not registered? Click here.</p></Link>
 							</form>
 						</div>
 					)}

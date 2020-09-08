@@ -86,9 +86,6 @@ function Trip({ userId }) {
 			<Row className='mt-2'>
 				<form>
 					<Row>
-						<Label text={`Unique trip code to share with others: ${userId}`} />
-					</Row>
-					<Row>
 						<Col size='md-6'>
 							<FormGroup>
 								<Label text='Trip Name' />

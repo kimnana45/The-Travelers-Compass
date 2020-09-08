@@ -1,3 +1,7 @@
 .registerContainer {
   max-width: 600px;
 }
+
+.registerContainer a {
+  color: white
+}
