@@ -45,7 +45,7 @@ function IdeasList() {
 			<h1 className="text-center" id="headerWordCreme">Current Ideas</h1>
 			{state.ideas.length ? (
 				<List>
-					{state.ideas.map((idea) => (
+					{state.ideas.map(idea => (
 						<ListItem key={idea._id}>
 							<FormBtn 
 								classes="float-right btn-sm mx-1 btn-outline-danger" 
@@ -54,10 +54,11 @@ function IdeasList() {
 								style={{width: "auto"}}
 							/>
                             <i className='fas fa-map-marked-alt fa-2x mx-3'></i>
-							<small className="d-inline-flex text-monospace mr-3">
+							<p className="d-inline-flex text-monospace mr-3">
 								{`${idea.idea} by ${idea.user.firstName} ${idea.user.lastName}`} 
-							</small>
-							{idea.mustDo ? (<Small text="(must do)" classes="d-inline-flex"/>) : (<Small text="(suggestion)" classes="d-inline-flex"/>)}
+							</p>
+							{idea.mustDo ? (<Small text="(must do)" classes="d-inline-flex"/>) : (<Small text="(suggestion)" classes="d-inline-flex"/>)}<br/>
+							<small className="text-monospace">{idea.address.value}</small>
 						</ListItem>
 					))}
 				</List>
